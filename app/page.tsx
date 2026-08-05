@@ -46,14 +46,13 @@ export default function Home() {
 
       <section className="hero hero-impact">
         <div className="impact-photo" aria-hidden="true"><div className="impact-photo-inner"></div><div className="hero-campus-bubbles"><CampusIcon name="Arizona State"/><CampusIcon name="Michigan"/><CampusIcon name="Yale"/><CampusIcon name="UCLA"/></div><span className="photo-stamp">32 legacy campuses<br/>One connected movement</span></div>
-        <div className="impact-noise" aria-hidden="true"></div>
         <div className="impact-copy">
-          <p className="overline">Students Organize for Syria — Nationwide</p>
-          <h1><span>Syria’s future</span><span>is not waiting.</span><em>Neither are we.</em></h1>
-          <div className="impact-bottom"><p>Students are building the power, relationships, and public voice to shape what comes next.</p><div><a className="pill pill-acid" href="/get-involved?form=member#apply">Join the movement <Arrow /></a><a className="impact-link" href="#chapters">Find your campus ↓</a></div></div>
+          <div className="hero-eyebrow"><span>Student-led</span><span>Nationwide</span><span>Syria-focused</span></div>
+          <h1><span>Students</span><span>shaping Syria’s</span><em>future.</em></h1>
+          <div className="impact-bottom"><p>We mobilize students to organize their campuses, advocate for Syria, and build lasting community power.</p><div><a className="pill pill-green" href="/get-involved?form=member#apply">Join the movement <Arrow /></a><a className="impact-link" href="#chapters">Explore 32 campuses ↓</a></div></div>
         </div>
-        <a className="impact-badge" href="/get-involved?form=chapter#apply"><b>Start</b><span>a chapter</span><i>↗</i></a>
-        <div className="impact-proof"><span><b>2012</b>Student organizing roots</span><span><b>National</b>Campus network</span><span><b>3</b>Core action pillars</span><span><b>1</b>Shared future</span></div>
+        <a className="impact-badge" href="/get-involved?form=chapter#apply"><span>Bring SOS to your campus</span><b>Start a chapter</b><i>↗</i></a>
+        <div className="impact-proof"><span><b>01</b>Organize campuses</span><span><b>02</b>Advocate for Syria</span><span><b>03</b>Mobilize community</span><a href="/about">Our story <Arrow/></a></div>
       </section>
 
       <div className="marquee" aria-hidden="true"><div>STUDENT-LED / COMMUNITY-POWERED / SYRIA-FOCUSED / BOLD ENOUGH TO BUILD WHAT COMES NEXT / </div></div>
