@@ -45,7 +45,7 @@ export default function Home() {
       </header>
 
       <section className="hero hero-impact">
-        <div className="impact-photo" aria-hidden="true"><div className="impact-photo-inner"></div><span className="photo-stamp">Student-led<br/>Community-powered</span></div>
+        <div className="impact-photo" aria-hidden="true"><div className="impact-photo-inner"></div><div className="hero-campus-bubbles"><CampusIcon name="Arizona State"/><CampusIcon name="Michigan"/><CampusIcon name="Yale"/><CampusIcon name="UCLA"/></div><span className="photo-stamp">32 legacy campuses<br/>One connected movement</span></div>
         <div className="impact-noise" aria-hidden="true"></div>
         <div className="impact-copy">
           <p className="overline">Students Organize for Syria — Nationwide</p>

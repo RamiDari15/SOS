@@ -1,13 +1,14 @@
 "use client";
 
 import { FormEvent, ReactNode, useEffect, useState } from "react";
-import { legacyChapters, slugify } from "./site-data";
+import { collegeLogos, legacyChapters, slugify } from "./site-data";
 
 export const Arrow = () => <span aria-hidden="true">↗</span>;
 
 export function CampusIcon({ name }: { name: string }) {
   const initials = name.split(/\s+/).map(word => word[0]).join("").slice(0, 2).toUpperCase();
-  return <span className="campus-icon" aria-hidden="true"><i>{initials}</i><b></b></span>;
+  const logo = collegeLogos[name];
+  return <span className="campus-icon" aria-hidden="true">{logo ? <img src={logo} alt=""/> : <i>{initials}</i>}<b></b></span>;
 }
 
 export function Shell({ children, active }: { children: ReactNode; active?: string }) {
