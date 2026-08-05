@@ -1,9 +1,10 @@
 export const legacyChapters = [
-  ["Arizona State", "Tempe, Arizona"], ["Brown", "Providence, Rhode Island"],
+  ["Arizona State", "Tempe, Arizona"], ["Benedictine", "Lisle, Illinois"], ["Brown", "Providence, Rhode Island"], ["Butler", "Indianapolis, Indiana"],
   ["UC Berkeley", "Berkeley, California"], ["UCLA", "Los Angeles, California"],
-  ["Columbia", "New York, New York"], ["DePaul", "Chicago, Illinois"],
-  ["Eastern Michigan", "Ypsilanti, Michigan"], ["Florida State", "Tallahassee, Florida"],
-  ["UIC", "Chicago, Illinois"], ["Loyola Chicago", "Chicago, Illinois"],
+  ["UC Riverside", "Riverside, California"], ["UCF", "Orlando, Florida"], ["Colorado Boulder", "Boulder, Colorado"],
+  ["Columbia", "New York, New York"], ["DePaul", "Chicago, Illinois"], ["Eastern Michigan", "Ypsilanti, Michigan"],
+  ["Florida State", "Tallahassee, Florida"], ["University of Florida", "Gainesville, Florida"], ["UIC", "Chicago, Illinois"],
+  ["Illinois State", "Normal, Illinois"], ["Indiana University Indianapolis", "Indianapolis, Indiana"], ["Loyola Chicago", "Chicago, Illinois"],
   ["Michigan", "Ann Arbor, Michigan"], ["Michigan State", "East Lansing, Michigan"],
   ["UPenn", "Philadelphia, Pennsylvania"], ["USC", "Los Angeles, California"],
   ["Washington", "Seattle, Washington"], ["Wayne State", "Detroit, Michigan"],
@@ -15,7 +16,17 @@ export const pastCampaigns = [
   { title: "Advocacy in D.C.", partner: "With SAMS", body: "Students brought informed Syrian voices directly to Washington." },
   { title: "Paper Airplanes", partner: "National partnership", body: "SOS members offered English tutoring to young Syrians." },
   { title: "Warmth in Action", partner: "With NuDay Syria", body: "Students fundraised for winter coats for Syrian refugee children." },
+  { title: "Syria Solidarity Week", partner: "National campus action", body: "Chapters held panels, screenings, fundraisers, art actions, and public solidarity events." },
+  { title: "Dares 4 Syria", partner: "With Karam Foundation", body: "A Giving Tuesday campaign that invited supporters to take action for Syrian youth." },
+  { title: "Virtual Mentorship", partner: "Syrian Youth Empowerment", body: "Students and young professionals mentored Syrian youth navigating college applications." },
+  { title: "The Revolution Continues", partner: "Washington, D.C.", body: "A public remembrance and advocacy gathering centered on freedom and accountability." },
 ];
+
+export const pressReleases = [
+  ["May 31, 2020", "Statement on BLM protests", "A solidarity statement responding to protests against police brutality in the United States."],
+  ["March 18, 2020", "Statement on Idlib", "A statement addressing displacement, humanitarian conditions, and violence affecting civilians in Idlib."],
+  ["March 15, 2020", "Remembrance Day", "A reflection marking nine years since the first protests in Daraa and the beginning of the Syrian revolution."],
+] as const;
 
 export function slugify(value: string) { return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 

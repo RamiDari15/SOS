@@ -29,6 +29,7 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
         <a className={active === "chapters" ? "active" : ""} href="/chapters">Chapters</a>
         <a className={active === "conferences" ? "active" : ""} href="/conferences">Conferences</a>
         <a className={active === "news" ? "active" : ""} href="/media">Media</a>
+        <a className={active === "newsletter" ? "active" : ""} href="/newsletter">Newsletter</a>
         <a className="nav-action" href="/get-involved">Take action <Arrow /></a>
       </nav>
     </header>
@@ -36,7 +37,7 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
     <footer>
       <a className="footer-mark" href="/">SOS</a>
       <p>Students Organize for Syria<br />Building community power.<br />Shaping what comes next.</p>
-      <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/news">News</a><a href="/contact">Contact</a></div>
+      <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/contact">Contact</a></div>
       <div className="footer-meta"><span>© 2026 Students Organize for Syria</span><span>Student-led. Always.</span></div>
     </footer>
   </main>;
@@ -68,9 +69,16 @@ export function ContactForm() {
   const [sent, setSent] = useState(false);
   function submit(e: FormEvent) { e.preventDefault(); setSent(true); }
   if (sent) return <div className="form-success" role="status"><span>✓</span><h2>Message prepared.</h2><p>This prototype demonstrates the completed interaction. Connect SOS’s approved inbox before launch to deliver submissions.</p><button onClick={() => setSent(false)}>Send another</button></div>;
-  return <form className="contact-form" onSubmit={submit}>
-    <label>Name<input name="name" required /></label><label>Email<input name="email" type="email" required /></label>
+  return <form className="contact-form cool-form" onSubmit={submit}>
+    <div className="form-heading"><span>Message desk</span><b>01 — 04</b></div>
+    <label><span>Name</span><input name="name" placeholder="Your full name" required /></label><label><span>Email</span><input name="email" type="email" placeholder="you@school.edu" required /></label>
     <label>What can we help with?<select name="topic" defaultValue=""><option value="" disabled>Select one</option><option>Start or join a chapter</option><option>Partnership</option><option>Press or statement</option><option>General inquiry</option></select></label>
-    <label>Message<textarea name="message" rows={6} required /></label><button className="pill pill-green" type="submit">Send message <Arrow /></button>
+    <label><span>Message</span><textarea name="message" rows={6} placeholder="Tell us what you want to build…" required /></label><button className="pill pill-green" type="submit">Send message <Arrow /></button><p className="form-fineprint">Demo mode — connect the approved SOS inbox to activate delivery.</p>
   </form>;
+}
+
+export function MovementForms() {
+  const [mode,setMode]=useState<"member"|"chapter">("member"); const [done,setDone]=useState(false);
+  function submit(e:FormEvent){e.preventDefault();setDone(true)}
+  return <section className="application-zone" id="apply"><div className="application-intro"><p className="overline">Take the next step</p><h2>Turn intention<br/>into action.</h2><p>These polished forms preserve the important questions from the legacy applications. They are placeholders until SOS selects its final form and data system.</p><div className="form-tabs"><button className={mode==="member"?"active":""} onClick={()=>{setMode("member");setDone(false)}}>Join a chapter</button><button className={mode==="chapter"?"active":""} onClick={()=>{setMode("chapter");setDone(false)}}>Start a chapter</button></div></div>{done?<div className="form-success application-success" role="status"><span>✓</span><h2>Application staged.</h2><p>The experience works; submission delivery will activate when the owner provides the approved destination.</p><button onClick={()=>setDone(false)}>Submit another</button></div>:<form className="cool-form application-form" onSubmit={submit}><div className="form-heading"><span>{mode==="member"?"Member interest":"Chapter starter"}</span><b>Placeholder form</b></div><div className="form-row"><label><span>Name</span><input required placeholder="Your full name"/></label><label><span>Email</span><input required type="email" placeholder="you@school.edu"/></label></div><div className="form-row"><label><span>School</span><input required placeholder="University or institution"/></label><label><span>{mode==="member"?"Major / field":"State / region"}</span><input required placeholder={mode==="member"?"What do you study?":"Where are you organizing?"}/></label></div>{mode==="member"?<><label><span>How would you like to participate?</span><select required defaultValue=""><option value="" disabled>Choose a role</option><option>General member</option><option>Chapter officer</option><option>Volunteer for campaigns</option><option>Not sure yet</option></select></label><label><span>Existing student organizations</span><input placeholder="Optional — list any affiliations"/></label></>:<><label><span>Phone number</span><input required type="tel" placeholder="(000) 000-0000"/></label><label><span>Why this campus, why now?</span><textarea required rows={4} placeholder="Tell us about student interest and what you hope to build."/></label></>}<label><span>Anything else we should know?</span><textarea rows={4} placeholder="Experience, goals, accessibility needs, or questions"/></label><button className="pill pill-green" type="submit">Submit interest <Arrow/></button><p className="form-fineprint">Placeholder only. No personal information is stored or sent yet.</p></form>}</section>
 }
