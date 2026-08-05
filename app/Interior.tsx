@@ -27,7 +27,8 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
         <a className={active === "work" ? "active" : ""} href="/our-work">Our work</a>
         <a className={active === "campaigns" ? "active" : ""} href="/campaigns">Campaigns</a>
         <a className={active === "chapters" ? "active" : ""} href="/chapters">Chapters</a>
-        <a className={active === "news" ? "active" : ""} href="/news">News</a>
+        <a className={active === "conferences" ? "active" : ""} href="/conferences">Conferences</a>
+        <a className={active === "news" ? "active" : ""} href="/media">Media</a>
         <a className="nav-action" href="/get-involved">Take action <Arrow /></a>
       </nav>
     </header>
@@ -35,7 +36,7 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
     <footer>
       <a className="footer-mark" href="/">SOS</a>
       <p>Students Organize for Syria<br />Building community power.<br />Shaping what comes next.</p>
-      <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/news">News</a><a href="/contact">Contact</a></div>
+      <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/news">News</a><a href="/contact">Contact</a></div>
       <div className="footer-meta"><span>© 2026 Students Organize for Syria</span><span>Student-led. Always.</span></div>
     </footer>
   </main>;

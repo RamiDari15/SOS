@@ -36,7 +36,8 @@ export default function Home() {
           <a href="/our-work">Our work</a>
           <a href="/campaigns">Campaigns</a>
           <a href="/chapters">Chapters</a>
-          <a href="/news">News</a>
+          <a href="/conferences">Conferences</a>
+          <a href="/media">Media</a>
           <a className="nav-action" href="/get-involved">Take action <Arrow /></a>
         </nav>
       </header>
@@ -133,7 +134,7 @@ export default function Home() {
       <footer>
         <a className="footer-mark" href="#top">SOS</a>
         <p>Students Organize for Syria<br />Building community power.<br />Shaping what comes next.</p>
-        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/news">News</a><a href="/contact">Contact</a></div>
+        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/contact">Contact</a></div>
         <div className="footer-meta"><span>© 2026 Students Organize for Syria</span><span>Student-led. Always.</span></div>
       </footer>
     </main>
