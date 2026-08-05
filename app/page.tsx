@@ -111,7 +111,7 @@ export default function Home() {
         <div className="chapter-rails" aria-label="SOS college chapters">
           {[0,1].map((row) => <div className={`chapter-track row-${row}`} key={row}>{[...legacyChapters, ...legacyChapters].map(([chapter, place], i) => <a key={`${row}-${i}`} href={`/chapters/${slugify(chapter)}`}><CampusIcon name={chapter}/><span className="campus-copy"><b>{chapter}</b><small>{place}</small></span><Arrow /></a>)}</div>)}
         </div>
-        <a className="pill pill-cream chapter-cta" href="https://organize4syria.com/start-a-chapter/" target="_blank" rel="noreferrer">Start a chapter <Arrow /></a>
+        <a className="pill pill-cream chapter-cta" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a>
       </section>
 
       <section className="gather" data-reveal>
@@ -128,7 +128,7 @@ export default function Home() {
         <div className="join-copy" data-reveal>
           <p className="overline">There is a place for you here</p>
           <h2>Don’t watch<br />the future.<br /><i>Shape it.</i></h2>
-          <div className="join-actions"><a className="pill pill-dark" href="https://organize4syria.com/start-a-chapter/" target="_blank" rel="noreferrer">Start a chapter <Arrow /></a><a className="line-link" href="https://organize4syria.com/become-an-sos-member/" target="_blank" rel="noreferrer">Become a member <Arrow /></a></div>
+          <div className="join-actions"><a className="pill pill-dark" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a><a className="line-link" href="/get-involved?form=member#apply">Become a member <Arrow /></a></div>
         </div>
       </section>
 
