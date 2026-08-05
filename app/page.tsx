@@ -43,20 +43,16 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className="hero">
-        <div className="hero-art" aria-hidden="true">
-          <div className="green-orbit"></div>
-          <div className="hero-art-image"></div>
-          <p className="art-caption">A movement belongs<br />to the people building it.</p>
+      <section className="hero hero-impact">
+        <div className="impact-photo" aria-hidden="true"><div className="impact-photo-inner"></div><span className="photo-stamp">Student-led<br/>Community-powered</span></div>
+        <div className="impact-noise" aria-hidden="true"></div>
+        <div className="impact-copy">
+          <p className="overline">Students Organize for Syria — Nationwide</p>
+          <h1><span>Syria’s future</span><span>is not waiting.</span><em>Neither are we.</em></h1>
+          <div className="impact-bottom"><p>Students are building the power, relationships, and public voice to shape what comes next.</p><div><a className="pill pill-acid" href="/get-involved?form=member#apply">Join the movement <Arrow /></a><a className="impact-link" href="#chapters">Find your campus ↓</a></div></div>
         </div>
-        <div className="hero-copy">
-          <p className="overline">A student-led movement for Syria</p>
-          <h1><span>We are not</span><span>waiting for</span><em>the future.</em></h1>
-          <div className="hero-bottom">
-            <p>We are building it—campus by campus, community by community, voice by voice.</p>
-            <a className="pill pill-green" href="#chapters">Find your chapter <Arrow /></a>
-          </div>
-        </div>
+        <a className="impact-badge" href="/get-involved?form=chapter#apply"><b>Start</b><span>a chapter</span><i>↗</i></a>
+        <div className="impact-proof"><span><b>2012</b>Student organizing roots</span><span><b>National</b>Campus network</span><span><b>3</b>Core action pillars</span><span><b>1</b>Shared future</span></div>
       </section>
 
       <div className="marquee" aria-hidden="true"><div>STUDENT-LED / COMMUNITY-POWERED / SYRIA-FOCUSED / BOLD ENOUGH TO BUILD WHAT COMES NEXT / </div></div>
