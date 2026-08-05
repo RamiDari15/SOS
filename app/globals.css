@@ -45,3 +45,8 @@ main:before{content:"";position:fixed;z-index:100;left:0;top:0;width:100%;height
 @keyframes sticker-wiggle{50%{transform:rotate(-3deg) translateY(-6px)}}@keyframes spark-spin{to{transform:rotate(360deg)}}
 @media(max-width:900px){.campaign-card:nth-child(n){transform:none}.gather-image{margin:0;box-shadow:none}.manifesto:after{top:35px}.history:before{display:none}}
 @media(max-width:560px){.manifesto:after{content:"PEOPLE → POWER";right:6vw;top:25px}.manifesto-art{box-shadow:10px 10px 0 var(--acid)}.campaign-stack{padding:0 6vw 80px}.chapter-section:after{top:25px}.join:after{font-size:22vw}}
+
+/* Campaign-card overflow correction */
+.campaigns{padding-left:5vw;padding-right:5vw}.campaign-stack{padding-left:0;padding-right:0;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible}.campaign-card{width:100%;min-width:0;min-height:560px;padding:34px 30px;overflow:hidden}.campaign-card h3{font-size:clamp(38px,3.45vw,58px);line-height:.88;letter-spacing:-.055em;max-width:100%;overflow-wrap:anywhere;word-break:normal}.campaign-card p{max-width:100%;font-size:14px}.campaign-card.paper h3{font-size:clamp(36px,3.15vw,54px)}
+@media(max-width:1050px){.campaign-stack{grid-template-columns:1fr;gap:28px}.campaign-card{min-height:390px}.campaign-card:nth-child(n){transform:none}.campaign-card h3,.campaign-card.paper h3{font-size:clamp(48px,8vw,76px);overflow-wrap:normal}.campaigns{padding-left:7vw;padding-right:7vw}}
+@media(max-width:560px){.campaigns{padding-left:6vw;padding-right:6vw}.campaign-card{min-height:360px;padding:28px 24px}.campaign-card h3,.campaign-card.paper h3{font-size:13vw;overflow-wrap:anywhere}}
