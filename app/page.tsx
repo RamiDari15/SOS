@@ -1,12 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const chapters = [
-  "Arizona State", "Brown", "UC Berkeley", "UCLA", "Columbia", "DePaul",
-  "Eastern Michigan", "Florida State", "UIC", "Loyola Chicago", "Michigan",
-  "Michigan State", "UPenn", "USC", "Washington", "Wayne State", "Wellesley", "Yale",
-];
+import { CampusIcon } from "./Interior";
+import { legacyChapters, slugify } from "./site-data";
 
 const history = [
   ["Books Not Bombs", "With Karam Foundation, SOS helped fund scholarships and support education in Syria."],
@@ -111,7 +107,7 @@ export default function Home() {
           <p>Explore schools connected to the SOS chapter network. Select a campus to visit the existing chapter directory.</p>
         </div>
         <div className="chapter-rails" aria-label="SOS college chapters">
-          {[0,1].map((row) => <div className={`chapter-track row-${row}`} key={row}>{[...chapters, ...chapters].map((chapter, i) => <a key={`${row}-${i}`} href="https://organize4syria.com/find-your-chapter/" target="_blank" rel="noreferrer"><span>{String((i % chapters.length) + 1).padStart(2,"0")}</span>{chapter}<Arrow /></a>)}</div>)}
+          {[0,1].map((row) => <div className={`chapter-track row-${row}`} key={row}>{[...legacyChapters, ...legacyChapters].map(([chapter, place], i) => <a key={`${row}-${i}`} href={`/chapters/${slugify(chapter)}`}><CampusIcon name={chapter}/><span className="campus-copy"><b>{chapter}</b><small>{place}</small></span><Arrow /></a>)}</div>)}
         </div>
         <a className="pill pill-cream chapter-cta" href="https://organize4syria.com/start-a-chapter/" target="_blank" rel="noreferrer">Start a chapter <Arrow /></a>
       </section>

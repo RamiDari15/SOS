@@ -5,6 +5,11 @@ import { legacyChapters, slugify } from "./site-data";
 
 export const Arrow = () => <span aria-hidden="true">↗</span>;
 
+export function CampusIcon({ name }: { name: string }) {
+  const initials = name.split(/\s+/).map(word => word[0]).join("").slice(0, 2).toUpperCase();
+  return <span className="campus-icon" aria-hidden="true"><i>{initials}</i><b></b></span>;
+}
+
 export function Shell({ children, active }: { children: ReactNode; active?: string }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -47,12 +52,12 @@ export function ChapterDirectory() {
   return <>
     <section className="network" aria-labelledby="network-title">
       <div className="network-head"><div><p className="overline">Legacy chapter network</p><h2 id="network-title">Across campuses.<br />Connected by purpose.</h2></div><button onClick={() => setPaused(!paused)} aria-pressed={paused}>{paused ? "Play animation" : "Pause animation"}</button></div>
-      <div className={`orbit ${paused ? "paused" : ""}`}>{[...legacyChapters, ...legacyChapters].map(([name], i) => <a key={`${name}-${i}`} href={`/chapters/${slugify(name)}`}>{name}<Arrow /></a>)}</div>
+      <div className={`orbit ${paused ? "paused" : ""}`}>{[...legacyChapters, ...legacyChapters].map(([name, place], i) => <a key={`${name}-${i}`} href={`/chapters/${slugify(name)}`}><CampusIcon name={name}/><span className="campus-copy"><b>{name}</b><small>{place}</small></span><Arrow /></a>)}</div>
       <p className="verification-note">These schools appeared in the legacy SOS network. Current chapter status must be confirmed before public launch.</p>
     </section>
     <section className="directory">
       <div className="directory-tools"><div><p className="overline">Find a campus</p><h2>Chapter directory</h2></div><label>Search by school or location<input value={query} onChange={e => setQuery(e.target.value)} placeholder="Try Michigan or Chicago" /></label></div>
-      <div className="directory-grid">{filtered.map(([name, place], i) => <a href={`/chapters/${slugify(name)}`} key={name}><span>{String(i + 1).padStart(2, "0")}</span><h3>{name}</h3><p>{place}</p><b>View chapter <Arrow /></b></a>)}</div>
+      <div className="directory-grid">{filtered.map(([name, place], i) => <a href={`/chapters/${slugify(name)}`} key={name}><span className="campus-number">{String(i + 1).padStart(2, "0")}</span><CampusIcon name={name}/><h3>{name}</h3><p>{place}</p><b className="card-link">View chapter <Arrow /></b></a>)}</div>
       {filtered.length === 0 && <p className="empty">No matching legacy chapter. <a href="/get-involved">Start one at your school <Arrow /></a></p>}
     </section>
   </>;
