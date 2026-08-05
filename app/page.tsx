@@ -39,6 +39,7 @@ export default function Home() {
           <a href="/conferences">Conferences</a>
           <a href="/media">Media</a>
           <a href="/newsletter">Newsletter</a>
+          <a href="/donate">Donate</a>
           <a className="nav-action" href="/get-involved">Take action <Arrow /></a>
         </nav>
       </header>
@@ -124,14 +125,14 @@ export default function Home() {
         <div className="join-copy" data-reveal>
           <p className="overline">There is a place for you here</p>
           <h2>Don’t watch<br />the future.<br /><i>Shape it.</i></h2>
-          <div className="join-actions"><a className="pill pill-dark" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a><a className="line-link" href="/get-involved?form=member#apply">Become a member <Arrow /></a></div>
+          <div className="join-actions"><a className="pill pill-dark" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a><a className="line-link" href="/get-involved?form=member#apply">Become a member <Arrow /></a><a className="line-link" href="/donate">Support SOS <Arrow /></a></div>
         </div>
       </section>
 
       <footer>
         <a className="footer-mark" href="#top">SOS</a>
         <p>Students Organize for Syria<br />Building community power.<br />Shaping what comes next.</p>
-        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/contact">Contact</a></div>
+        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/donate">Donate</a><a href="/contact">Contact</a></div>
         <div className="footer-meta"><span>© 2026 Students Organize for Syria</span><span>Student-led. Always.</span></div>
       </footer>
     </main>
