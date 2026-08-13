@@ -39,7 +39,7 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
     {children}
     <footer>
       <a className="footer-mark" href="/">SOS</a>
-      <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href="https://www.instagram.com/organize4syria/">Instagram</a> · <a href="https://www.facebook.com/Organize4Syria/">Facebook</a></p>
+      <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a><br/><a href="https://www.instagram.com/organize4syria/">Instagram</a> · <a href="https://www.facebook.com/Organize4Syria/">Facebook</a></p>
       <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/toolkits">Toolkits</a><a href="/donate">Donate</a><a href="/contact">Contact</a></div>
       <div className="footer-meta"><span>© 2026 Students Organize for Syria</span><span>Student-led. Always.</span></div>
     </footer>
@@ -71,12 +71,12 @@ export function ChapterDirectory() {
 export function ContactForm() {
   const [sent, setSent] = useState(false);
   function submit(e: FormEvent) { e.preventDefault(); setSent(true); }
-  if (sent) return <div className="form-success" role="status"><span>✓</span><h2>Message prepared.</h2><p>This prototype demonstrates the completed interaction. Connect SOS’s approved inbox before launch to deliver submissions.</p><button onClick={() => setSent(false)}>Send another</button></div>;
+  if (sent) return <div className="form-success" role="status"><span>✓</span><h2>Message prepared.</h2><p>Submission delivery will route to <a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a> once the form provider is connected.</p><button onClick={() => setSent(false)}>Send another</button></div>;
   return <form className="contact-form cool-form" onSubmit={submit}>
     <div className="form-heading"><span>Message desk</span><b>01 — 04</b></div>
     <label><span>Name</span><input name="name" placeholder="Your full name" required /></label><label><span>Email</span><input name="email" type="email" placeholder="you@school.edu" required /></label>
     <label>What can we help with?<select name="topic" defaultValue=""><option value="" disabled>Select one</option><option>Start or join a chapter</option><option>Partnership</option><option>Press or statement</option><option>General inquiry</option></select></label>
-    <label><span>Message</span><textarea name="message" rows={6} placeholder="Tell us what you want to build…" required /></label><button className="pill pill-green" type="submit">Send message <Arrow /></button><p className="form-fineprint">Demo mode — connect the approved SOS inbox to activate delivery.</p>
+    <label><span>Message</span><textarea name="message" rows={6} placeholder="Tell us what you want to build…" required /></label><button className="pill pill-green" type="submit">Send message <Arrow /></button><p className="form-fineprint">Demo mode — delivery will go to <a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a>.</p>
   </form>;
 }
 
