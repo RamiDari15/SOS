@@ -70,12 +70,14 @@ export function ChapterDirectory() {
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
+  const [toolkitRequest, setToolkitRequest] = useState(false);
+  useEffect(() => setToolkitRequest(new URLSearchParams(window.location.search).get("topic") === "toolkit"), []);
   function submit(e: FormEvent) { e.preventDefault(); setSent(true); }
   if (sent) return <div className="form-success" role="status"><span>✓</span><h2>Message prepared.</h2><p>Submission delivery will route to <a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a> once the form provider is connected.</p><button onClick={() => setSent(false)}>Send another</button></div>;
-  return <form className="contact-form cool-form" onSubmit={submit}>
+  return <form className="contact-form cool-form" id="contact-form" onSubmit={submit}>
     <div className="form-heading"><span>Message desk</span><b>01 — 04</b></div>
     <label><span>Name</span><input name="name" placeholder="Your full name" required /></label><label><span>Email</span><input name="email" type="email" placeholder="you@school.edu" required /></label>
-    <label>What can we help with?<select name="topic" defaultValue=""><option value="" disabled>Select one</option><option>Start or join a chapter</option><option>Partnership</option><option>Press or statement</option><option>General inquiry</option></select></label>
+    <label>What can we help with?<select name="topic" defaultValue={toolkitRequest ? "Chapter toolkit access" : ""}><option value="" disabled>Select one</option><option>Start or join a chapter</option><option>Chapter toolkit access</option><option>Partnership</option><option>Press or statement</option><option>General inquiry</option></select></label>
     <label><span>Message</span><textarea name="message" rows={6} placeholder="Tell us what you want to build…" required /></label><button className="pill pill-green" type="submit">Send message <Arrow /></button><p className="form-fineprint">Demo mode — delivery will go to <a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a>.</p>
   </form>;
 }
