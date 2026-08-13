@@ -39,6 +39,7 @@ export default function Home() {
           <a href="/conferences">Conferences</a>
           <a href="/media">Media</a>
           <a href="/newsletter">Newsletter</a>
+          <a href="/toolkits">Toolkits</a>
           <a href="/donate">Donate</a>
           <a className="nav-action" href="/get-involved">Take action <Arrow /></a>
         </nav>
@@ -49,7 +50,7 @@ export default function Home() {
         <div className="impact-copy">
           <div className="hero-eyebrow"><span>Student-led</span><span>Nationwide</span><span>Syria-focused</span></div>
           <h1><span>Students</span><span>shaping Syria’s</span><em>future.</em></h1>
-          <div className="impact-bottom"><p>We mobilize students to organize their campuses, advocate for Syria, and build lasting community power.</p><div><a className="pill pill-green" href="/get-involved?form=member#apply">Join the movement <Arrow /></a><a className="impact-link" href="#chapters">Explore 32 campuses ↓</a></div></div>
+          <div className="impact-bottom"><p>We mobilize students to honor the revolution, build solidarity, and empower a new generation to engage in shaping Syria’s future.</p><div><a className="pill pill-green" href="/get-involved?form=member#apply">Join the movement <Arrow /></a><a className="impact-link" href="#chapters">Explore 32 campuses ↓</a></div></div>
         </div>
         <a className="impact-badge" href="/get-involved?form=chapter#apply"><span>Bring SOS to your campus</span><b>Start a chapter</b><i>↗</i></a>
         <div className="impact-proof"><span><b>01</b>Organize campuses</span><span><b>02</b>Advocate for Syria</span><span><b>03</b>Mobilize community</span><a href="/about">Our story <Arrow/></a></div>
@@ -110,15 +111,6 @@ export default function Home() {
         <a className="pill pill-cream chapter-cta" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a>
       </section>
 
-      <section className="gather" data-reveal>
-        <div className="gather-image"><div className="blur-bloom"></div></div>
-        <div className="gather-copy">
-          <p className="overline">The people become the brand</p>
-          <blockquote>A movement is built together—in rooms where students plan, listen, act, and return to do it again.</blockquote>
-          <p>At chapter meetings, conferences, workshops, campus actions, and in every conversation that moves someone to care—we are practicing the future we want.</p>
-        </div>
-      </section>
-
       <section className="join" id="join">
         <div className="join-art"><img src="/brand/archive-frame.jpg" alt="Historic floral manuscript frame" /></div>
         <div className="join-copy" data-reveal>
@@ -130,8 +122,8 @@ export default function Home() {
 
       <footer>
         <a className="footer-mark" href="#top">SOS</a>
-        <p>Students Organize for Syria<br />Building community power.<br />Shaping what comes next.</p>
-        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/donate">Donate</a><a href="/contact">Contact</a></div>
+        <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href="https://www.instagram.com/organize4syria/">Instagram</a> · <a href="https://www.facebook.com/Organize4Syria/">Facebook</a></p>
+        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/toolkits">Toolkits</a><a href="/donate">Donate</a><a href="/contact">Contact</a></div>
         <div className="footer-meta"><span>© 2026 Students Organize for Syria</span><span>Student-led. Always.</span></div>
       </footer>
     </main>

@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
   const image = `${protocol}://${host}/og.png`;
-  const title = "Students Organizing for Syria | Shape the Future";
+  const title = "Students Organize For Syria | Shape the Future";
   const description = "A student-led movement building community power and the next generation of Syrian advocates, leaders, and changemakers.";
   return {
     title,
