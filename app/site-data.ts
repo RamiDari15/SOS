@@ -9,11 +9,32 @@ export const pastCampaigns = [
   { title: "The Revolution Continues", partner: "Washington, D.C.", body: "A public remembrance and advocacy gathering centered on freedom and accountability." },
 ];
 
-export const pressReleases = [
-  ["May 31, 2020", "Statement on BLM protests", "A solidarity statement responding to protests against police brutality in the United States."],
-  ["March 18, 2020", "Statement on Idlib", "A statement addressing displacement, humanitarian conditions, and violence affecting civilians in Idlib."],
-  ["March 15, 2020", "Remembrance Day", "A reflection marking nine years since the first protests in Daraa and the beginning of the Syrian revolution."],
-] as const;
+export type Statement = { date: string; title: string; summary: string; url: string; source: "Instagram" | "organize4syria.com" };
+
+/** Official SOS statements, newest first. Dates come from the board's notes or the original posts. */
+export const statements: readonly Statement[] = [
+  { date: "Dec 10, 2024", title: "Syria is Free", summary: "Our statement: Syria is free.", url: "https://www.instagram.com/p/DDay_bvOloU/", source: "Instagram" },
+  // Date not given in the board notes; the year is read from the original Instagram post.
+  { date: "2023", title: "In Solidarity with Gaza", summary: "Our statement in solidarity with Gaza.", url: "https://www.instagram.com/p/CyeO14JpQ7_/", source: "Instagram" },
+  { date: "Feb 6, 2023", title: "Statement Regarding the Earthquake", summary: "Our statement regarding the earthquake.", url: "https://www.instagram.com/p/CocrQGMJWhP/", source: "Instagram" },
+  { date: "May 31, 2020", title: "Statement on BLM protests", summary: "A solidarity statement responding to protests against police brutality in the United States.", url: "https://organize4syria.com/statement-on-blm-protests/", source: "organize4syria.com" },
+  { date: "Mar 18, 2020", title: "Statement on Idlib", summary: "A statement addressing displacement, humanitarian conditions, and violence affecting civilians in Idlib.", url: "https://organize4syria.com/statement-on-idlib/", source: "organize4syria.com" },
+  { date: "Mar 15, 2020", title: "Remembrance Day", summary: "A reflection marking nine years since the first protests in Daraa and the beginning of the Syrian revolution.", url: "https://organize4syria.com/remembrance-day/", source: "organize4syria.com" },
+];
+
+export function statementLinkLabel(s: Statement) { return s.source === "Instagram" ? "Read on Instagram ↗" : "Read statement ↗"; }
+
+/**
+ * "Where your money goes" photo slots on /donate.
+ * To add a real photo: drop a rights-cleared image in public/donate/ (e.g. public/donate/campus.jpg)
+ * and set `image: "/donate/campus.jpg"` plus a descriptive `alt`. Slots without an image render a textured placeholder frame.
+ */
+export type GivingSlot = { title: string; caption: string; image?: string; alt?: string };
+export const givingSlots: readonly GivingSlot[] = [
+  { title: "Campus organizing", caption: "Chapter tools, student actions, and local organizing resources." },
+  { title: "National connection", caption: "Shared campaigns, training, and collaboration across the student network." },
+  { title: "Movement continuity", caption: "Communications, organizer care, and long-term movement infrastructure." },
+];
 
 export function slugify(value: string) { return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
@@ -34,7 +55,7 @@ export const conferences = [
 export const press = [
   ["USA Today College", "Student activists organize for a free Syria", "https://www.usatoday.com/story/college/2015/09/16/student-activists-organize-for-a-free-syria/37406537/"],
   ["BarakaBits", "Five ways you can help Syria for real", "http://www.barakabits.com/2015/03/5-ways-you-can-help-syria-for-real"],
-  ["Syrian American Medical Society", "SAMS highlights Students Organize for Syria", "https://www.sams-usa.net/foundation/blog/523/"],
+  ["Syrian American Medical Society", "SAMS highlights Students Organize For Syria", "https://www.sams-usa.net/foundation/blog/523/"],
   ["The State Press", "Arizona State University’s mock refugee tent", "http://www.statepress.com/article/2015/03/asu-students-experience-living-like-syrian-refugees/"],
   ["The Eastern Echo", "Eastern Michigan University hosts Tea With a Syrian", "http://www.easternecho.com/article/2015/03/tea-with-a-syrian"],
   ["The Independent Florida Alligator", "University of Florida SOS shows students the life of a refugee", "https://www.alligator.org/news/did-you-notice-the-blue-tent-on-plaza-of-americas/article_bfd0ef48-41ed-11e8-9f26-3f0f31f6ef6d.html"],

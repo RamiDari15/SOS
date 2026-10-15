@@ -1,9 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CampusIcon } from "./chapters/ChapterDirectory";
-import { legacyChapters } from "./chapter-data";
-import { slugify } from "./site-data";
+import { activeChapters, chapterHref, displayName, pastChapters } from "./chapter-data";
+
+const heroCampuses = activeChapters.filter(c => c.logo).slice(0, 4);
+const railChapters = [...activeChapters, ...pastChapters];
 
 const history = [
   ["Books Not Bombs", "With Karam Foundation, SOS helped fund scholarships and support education in Syria."],
@@ -30,13 +33,13 @@ export default function Home() {
       <div className="signal"><span>Students shaping Syria’s future</span><a href="#join">Join the movement <Arrow /></a></div>
 
       <header className="nav-wrap">
-        <a className="brand" href="#top" aria-label="SOS home"><b>SOS</b><span>Students<br />Organize<br />for Syria</span></a>
+        <a className="brand" href="#top" aria-label="SOS home"><b>SOS</b><span>Students<br />Organize<br />For Syria</span></a>
         <button className="menu" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>{menuOpen ? "Close" : "Menu"}</button>
         <nav className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
           <a href="/about">About</a>
           <a href="/our-work">Our work</a>
           <a href="/campaigns">Campaigns</a>
-          <a href="/chapters">Chapters</a>
+          <Link href="/chapters">Chapters</Link>
           <a href="/conferences">Conferences</a>
           <a href="/media">Media</a>
           <a href="/newsletter">Newsletter</a>
@@ -47,11 +50,11 @@ export default function Home() {
       </header>
 
       <section className="hero hero-impact">
-        <div className="impact-photo" aria-hidden="true"><div className="impact-photo-inner"></div><div className="hero-campus-bubbles"><CampusIcon name="Arizona State"/><CampusIcon name="Michigan"/><CampusIcon name="Yale"/><CampusIcon name="UCLA"/></div><span className="photo-stamp">32 legacy campuses<br/>One connected movement</span></div>
+        <div className="impact-photo" aria-hidden="true"><div className="impact-photo-inner"></div><div className="hero-campus-bubbles">{heroCampuses.map(c => <CampusIcon key={c.name} chapter={c}/>)}</div><span className="photo-stamp">{activeChapters.length} active chapters<br/>One connected movement</span></div>
         <div className="impact-copy">
           <div className="hero-eyebrow"><span>Student-led</span><span>Nationwide</span><span>Syria-focused</span></div>
           <h1><span>Students</span><span>shaping Syria’s</span><em>future.</em></h1>
-          <div className="impact-bottom"><p>We mobilize students to honor the revolution, build solidarity, and empower a new generation to engage in shaping Syria’s future.</p><div><a className="pill pill-green" href="/get-involved?form=member#apply">Join the movement <Arrow /></a><a className="impact-link" href="#chapters">Explore 32 campuses ↓</a></div></div>
+          <div className="impact-bottom"><p>We mobilize students to honor the revolution, build solidarity, and empower a new generation to engage in shaping Syria’s future.</p><div><a className="pill pill-green" href="/get-involved?form=member#apply">Join the movement <Arrow /></a><a className="impact-link" href="#chapters">Explore {activeChapters.length} active chapters ↓</a></div></div>
         </div>
         <a className="impact-badge" href="/get-involved?form=chapter#apply"><span>Bring SOS to your campus</span><b>Start a chapter</b><i>↗</i></a>
         <div className="impact-proof"><span><b>01</b>Organize campuses</span><span><b>02</b>Advocate for Syria</span><span><b>03</b>Mobilize community</span><a href="/about">Our story <Arrow/></a></div>
@@ -97,17 +100,17 @@ export default function Home() {
             {history.map(([title, text], i) => <article key={title} data-reveal><span>0{i + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}
           </div>
         </div>
-        <p className="source-note">Documented on the legacy SOS website. Current impact data should be verified before public launch.</p>
+        <p className="source-note">Documented on the legacy SOS website.</p>
       </section>
 
       <section className="chapter-section" id="chapters">
         <div className="chapter-title" data-reveal>
           <div className="section-label light"><span>04</span> Across the country</div>
           <h2>Find your people.<br />Build from where you are.</h2>
-          <p>Explore schools connected to the SOS chapter network. Select a campus to visit the existing chapter directory.</p>
+          <p>{activeChapters.length} active chapters and counting. Select a campus to find its chapter, or bring a past chapter back to life.</p>
         </div>
         <div className="chapter-rails" aria-label="SOS college chapters">
-          {[0,1].map((row) => <div className={`chapter-track row-${row}`} key={row}>{[...legacyChapters, ...legacyChapters].map(([chapter, place], i) => <a key={`${row}-${i}`} href={`/chapters/${slugify(chapter)}`}><CampusIcon name={chapter}/><span className="campus-copy"><b>{chapter}</b><small>{place}</small></span><Arrow /></a>)}</div>)}
+          {[0,1].map((row) => <div className={`chapter-track row-${row}`} key={row}>{[...railChapters, ...railChapters].map((c, i) => <a key={`${row}-${i}`} className={c.status === "active" ? undefined : "is-past"} href={chapterHref(c)}><CampusIcon chapter={c}/><span className="campus-copy"><b>{displayName(c)}</b><small>{c.status === "active" ? c.location : "Past chapter · Revive it"}</small></span><Arrow /></a>)}</div>)}
         </div>
         <a className="pill pill-cream chapter-cta" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a>
       </section>
@@ -124,8 +127,8 @@ export default function Home() {
       <footer>
         <a className="footer-mark" href="#top">SOS</a>
         <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a><br/><a href="https://www.instagram.com/organize4syria/">Instagram</a> · <a href="https://www.facebook.com/Organize4Syria/">Facebook</a></p>
-        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/toolkits">Toolkits</a><a href="/donate">Donate</a><a href="/contact">Contact</a></div>
-        <div className="footer-meta"><span>© 2026 Students Organize for Syria</span><span>Student-led. Always.</span></div>
+        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><Link href="/chapters">Chapters</Link><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/toolkits">Toolkits</a><a href="/donate">Donate</a><a href="/contact">Contact</a></div>
+        <div className="footer-meta"><span>© 2026 Students Organize For Syria</span><span>Student-led. Always.</span></div>
       </footer>
     </main>
   );

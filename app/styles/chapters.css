@@ -1,1 +1,85 @@
 /* chapters styles (layered after globals.css) */
+
+/* Campus icon fallback letters (abbreviations up to 4 characters) */
+.campus-icon i.is-long{font-size:14px;letter-spacing:-.04em}
+
+/* ---------- Directory controls: status filter + search ---------- */
+.directory-controls{display:flex;align-items:end;gap:28px;flex-wrap:wrap;justify-content:flex-end}
+.status-filter{display:inline-flex;border:1px solid var(--ink);border-radius:100px;padding:4px;gap:4px}
+.status-filter button{border:0;background:transparent;color:var(--ink);border-radius:100px;padding:11px 18px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;transition:background .2s,color .2s}
+.status-filter button:hover{background:var(--acid)}
+.status-filter button[aria-pressed="true"]{background:var(--ink);color:white}
+.status-filter button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+
+/* ---------- Directory groups ---------- */
+.directory-group{margin-top:70px}
+.directory-group-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.directory-group-head h3{margin:0;font-size:clamp(26px,3vw,40px);text-transform:uppercase;letter-spacing:-.04em;line-height:1}
+.directory-group-head span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--green)}
+.directory-group .directory-grid{margin-top:30px}
+.directory-group.is-past .directory-group-head{border-bottom-width:1px;border-bottom-color:var(--line)}
+.directory-group.is-past .directory-group-head h3{font-size:clamp(22px,2.4vw,32px);opacity:.75}
+.directory-group.is-past .directory-group-head span{color:var(--ink);opacity:.6}
+.revive-note{margin:22px 0 0;max-width:640px;line-height:1.6;font-size:15px}
+.revive-note a{font-weight:800;border-bottom:1px solid;white-space:nowrap}
+.revive-note a:hover{color:var(--green)}
+
+/* ---------- Chapter card (mirrors the original .directory-grid>a look) ---------- */
+.directory-grid>.chapter-card{padding:30px;min-height:320px;border:1px solid var(--line);display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto 1fr auto auto auto;position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),background .25s,color .25s,box-shadow .35s}
+.directory-grid>.chapter-card:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:var(--acid);right:-180px;bottom:-180px;transition:.45s;z-index:-1}
+.directory-grid>.chapter-card:hover,.directory-grid>.chapter-card:focus-within{background:var(--ink);color:white;transform:translateY(-10px);box-shadow:0 24px 60px rgba(27,28,26,.18);z-index:2}
+.directory-grid>.chapter-card:hover:before{right:-80px;bottom:-100px}
+.directory-grid>.chapter-card:hover .campus-icon,.directory-grid>.chapter-card:focus-within .campus-icon{transform:rotate(-12deg) scale(1.08);background:var(--green);color:white!important}
+.chapter-card .campus-number{grid-column:1;grid-row:1}
+.chapter-card .campus-icon{grid-column:2;grid-row:1/3}
+.chapter-card .chapter-status{grid-column:1;grid-row:2;justify-self:start;align-self:start;margin-top:12px}
+.chapter-card h3{grid-column:1/-1;grid-row:4;align-self:end;margin:auto 0 5px}
+.chapter-card p{grid-column:1/-1;grid-row:5;margin:0}
+/* The school name is the card's link; stretch it over the whole card. */
+.chapter-card-link:after{content:"";position:absolute;inset:0;z-index:1}
+.chapter-card-link:focus-visible{outline:none}
+.chapter-card:has(.chapter-card-link:focus-visible){outline:3px solid var(--green);outline-offset:3px}
+.chapter-card-foot{grid-column:1/-1;grid-row:6;display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;flex-wrap:wrap}
+.chapter-card-foot .card-link{display:flex;gap:10px;margin:0;font-size:10px;text-transform:uppercase}
+.directory-grid>.chapter-card:hover .card-link{color:var(--acid)}
+.chapter-ig{position:relative;z-index:2;font-size:11px;font-weight:800;letter-spacing:.02em;border:1px solid currentColor;border-radius:100px;padding:7px 12px;transition:background .2s,color .2s}
+.chapter-ig:hover,.chapter-ig:focus-visible{background:var(--acid);color:var(--ink);border-color:var(--acid)}
+
+/* Status badge (cards + chapter page) */
+.chapter-status{display:inline-flex;align-items:center;gap:7px;font-size:9px!important;font-weight:850;text-transform:uppercase;letter-spacing:.12em;border-radius:100px;padding:5px 10px}
+.chapter-status:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.chapter-status.is-active{background:var(--acid);color:var(--green)!important}
+.chapter-status.is-past{border:1px solid currentColor;color:inherit!important;opacity:.7}
+
+/* Past chapters: quieter */
+.directory-group.is-past .chapter-card{min-height:250px;border-style:dashed}
+.directory-group.is-past .chapter-card h3{font-size:24px}
+.directory-group.is-past .chapter-card .campus-icon{filter:grayscale(1);opacity:.7}
+.directory-group.is-past .chapter-card:hover .campus-icon,.directory-group.is-past .chapter-card:focus-within .campus-icon{filter:none;opacity:1}
+.directory-group.is-past .chapter-card:not(:hover):not(:focus-within){color:rgba(27,28,26,.72)}
+
+/* ---------- Homepage rails: past chapters muted ---------- */
+.chapter-track a.is-past{opacity:.6}
+.chapter-track a.is-past .campus-icon{filter:grayscale(1)}
+.chapter-track a.is-past:hover,.chapter-track a.is-past:focus{opacity:1}
+.chapter-track a.is-past:hover .campus-icon{filter:none}
+
+/* ---------- Chapter detail page ---------- */
+.chapter-profile dd{margin:0}
+.chapter-profile dd a{border-bottom:1px solid;overflow-wrap:anywhere}
+.chapter-profile dd a:hover{color:var(--green)}
+.chapter-actions{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:26px}
+.chapter-profile.is-past .profile-art{box-shadow:20px 20px 0 var(--cream)}
+.chapter-profile.is-past .profile-art img{filter:grayscale(.6)}
+
+@media(max-width:900px){
+  .directory-controls{justify-content:flex-start;margin-top:30px}
+  .directory-controls label{margin-top:0}
+}
+@media(max-width:560px){
+  .directory-controls{display:block}
+  .directory-controls label{margin-top:20px}
+  .status-filter{display:flex}
+  .status-filter button{flex:1}
+  .directory-grid>.chapter-card{padding:24px;min-height:260px}
+}

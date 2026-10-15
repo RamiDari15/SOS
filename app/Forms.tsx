@@ -1,25 +1,312 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useId, useRef, useState } from "react";
 import { Arrow } from "./Interior";
+import { CONTACT_TOPICS, FormType, HONEYPOT_FIELD, MEMBER_ROLES, ORG_EMAIL, ORG_NAME, buildMailto } from "./lib/forms";
+
+/* ---------- shared submission logic ---------- */
+
+type Status =
+  | { kind: "idle" }
+  | { kind: "submitting" }
+  | { kind: "success" }
+  | { kind: "invalid" }
+  | { kind: "fallback"; mailto: string; reason: "not_configured" | "failed" };
+
+const TOPIC_PARAMS: Record<string, (typeof CONTACT_TOPICS)[number]> = {
+  toolkit: "Chapter toolkit access",
+  chapter: "Start or join a chapter",
+  partner: "Partnership",
+  partnership: "Partnership",
+  press: "Press or statement",
+};
+
+function readFields(form: HTMLFormElement): Record<string, string> {
+  const out: Record<string, string> = {};
+  new FormData(form).forEach((value, key) => {
+    if (typeof value === "string") out[key] = value;
+  });
+  return out;
+}
+
+function trimmed(fields: Record<string, string>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(fields)) if (k !== HONEYPOT_FIELD && v.trim()) out[k] = v.trim();
+  return out;
+}
+
+function useFormSubmission(type: FormType) {
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const uid = useId();
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (status.kind === "submitting") return;
+    const form = e.currentTarget;
+    const fields = readFields(form);
+    setStatus({ kind: "submitting" });
+    setFieldErrors({});
+    let res: Response | null = null;
+    try {
+      res = await fetch("/api/forms", {
+        method: "POST",
+        headers: { "content-type": "application/json", accept: "application/json" },
+        body: JSON.stringify({ type, fields, page: window.location.pathname }),
+      });
+    } catch {
+      res = null;
+    }
+    if (res?.ok) {
+      setStatus({ kind: "success" });
+      return;
+    }
+    let payload: { error?: string; fieldErrors?: Record<string, string> } = {};
+    try {
+      payload = res ? await res.json() : {};
+    } catch {
+      payload = {};
+    }
+    if (res?.status === 400 && payload.fieldErrors && Object.keys(payload.fieldErrors).length) {
+      setFieldErrors(payload.fieldErrors);
+      setStatus({ kind: "invalid" });
+      const first = form.querySelector<HTMLElement>(`[name="${Object.keys(payload.fieldErrors)[0]}"]`);
+      first?.focus();
+      return;
+    }
+    setStatus({
+      kind: "fallback",
+      mailto: buildMailto(type, trimmed(fields)),
+      reason: payload.error === "not_configured" ? "not_configured" : "failed",
+    });
+  }
+
+  /** Props that wire an input to its error message. */
+  function fieldProps(name: string) {
+    const err = fieldErrors[name];
+    return {
+      name,
+      "aria-invalid": err ? true : undefined,
+      "aria-describedby": err ? `${uid}-${name}-err` : undefined,
+    } as const;
+  }
+
+  function errorFor(name: string) {
+    const err = fieldErrors[name];
+    return err ? <em className="field-error" id={`${uid}-${name}-err`}>{err}</em> : null;
+  }
+
+  function reset() {
+    setStatus({ kind: "idle" });
+    setFieldErrors({});
+  }
+
+  return { status, onSubmit, fieldProps, errorFor, reset };
+}
+
+function Honeypot() {
+  return (
+    <div className="form-hp" aria-hidden="true">
+      <label>
+        Leave this field empty
+        <input name={HONEYPOT_FIELD} type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
+      </label>
+    </div>
+  );
+}
+
+/** Live region inside the form: submitting / validation / fallback messages. */
+function FormStatus({ status }: { status: Status }) {
+  let content: ReactNode = null;
+  if (status.kind === "submitting") content = <p>Sending…</p>;
+  if (status.kind === "invalid") content = <p>Please fix the highlighted fields and try again.</p>;
+  if (status.kind === "fallback")
+    content = (
+      <>
+        <p>
+          <strong>{status.reason === "not_configured" ? "Online submissions aren’t switched on yet." : "We couldn’t send your submission."}</strong>{" "}
+          Nothing you typed has been lost. Send it to us by email instead. The message is already filled in.
+        </p>
+        <a className="pill pill-green form-fallback-link" href={status.mailto}>
+          Email {ORG_EMAIL} <Arrow />
+        </a>
+      </>
+    );
+  return (
+    <div className={`form-status${status.kind === "fallback" ? " is-error" : ""}`} role="status" aria-live="polite">
+      {content}
+    </div>
+  );
+}
+
+function SuccessPanel({ title, children, again, onAgain, className = "" }: { title: string; children: ReactNode; again: string; onAgain: () => void; className?: string }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  useEffect(() => ref.current?.focus(), []);
+  return (
+    <div className={`form-success ${className}`} role="status" aria-live="polite">
+      <span aria-hidden="true">✓</span>
+      <h2 ref={ref} tabIndex={-1}>{title}</h2>
+      <p>{children}</p>
+      <button type="button" onClick={onAgain}>{again}</button>
+    </div>
+  );
+}
+
+function SubmitButton({ busy, children }: { busy: boolean; children: ReactNode }) {
+  return (
+    <button className="pill pill-green" type="submit" disabled={busy} aria-disabled={busy}>
+      {busy ? "Sending…" : children} {!busy && <Arrow />}
+    </button>
+  );
+}
+
+/* ---------- contact ---------- */
 
 export function ContactForm() {
-  const [sent, setSent] = useState(false);
-  const [toolkitRequest, setToolkitRequest] = useState(false);
-  useEffect(() => setToolkitRequest(new URLSearchParams(window.location.search).get("topic") === "toolkit"), []);
-  function submit(e: FormEvent) { e.preventDefault(); setSent(true); }
-  if (sent) return <div className="form-success" role="status"><span>✓</span><h2>Message received.</h2><p>Thank you for reaching out. The SOS team will follow up at the email you provided.</p><button onClick={() => setSent(false)}>Send another</button></div>;
-  return <form className="contact-form cool-form" id="contact-form" onSubmit={submit}>
-    <div className="form-heading"><span>Message desk</span><b>01 — 04</b></div>
-    <label><span>Name</span><input name="name" placeholder="Your full name" required /></label><label><span>Email</span><input name="email" type="email" placeholder="you@school.edu" required /></label>
-    <label>What can we help with?<select name="topic" defaultValue={toolkitRequest ? "Chapter toolkit access" : ""}><option value="" disabled>Select one</option><option>Start or join a chapter</option><option>Chapter toolkit access</option><option>Partnership</option><option>Press or statement</option><option>General inquiry</option></select></label>
-    <label><span>Message</span><textarea name="message" rows={6} placeholder="Tell us what you want to build…" required /></label><button className="pill pill-green" type="submit">Send message <Arrow /></button><p className="form-fineprint">Messages are directed to <a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a>.</p>
-  </form>;
+  const { status, onSubmit, fieldProps, errorFor, reset } = useFormSubmission("contact");
+  const [topic, setTopic] = useState("");
+  useEffect(() => {
+    const preset = TOPIC_PARAMS[new URLSearchParams(window.location.search).get("topic") ?? ""];
+    // Query string is only readable after hydration; preselect the matching topic.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (preset) setTopic(preset);
+  }, []);
+  const busy = status.kind === "submitting";
+
+  if (status.kind === "success")
+    return (
+      <div id="contact-form">
+        <SuccessPanel title="Message received." again="Send another" onAgain={reset}>
+          Thank you for reaching out. The {ORG_NAME} team will follow up at the email you provided.
+        </SuccessPanel>
+      </div>
+    );
+
+  return (
+    <form className="contact-form cool-form" id="contact-form" onSubmit={onSubmit} aria-busy={busy}>
+      <div className="form-heading"><span>Message desk</span><b>01 — 04</b></div>
+      <label><span>Name</span><input {...fieldProps("name")} autoComplete="name" placeholder="Your full name" required maxLength={120} />{errorFor("name")}</label>
+      <label><span>Email</span><input {...fieldProps("email")} type="email" autoComplete="email" placeholder="you@school.edu" required maxLength={254} />{errorFor("email")}</label>
+      <label>
+        <span>What can we help with?</span>
+        <select {...fieldProps("topic")} required value={topic} onChange={(e) => setTopic(e.target.value)}>
+          <option value="" disabled>Select one</option>
+          {CONTACT_TOPICS.map((t) => <option key={t}>{t}</option>)}
+        </select>
+        {errorFor("topic")}
+      </label>
+      <label><span>Message</span><textarea {...fieldProps("message")} rows={6} placeholder="Tell us what you want to build…" required maxLength={5000} />{errorFor("message")}</label>
+      <Honeypot />
+      <SubmitButton busy={busy}>Send message</SubmitButton>
+      <FormStatus status={status} />
+      <p className="form-fineprint">Messages are directed to <a href={`mailto:${ORG_EMAIL}`}>{ORG_EMAIL}</a>.</p>
+    </form>
+  );
+}
+
+/* ---------- get involved: join / start a chapter ---------- */
+
+function MovementForm({ mode }: { mode: "member" | "chapter" }) {
+  const { status, onSubmit, fieldProps, errorFor, reset } = useFormSubmission(mode);
+  const busy = status.kind === "submitting";
+  const member = mode === "member";
+
+  if (status.kind === "success")
+    return (
+      <SuccessPanel className="application-success" title="Interest received." again="Submit another" onAgain={reset}>
+        Thank you for stepping forward. The {ORG_NAME} team will follow up at the email you provided.
+      </SuccessPanel>
+    );
+
+  return (
+    <form className="cool-form application-form" onSubmit={onSubmit} aria-busy={busy} aria-label={member ? "Join a chapter" : "Start a chapter"}>
+      <div className="form-heading"><span>{member ? "Member interest" : "Chapter starter"}</span><b>Get involved</b></div>
+      <div className="form-row">
+        <label><span>Name</span><input {...fieldProps("name")} autoComplete="name" required maxLength={120} placeholder="Your full name" />{errorFor("name")}</label>
+        <label><span>Email</span><input {...fieldProps("email")} autoComplete="email" required maxLength={254} type="email" placeholder="you@school.edu" />{errorFor("email")}</label>
+      </div>
+      <div className="form-row">
+        <label><span>School</span><input {...fieldProps("school")} autoComplete="organization" required maxLength={160} placeholder="University or institution" />{errorFor("school")}</label>
+        {member
+          ? <label><span>Major / field</span><input {...fieldProps("major")} required maxLength={160} placeholder="What do you study?" />{errorFor("major")}</label>
+          : <label><span>State / region</span><input {...fieldProps("region")} autoComplete="address-level1" required maxLength={160} placeholder="Where are you organizing?" />{errorFor("region")}</label>}
+      </div>
+      {member ? (
+        <>
+          <label>
+            <span>How would you like to participate?</span>
+            <select {...fieldProps("role")} required defaultValue="">
+              <option value="" disabled>Choose a role</option>
+              {MEMBER_ROLES.map((r) => <option key={r}>{r}</option>)}
+            </select>
+            {errorFor("role")}
+          </label>
+          <label><span>Existing student organizations</span><input {...fieldProps("affiliations")} maxLength={500} placeholder="Optional — list any affiliations" />{errorFor("affiliations")}</label>
+        </>
+      ) : (
+        <>
+          <label><span>Phone number</span><input {...fieldProps("phone")} autoComplete="tel" required maxLength={40} type="tel" placeholder="(000) 000-0000" />{errorFor("phone")}</label>
+          <label><span>Why this campus, why now?</span><textarea {...fieldProps("why")} required maxLength={3000} rows={4} placeholder="Tell us about student interest and what you hope to build." />{errorFor("why")}</label>
+        </>
+      )}
+      <label><span>Anything else we should know?</span><textarea {...fieldProps("notes")} maxLength={3000} rows={4} placeholder="Experience, goals, accessibility needs, or questions" />{errorFor("notes")}</label>
+      <Honeypot />
+      <SubmitButton busy={busy}>Submit interest</SubmitButton>
+      <FormStatus status={status} />
+      <p className="form-fineprint">Questions about applying? Email <a href={`mailto:${ORG_EMAIL}`}>{ORG_EMAIL}</a>.</p>
+    </form>
+  );
 }
 
 export function MovementForms() {
-  const [mode,setMode]=useState<"member"|"chapter">("member"); const [done,setDone]=useState(false);
-  useEffect(()=>{if(new URLSearchParams(window.location.search).get("form")==="chapter")setMode("chapter")},[]);
-  function submit(e:FormEvent){e.preventDefault();setDone(true)}
-  return <section className="application-zone" id="apply"><div className="application-intro"><p className="overline">Take the next step</p><h2>Turn intention<br/>into action.</h2><p>Tell us about your campus, your interests, and how you want to contribute. The SOS team will help connect you with the right next step.</p><div className="form-tabs"><button className={mode==="member"?"active":""} onClick={()=>{setMode("member");setDone(false)}}>Join a chapter</button><button className={mode==="chapter"?"active":""} onClick={()=>{setMode("chapter");setDone(false)}}>Start a chapter</button></div></div>{done?<div className="form-success application-success" role="status"><span>✓</span><h2>Interest received.</h2><p>Thank you for stepping forward. The SOS team will follow up at the email you provided.</p><button onClick={()=>setDone(false)}>Submit another</button></div>:<form className="cool-form application-form" onSubmit={submit}><div className="form-heading"><span>{mode==="member"?"Member interest":"Chapter starter"}</span><b>Get involved</b></div><div className="form-row"><label><span>Name</span><input required placeholder="Your full name"/></label><label><span>Email</span><input required type="email" placeholder="you@school.edu"/></label></div><div className="form-row"><label><span>School</span><input required placeholder="University or institution"/></label><label><span>{mode==="member"?"Major / field":"State / region"}</span><input required placeholder={mode==="member"?"What do you study?":"Where are you organizing?"}/></label></div>{mode==="member"?<><label><span>How would you like to participate?</span><select required defaultValue=""><option value="" disabled>Choose a role</option><option>General member</option><option>Chapter officer</option><option>Volunteer for campaigns</option><option>Not sure yet</option></select></label><label><span>Existing student organizations</span><input placeholder="Optional — list any affiliations"/></label></>:<><label><span>Phone number</span><input required type="tel" placeholder="(000) 000-0000"/></label><label><span>Why this campus, why now?</span><textarea required rows={4} placeholder="Tell us about student interest and what you hope to build."/></label></>}<label><span>Anything else we should know?</span><textarea rows={4} placeholder="Experience, goals, accessibility needs, or questions"/></label><button className="pill pill-green" type="submit">Submit interest <Arrow/></button><p className="form-fineprint">Questions about applying? Email <a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a>.</p></form>}</section>
+  const [mode, setMode] = useState<"member" | "chapter">("member");
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (new URLSearchParams(window.location.search).get("form") === "chapter") setMode("chapter");
+  }, []);
+  return (
+    <section className="application-zone" id="apply">
+      <div className="application-intro">
+        <p className="overline">Take the next step</p>
+        <h2>Turn intention<br />into action.</h2>
+        <p>Tell us about your campus, your interests, and how you want to contribute. The {ORG_NAME} team will help connect you with the right next step.</p>
+        <div className="form-tabs" role="group" aria-label="Choose a form">
+          <button type="button" className={mode === "member" ? "active" : ""} aria-pressed={mode === "member"} onClick={() => setMode("member")}>Join a chapter</button>
+          <button type="button" className={mode === "chapter" ? "active" : ""} aria-pressed={mode === "chapter"} onClick={() => setMode("chapter")}>Start a chapter</button>
+        </div>
+      </div>
+      <MovementForm key={mode} mode={mode} />
+    </section>
+  );
+}
+
+/* ---------- newsletter early list ---------- */
+
+export function NewsletterForm() {
+  const { status, onSubmit, fieldProps, errorFor, reset } = useFormSubmission("newsletter");
+  const busy = status.kind === "submitting";
+
+  if (status.kind === "success")
+    return (
+      <SuccessPanel title="You’re on the early list." again="Add another email" onAgain={reset}>
+        We’ll send launch updates to the email you provided.
+      </SuccessPanel>
+    );
+
+  return (
+    <form className="cool-form newsletter-form" onSubmit={onSubmit} aria-busy={busy} aria-label="Newsletter early list">
+      <div className="form-heading"><span>Monthly dispatch</span><b>Early access</b></div>
+      <label><span>Email address</span><input {...fieldProps("email")} autoComplete="email" required maxLength={254} type="email" placeholder="you@school.edu" />{errorFor("email")}</label>
+      <div className="form-row">
+        <label><span>First name</span><input {...fieldProps("firstName")} autoComplete="given-name" required maxLength={80} placeholder="First name" />{errorFor("firstName")}</label>
+        <label><span>Last name</span><input {...fieldProps("lastName")} autoComplete="family-name" required maxLength={80} placeholder="Last name" />{errorFor("lastName")}</label>
+      </div>
+      <label className="check"><input {...fieldProps("consent")} type="checkbox" required /><span>I want updates from {ORG_NAME}.</span></label>
+      {errorFor("consent")}
+      <Honeypot />
+      <SubmitButton busy={busy}>Join the early list</SubmitButton>
+      <FormStatus status={status} />
+      <p className="form-fineprint">Questions? Email <a href={`mailto:${ORG_EMAIL}`}>{ORG_EMAIL}</a>.</p>
+    </form>
+  );
 }

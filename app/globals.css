@@ -103,3 +103,135 @@ main{overflow:clip}.signal{height:32px;justify-content:space-between;gap:24px}.n
 .archive-band{position:relative;grid-template-columns:minmax(320px,.72fr) minmax(0,1.28fr);min-height:760px;background:var(--forest);color:white;overflow:hidden}.archive-band:before{content:"SOS";position:absolute;right:-2vw;bottom:-8vw;font-size:30vw;font-weight:900;line-height:.7;letter-spacing:-.12em;color:rgba(255,255,255,.035);pointer-events:none}.archive-visual{position:relative;margin:7vw 0 7vw 7vw;min-height:580px;overflow:hidden;transform:rotate(-2deg);box-shadow:20px 20px 0 var(--red)}.archive-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,63,44,.05),rgba(6,63,44,.72));mix-blend-mode:multiply}.archive-visual img{width:100%;height:100%;object-fit:cover;filter:saturate(.75) contrast(1.15);transition:transform 1s cubic-bezier(.16,1,.3,1)}.archive-band:hover .archive-visual img{transform:scale(1.06)}.archive-visual span{position:absolute;z-index:2;left:32px;bottom:28px;font-size:10px;line-height:1.5;font-weight:850;letter-spacing:.16em;text-transform:uppercase}.archive-message{position:relative;z-index:2;padding:9vw 7vw 8vw}.archive-message .overline{color:var(--acid)}.archive-message h2{max-width:920px;margin:45px 0 65px;font-size:clamp(56px,7.2vw,116px);line-height:.84;letter-spacing:-.065em;text-transform:uppercase}.archive-message h2 i{display:inline;font-style:normal;color:var(--acid)}.archive-action{display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:45px;align-items:end;border-top:1px solid rgba(255,255,255,.35);padding-top:28px}.archive-action p{max-width:510px;margin:0;font-size:16px;line-height:1.55}.archive-action .pill{background:var(--acid);min-width:210px;transition:transform .25s,background .25s}.archive-action .pill:hover{background:white;transform:translateY(-5px)}
 @media(max-width:900px){.archive-band{grid-template-columns:1fr;min-height:0}.archive-visual{min-height:470px;margin:60px 6vw 0}.archive-message{padding:85px 6vw}.archive-action{grid-template-columns:1fr;align-items:start}.archive-action .pill{width:max-content}}
 @media(max-width:560px){.archive-visual{min-height:360px;box-shadow:12px 12px 0 var(--red)}.archive-message h2{font-size:14vw;margin:36px 0 50px}.archive-action{gap:28px}}
+
+
+/* ==========================================================================
+   2026 refinement pass
+   Bold letterpress display type, centered interior heroes, balanced
+   editorial splits, focus states and small-screen hardening.
+   ========================================================================== */
+
+/* Ink grain: two feTurbulence layers multiplied into an alpha mask.
+   - fine grain (.45 base frequency, steep threshold) = sparse specks where the
+     paper tooth didn't take ink
+   - coarse vertical wear (.04 x .005) = soft, uneven woodtype pressure
+   Readable source:
+   <svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'>
+     <filter id='i' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'>
+       <feTurbulence type='fractalNoise' baseFrequency='.45' numOctaves='2' seed='3' stitchTiles='stitch'/>
+       <feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 7.05' result='grain'/>
+       <feTurbulence type='fractalNoise' baseFrequency='.04 .005' numOctaves='3' seed='11' stitchTiles='stitch'/>
+       <feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1 0 0 0 1.4' result='wear'/>
+       <feComposite in='grain' in2='wear' operator='arithmetic' k1='1'/>
+     </filter>
+     <rect width='100%' height='100%' filter='url(#i)'/>
+   </svg>
+   It is inlined as a data URI so the mask can never 404 (a failed mask image hides the text). */
+:root{
+  --focus:var(--green);
+  --ink-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='i' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.45' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -9 0 0 0 7.05' result='grain'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04 .005' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 0 0 0 1.4' result='wear'/%3E%3CfeComposite in='grain' in2='wear' operator='arithmetic' k1='1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23i%29'/%3E%3C/svg%3E");
+}
+
+/* Bold text: Tailwind's preflight resets headings to inherit (400), which is why
+   section titles rendered thin. Headings are heavy by default again. */
+h1,h2,h3{font-weight:800}
+
+/* Display type: heaviest Archivo cut, slightly opened tracking so the heavier
+   strokes don't collide, and balanced line breaks. (.impact-copy h1 is set in
+   Archivo Black, which only has one weight, so it is left out of the weight rule.) */
+.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
+.mission-statement h2,.editorial-split h2,.evolution-intro h2,.support-clarity h2,.network h2,.directory h2,
+.chapter-profile h2,.contact-layout h2,.archive-message h2,.archive-band h2,.legacy-structure h2,
+.application-intro h2,.newsletter-copy h2,.donation-story h2,.donation-panel h2,.toolkit-lock h2,
+.gallery-head h2,.guide-callout h2,.conference-note h2,.legacy-model>h2,.news-empty h2,.empty-campaign h2,
+.conference-list h2,.action-grid h2,.work-index article h2,.origin-columns h2,.giving-head h2,.ink{font-weight:900;text-wrap:balance}
+
+/* Letterpress texture — only on large display headings. The text stays real,
+   selectable text; the mask just knocks tiny specks out of the ink.
+   `mask-clip:no-clip` keeps tight-leaded glyphs (commas, Q tails) from being
+   cropped at the box edge. Unsupported browsers get solid heavy type. */
+@supports ((mask-image:none) or (-webkit-mask-image:none)){
+  .impact-copy h1,.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
+  .mission-statement h2,.editorial-split h2,.evolution-intro h2,.support-clarity h2,.network h2,.directory h2,
+  .chapter-profile h2,.contact-layout h2,.archive-message h2,.archive-band h2,.legacy-structure h2,
+  .application-intro h2,.newsletter-copy h2,.donation-story h2,.donation-panel h2,.toolkit-lock h2,
+  .gallery-head h2,.guide-callout h2,.conference-note h2,.legacy-model>h2,.news-empty h2,.empty-campaign h2,
+  .conference-list h2,.action-grid h2,.work-index article h2,.origin-columns h2,.giving-head h2,.ink{
+    -webkit-mask-image:var(--ink-grain);mask-image:var(--ink-grain);
+    -webkit-mask-size:320px 320px;mask-size:320px 320px;
+    -webkit-mask-repeat:repeat;mask-repeat:repeat;
+    mask-clip:no-clip;
+  }
+  /* Finer grain on phones so smaller headings stay crisp. */
+  @media(max-width:560px){
+    .page-hero h1,.ink,h2{-webkit-mask-size:230px 230px;mask-size:230px 230px}
+  }
+}
+@media (forced-colors:active),(prefers-contrast:more),print{
+  .impact-copy h1,.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
+  .mission-statement h2,.editorial-split h2,.evolution-intro h2,.support-clarity h2,.network h2,.directory h2,
+  .chapter-profile h2,.contact-layout h2,.archive-message h2,.archive-band h2,.legacy-structure h2,
+  .application-intro h2,.newsletter-copy h2,.donation-story h2,.donation-panel h2,.toolkit-lock h2,
+  .gallery-head h2,.guide-callout h2,.conference-note h2,.legacy-model>h2,.news-empty h2,.empty-campaign h2,
+  .conference-list h2,.action-grid h2,.work-index article h2,.origin-columns h2,.giving-head h2,.ink{-webkit-mask-image:none;mask-image:none}
+}
+
+/* Interior heroes: centered.
+   Every hero is two short lines of heavy caps; flush-left, the side bearings of
+   the first letters (T vs F, A vs W, B vs O…) never line up and no CSS can trim
+   them per glyph. Centering removes the shared edge entirely, works for any
+   title (including chapter names that wrap differently on phones) and keeps
+   the intro visually tied to the heading. */
+.page-hero{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:0;padding:clamp(56px,7vw,104px) 6vw clamp(56px,6.5vw,96px)}
+.page-hero h1{width:100%;max-width:1500px;margin:0 auto;font-size:clamp(54px,9.2vw,148px);line-height:.86;letter-spacing:-.05em}
+.page-hero h1 i{font-style:normal}
+.page-hero>p{grid-column:auto;width:100%;max-width:40rem;margin:clamp(26px,3vw,42px) auto 0;font-size:clamp(17px,1.5vw,21px);line-height:1.45;font-weight:600;text-wrap:pretty}
+@media(max-width:560px){
+  .page-hero{padding:48px 6vw 52px}
+  .page-hero h1{font-size:clamp(38px,11.4vw,64px);line-height:.9;letter-spacing:-.04em;overflow-wrap:break-word;hyphens:manual}
+  .page-hero>p{font-size:16px}
+}
+
+/* Editorial split: columns are vertically centred on each other so neither side
+   leaves a dead block, with a tighter rhythm into the next section. */
+.editorial-split{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(36px,6vw,96px);align-items:center;padding:clamp(72px,8vw,112px) 7vw clamp(60px,6vw,88px)}
+.editorial-split>div>:first-child{margin-top:0}
+.editorial-split>div>:last-child{margin-bottom:0}
+.editorial-split h2{margin:28px 0 0}
+.editorial-split .big-copy{font-size:clamp(21px,2vw,27px);margin-bottom:18px}
+.mission-statement{row-gap:clamp(24px,3vw,40px)}
+.editorial-split+.origin-story{padding-top:clamp(56px,6vw,84px)}
+@media(max-width:900px){.editorial-split{grid-template-columns:1fr;gap:28px;align-items:start}}
+@media(max-width:560px){.editorial-split{padding:64px 6vw 56px}}
+
+/* Skip link + main landmark */
+.skip-link{position:absolute;left:16px;top:-80px;z-index:300;background:var(--ink);color:white;padding:12px 18px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:top .15s}
+.skip-link:focus{top:12px;outline:3px solid var(--acid);outline-offset:2px}
+#main-content{display:block;scroll-margin-top:90px}
+#main-content:focus{outline:none}
+
+/* Focus: one consistent, high-contrast ring; acid on dark surfaces. */
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+footer,.campaigns,.chapter-section,.page-hero.green,.page-hero.red,.mission-statement,.guide-callout,.media-gallery,.archive-band,
+.work-index,.conference-list,.network,.cool-form,.donation-panel,.legacy-structure,.impact-proof,.action-grid>a:nth-child(n+2),.signal{--focus:var(--acid)}
+.action-grid>a:nth-child(5){--focus:var(--ink)}
+@media(max-width:1180px){.nav-wrap nav{--focus:var(--acid)}}
+
+/* Brand lock-up and small-text legibility */
+.brand span{font-size:8px}
+.source-note{opacity:.75}
+.verification-note{opacity:.8}
+.footer-meta{opacity:.72}
+.footer-nav a:focus-visible{color:var(--acid)}
+
+/* Small screens: never scroll sideways, long words wrap instead of overflowing. */
+body{overflow-x:clip}
+h1,h2,h3{overflow-wrap:break-word}
+@media(max-width:560px){
+  .manifesto-copy h2,.campaign-intro h2,.chapter-title h2,.history-head h2,.join h2,.mission-statement h2,.archive-message h2,
+  .application-intro h2,.newsletter-copy h2,.donation-story h2,.toolkit-lock h2,.gallery-head h2,.legacy-structure h2,
+  .editorial-split h2,.evolution-intro h2,.giving-head h2,.news-empty h2,.contact-layout h2,.chapter-profile h2,.directory h2,
+  .network h2,.support-clarity h2,.conference-note h2,.conference-list h2,.legacy-model>h2,.empty-campaign h2{font-size:clamp(36px,11vw,56px);letter-spacing:-.045em}
+  .action-grid h2,.work-index article h2,.origin-columns h2,.donation-panel h2,.guide-callout h2{font-size:clamp(34px,10vw,50px)}
+  .signal{font-size:9px}
+}

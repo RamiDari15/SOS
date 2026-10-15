@@ -96,3 +96,45 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - [vinext Documentation](https://github.com/cloudflare/vinext)
 - [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+
+## Form submissions
+
+The contact, get-involved (join / start a chapter) and newsletter forms POST JSON to
+`/api/forms` (`app/api/forms/route.ts`). The route validates every field (required fields,
+email format, length limits, allowed options, a hidden honeypot), returns `400` with
+`fieldErrors` for bad input, then delivers the submission through whichever channels are
+configured with environment variables (see `.env.example`):
+
+| Variable | Purpose |
+| --- | --- |
+| `FORMS_WEBHOOK_URL` | https URL that receives each submission as JSON (Google Apps Script, Zapier, Make, …). |
+| `FORMS_WEBHOOK_SECRET` | Optional. Sent as `secret` in the JSON and as the `X-Forms-Secret` header. |
+| `RESEND_API_KEY` | Resend API key. Needs `FORMS_TO_EMAIL`. |
+| `FORMS_TO_EMAIL` | Inbox(es) for submission emails, comma-separated. |
+| `FORMS_FROM_EMAIL` | Optional sender on a Resend-verified domain (default `onboarding@resend.dev`). |
+
+If neither channel is configured the route answers `503 {"error":"not_configured"}`, and if
+every configured channel fails it answers `502`. In both cases the form shows a
+`mailto:sos@organize4syria.com` link with the visitor's message already filled in, so nothing is lost.
+The site never shows a success message unless delivery actually worked.
+
+Set the variables in Vercel (Project → Settings → Environment Variables) or as Cloudflare
+Worker secrets (`wrangler secret put FORMS_WEBHOOK_URL`), or in `.env.local` for local dev.
+`.gitignore` ignores `.env*`, so `.env.example` must be added with `git add -f .env.example`.
+
+**Google Sheet recipe (no paid service needed):**
+
+1. Create a Google Sheet, then open Extensions → Apps Script.
+2. Paste:
+   ```js
+   function doPost(e) {
+     var p = JSON.parse(e.postData.contents);
+     if (p.secret !== 'YOUR_SECRET') return ContentService.createTextOutput('forbidden');
+     var ss = SpreadsheetApp.getActive(), sh = ss.getSheetByName(p.type) || ss.insertSheet(p.type);
+     sh.appendRow([p.submittedAt, p.page].concat(Object.keys(p.data).map(function (k) { return k + ': ' + p.data[k]; })));
+     return ContentService.createTextOutput('ok');
+   }
+   ```
+3. Deploy → New deployment → Web app, execute as **Me**, access **Anyone**. Copy the `/exec` URL.
+4. Set `FORMS_WEBHOOK_URL` to that URL and `FORMS_WEBHOOK_SECRET` to `YOUR_SECRET`.
+5. Submit a test form; a row appears in a tab named after the form type (`contact`, `member`, `chapter`, `newsletter`).
