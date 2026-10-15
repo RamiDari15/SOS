@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CampusIcon } from "./Interior";
-import { legacyChapters, slugify } from "./site-data";
+import { CampusIcon } from "./chapters/ChapterDirectory";
+import { legacyChapters } from "./chapter-data";
+import { slugify } from "./site-data";
 
 const history = [
   ["Books Not Bombs", "With Karam Foundation, SOS helped fund scholarships and support education in Syria."],

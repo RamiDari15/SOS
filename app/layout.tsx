@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Archivo, Archivo_Black } from "next/font/google";
 import "./globals.css";
+import "./styles/chapters.css";
+import "./styles/forms.css";
+import "./styles/content.css";
 
 const archivo = Archivo({ variable: "--font-body", subsets: ["latin"] });
 const archivoBlack = Archivo_Black({ variable: "--font-display", weight: "400", subsets: ["latin"] });
