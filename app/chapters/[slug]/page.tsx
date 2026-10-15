@@ -1,10 +1,22 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero, Shell } from "../../Interior";
+import type { Metadata } from "next";
 import { chapterSlug, chapters, findChapter, instagramUrl, nationalEmail } from "../../chapter-data";
+import { CampusIcon } from "../ChapterDirectory";
 
 export function generateStaticParams() {
   return chapters.map(c => ({ slug: chapterSlug(c) }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const chapter = findChapter(slug);
+  if (!chapter) return { title: "Chapter not found | Students Organize For Syria" };
+  const description = chapter.status === "active"
+    ? `The ${chapter.name} chapter of Students Organize For Syria in ${chapter.location}. Join the chapter${chapter.instagram ? ` or follow @${chapter.instagram} on Instagram` : ""}.`
+    : `${chapter.name} in ${chapter.location} is a past chapter of Students Organize For Syria. Students there can revive it.`;
+  return { title: `${chapter.name} chapter | Students Organize For Syria`, description };
 }
 
 export default async function Chapter({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,14 +38,14 @@ export default async function Chapter({ params }: { params: Promise<{ slug: stri
         : `${location}. This SOS chapter is not active right now. Students here can bring it back.`}
     />
     <section className={`chapter-profile ${isActive ? "is-active" : "is-past"}`}>
-      <div className="profile-art chapter-logo-art">{logo ? <img src={logo} alt={`${name} logo`}/> : <img src="/brand/dragonfly.jpg" alt="SOS artwork"/>}</div>
+      <div className={`profile-art chapter-logo-art${logo ? "" : " is-mark"}`}>{logo ? <img src={logo} alt={`${name} logo`}/> : <CampusIcon chapter={chapter}/>}</div>
       <div>
         <p className="overline">Campus chapter</p>
         <h2>{isActive ? <>Built by students.<br />Connected nationally.</> : <>Ready for<br />its next chapter.</>}</h2>
         <dl>
           <div><dt>Campus</dt><dd>{name}</dd></div>
           <div><dt>Location</dt><dd>{location}</dd></div>
-          <div><dt>Status</dt><dd><span className={`chapter-status ${isActive ? "is-active" : "is-past"}`}>{isActive ? "Active" : "Inactive"}</span></dd></div>
+          <div><dt>Status</dt><dd><span className={`chapter-status ${isActive ? "is-active" : "is-past"}`}>{isActive ? "Active" : "Past chapter"}</span></dd></div>
           {instagram && <div><dt>Instagram</dt><dd><a href={instagramUrl(instagram)} target="_blank" rel="noopener noreferrer">@{instagram} ↗</a></dd></div>}
           {email
             ? <div><dt>Chapter email</dt><dd><a href={`mailto:${email}`}>{email}</a></dd></div>

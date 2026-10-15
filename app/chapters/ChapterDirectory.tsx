@@ -30,7 +30,7 @@ function ChapterCard({ chapter, index }: { chapter: Chapter; index: number }) {
     <h3><a className="chapter-card-link" href={chapterHref(chapter)}>{displayName(chapter)}</a></h3>
     <p>{chapter.location}</p>
     <div className="chapter-card-foot">
-      <b className="card-link" aria-hidden="true">{isActive ? "View chapter" : "Revive chapter"} <Arrow /></b>
+      <b className="card-link" aria-hidden="true">View chapter <Arrow /></b>
       {chapter.instagram && <a className="chapter-ig" href={instagramUrl(chapter.instagram)} target="_blank" rel="noopener noreferrer" aria-label={`${displayName(chapter)} on Instagram (@${chapter.instagram})`}>@{chapter.instagram}</a>}
     </div>
   </article>;

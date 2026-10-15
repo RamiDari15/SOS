@@ -5,8 +5,41 @@ export const dynamic = "force-dynamic";
 
 const MAX_BODY_BYTES = 32_000;
 
-function json(body: unknown, status: number) {
-  return Response.json(body, { status, headers: { "cache-control": "no-store" } });
+/*
+ * Best-effort per-IP rate limit: 5 accepted submissions per minute. The map lives in
+ * memory, so it is per server instance / Worker isolate and resets on cold start. Use a
+ * Cloudflare or Vercel WAF rate-limit rule (or Turnstile) for real abuse protection.
+ */
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 60_000;
+const hits = new Map<string, number[]>();
+
+function clientIp(request: Request): string {
+  return (
+    request.headers.get("cf-connecting-ip") ||
+    request.headers.get("x-real-ip") ||
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown"
+  );
+}
+
+/** Records a hit and returns seconds to wait if the IP is over the limit, else 0. */
+function rateLimited(ip: string, now = Date.now()): number {
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT) {
+    hits.set(ip, recent);
+    return Math.ceil((RATE_WINDOW_MS - (now - recent[0])) / 1000);
+  }
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) {
+    for (const [key, times] of hits) if (!times.some((t) => now - t < RATE_WINDOW_MS)) hits.delete(key);
+  }
+  return 0;
+}
+
+function json(body: unknown, status: number, headers: Record<string, string> = {}) {
+  return Response.json(body, { status, headers: { "cache-control": "no-store", ...headers } });
 }
 
 export async function POST(request: Request) {
@@ -26,6 +59,9 @@ export async function POST(request: Request) {
       return json({ error: "forbidden_origin" }, 403);
     }
   }
+
+  const declared = Number(request.headers.get("content-length"));
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) return json({ error: "payload_too_large" }, 413);
 
   const raw = await request.text();
   if (raw.length > MAX_BODY_BYTES) return json({ error: "payload_too_large" }, 413);
@@ -49,6 +85,9 @@ export async function POST(request: Request) {
 
   const result = validateSubmission(type, input);
   if (!result.ok) return json({ error: "validation_failed", fieldErrors: result.fieldErrors }, 400);
+
+  const wait = rateLimited(clientIp(request));
+  if (wait) return json({ error: "rate_limited" }, 429, { "retry-after": String(wait) });
 
   const env = await readFormsEnv();
   const delivery = await deliverSubmission(env, {

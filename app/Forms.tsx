@@ -11,15 +11,7 @@ type Status =
   | { kind: "submitting" }
   | { kind: "success" }
   | { kind: "invalid" }
-  | { kind: "fallback"; mailto: string; reason: "not_configured" | "failed" };
-
-const TOPIC_PARAMS: Record<string, (typeof CONTACT_TOPICS)[number]> = {
-  toolkit: "Chapter toolkit access",
-  chapter: "Start or join a chapter",
-  partner: "Partnership",
-  partnership: "Partnership",
-  press: "Press or statement",
-};
+  | { kind: "fallback"; mailto: string; reason: "not_configured" | "rate_limited" | "failed" };
 
 function readFields(form: HTMLFormElement): Record<string, string> {
   const out: Record<string, string> = {};
@@ -39,11 +31,21 @@ function useFormSubmission(type: FormType) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const uid = useId();
+  const inFlight = useRef(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (status.kind === "submitting") return;
-    const form = e.currentTarget;
+    // The button stays focusable while sending (aria-disabled), so guard repeat submits here.
+    if (inFlight.current) return;
+    inFlight.current = true;
+    try {
+      await send(e.currentTarget);
+    } finally {
+      inFlight.current = false;
+    }
+  }
+
+  async function send(form: HTMLFormElement) {
     const fields = readFields(form);
     setStatus({ kind: "submitting" });
     setFieldErrors({});
@@ -77,7 +79,7 @@ function useFormSubmission(type: FormType) {
     setStatus({
       kind: "fallback",
       mailto: buildMailto(type, trimmed(fields)),
-      reason: payload.error === "not_configured" ? "not_configured" : "failed",
+      reason: payload.error === "not_configured" ? "not_configured" : payload.error === "rate_limited" ? "rate_limited" : "failed",
     });
   }
 
@@ -109,7 +111,7 @@ function Honeypot() {
     <div className="form-hp" aria-hidden="true">
       <label>
         Leave this field empty
-        <input name={HONEYPOT_FIELD} type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
+        <input name={HONEYPOT_FIELD} type="text" tabIndex={-1} autoComplete="new-password" data-lpignore="true" data-1p-ignore="" defaultValue="" />
       </label>
     </div>
   );
@@ -124,7 +126,7 @@ function FormStatus({ status }: { status: Status }) {
     content = (
       <>
         <p>
-          <strong>{status.reason === "not_configured" ? "Online submissions aren’t switched on yet." : "We couldn’t send your submission."}</strong>{" "}
+          <strong>{status.reason === "not_configured" ? "Online submissions aren’t switched on yet." : status.reason === "rate_limited" ? "Too many submissions from this connection. Please wait a minute." : "We couldn’t send your submission."}</strong>{" "}
           Nothing you typed has been lost. Send it to us by email instead. The message is already filled in.
         </p>
         <a className="pill pill-green form-fallback-link" href={status.mailto}>
@@ -154,7 +156,7 @@ function SuccessPanel({ title, children, again, onAgain, className = "" }: { tit
 
 function SubmitButton({ busy, children }: { busy: boolean; children: ReactNode }) {
   return (
-    <button className="pill pill-green" type="submit" disabled={busy} aria-disabled={busy}>
+    <button className="pill pill-green" type="submit" aria-disabled={busy || undefined}>
       {busy ? "Sending…" : children} {!busy && <Arrow />}
     </button>
   );
@@ -162,15 +164,10 @@ function SubmitButton({ busy, children }: { busy: boolean; children: ReactNode }
 
 /* ---------- contact ---------- */
 
-export function ContactForm() {
+/** `initialTopic` comes from `?topic=` on the server (see topicFromParam), so the right option renders on first paint. */
+export function ContactForm({ initialTopic = "" }: { initialTopic?: string }) {
   const { status, onSubmit, fieldProps, errorFor, reset } = useFormSubmission("contact");
-  const [topic, setTopic] = useState("");
-  useEffect(() => {
-    const preset = TOPIC_PARAMS[new URLSearchParams(window.location.search).get("topic") ?? ""];
-    // Query string is only readable after hydration; preselect the matching topic.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (preset) setTopic(preset);
-  }, []);
+  const [topic, setTopic] = useState(initialTopic);
   const busy = status.kind === "submitting";
 
   if (status.kind === "success")
@@ -258,12 +255,9 @@ function MovementForm({ mode }: { mode: "member" | "chapter" }) {
   );
 }
 
-export function MovementForms() {
-  const [mode, setMode] = useState<"member" | "chapter">("member");
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (new URLSearchParams(window.location.search).get("form") === "chapter") setMode("chapter");
-  }, []);
+/** `initialMode` comes from `?form=` on the server (see modeFromParam), so the right form renders on first paint. */
+export function MovementForms({ initialMode = "member" }: { initialMode?: "member" | "chapter" }) {
+  const [mode, setMode] = useState<"member" | "chapter">(initialMode);
   return (
     <section className="application-zone" id="apply">
       <div className="application-intro">

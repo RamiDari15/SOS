@@ -1,6 +1,8 @@
 /* chapters styles (layered after globals.css) */
 
-/* Campus icon fallback letters (abbreviations up to 4 characters) */
+/* Campus icon: letter mark fallback + logos kept whole inside the circle */
+.campus-icon{padding:11px}
+.campus-icon img{object-fit:contain;width:100%;height:100%}
 .campus-icon i.is-long{font-size:14px;letter-spacing:-.04em}
 
 /* ---------- Directory controls: status filter + search ---------- */
@@ -26,9 +28,10 @@
 
 /* ---------- Chapter card (mirrors the original .directory-grid>a look) ---------- */
 .directory-grid>.chapter-card{padding:30px;min-height:320px;border:1px solid var(--line);display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto 1fr auto auto auto;position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),background .25s,color .25s,box-shadow .35s}
-.directory-grid>.chapter-card:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:var(--acid);right:-180px;bottom:-180px;transition:.45s;z-index:-1}
+.directory-grid>.chapter-card:before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:var(--acid);right:-180px;bottom:-180px;transition:.45s;z-index:-1;opacity:0}
 .directory-grid>.chapter-card:hover,.directory-grid>.chapter-card:focus-within{background:var(--ink);color:white;transform:translateY(-10px);box-shadow:0 24px 60px rgba(27,28,26,.18);z-index:2}
-.directory-grid>.chapter-card:hover:before{right:-80px;bottom:-100px}
+.directory-grid>.chapter-card:hover:before,.directory-grid>.chapter-card:focus-within:before{right:-80px;bottom:-100px;opacity:1}
+.directory-grid>.chapter-card:hover .campus-icon img,.directory-grid>.chapter-card:focus-within .campus-icon img{mix-blend-mode:normal}
 .directory-grid>.chapter-card:hover .campus-icon,.directory-grid>.chapter-card:focus-within .campus-icon{transform:rotate(-12deg) scale(1.08);background:var(--green);color:white!important}
 .chapter-card .campus-number{grid-column:1;grid-row:1}
 .chapter-card .campus-icon{grid-column:2;grid-row:1/3}
@@ -54,18 +57,25 @@
 /* Past chapters: quieter */
 .directory-group.is-past .chapter-card{min-height:250px;border-style:dashed}
 .directory-group.is-past .chapter-card h3{font-size:24px}
-.directory-group.is-past .chapter-card .campus-icon{filter:grayscale(1);opacity:.7}
+.directory-group.is-past .chapter-card .campus-icon{filter:grayscale(1);opacity:.85}
 .directory-group.is-past .chapter-card:hover .campus-icon,.directory-group.is-past .chapter-card:focus-within .campus-icon{filter:none;opacity:1}
 .directory-group.is-past .chapter-card:not(:hover):not(:focus-within){color:rgba(27,28,26,.72)}
 
 /* ---------- Homepage rails: past chapters muted ---------- */
-.chapter-track a.is-past{opacity:.6}
-.chapter-track a.is-past .campus-icon{filter:grayscale(1)}
-.chapter-track a.is-past:hover,.chapter-track a.is-past:focus{opacity:1}
-.chapter-track a.is-past:hover .campus-icon{filter:none}
+.chapter-track a.is-past .campus-icon{filter:grayscale(1);opacity:.85}
+.chapter-track a.is-past:hover .campus-icon,.chapter-track a.is-past:focus .campus-icon{filter:none;opacity:1}
+/* The first rail is a real list; the duplicates only keep the loop seamless. */
+ul.chapter-track{margin:0;padding:0;list-style:none}
+ul.chapter-track>li{display:flex}
 
 /* ---------- Chapter detail page ---------- */
 .chapter-profile dd{margin:0}
+.chapter-profile dl{margin-bottom:30px}
+/* No logo: large letter mark instead of artwork */
+.chapter-logo-art.is-mark{background:var(--paper)}
+.chapter-logo-art.is-mark .campus-icon{width:min(300px,70%);height:auto;aspect-ratio:1;border-width:2px}
+.chapter-logo-art.is-mark .campus-icon i{font-size:clamp(48px,7vw,96px)}
+.chapter-logo-art.is-mark .campus-icon b{inset:14px}
 .chapter-profile dd a{border-bottom:1px solid;overflow-wrap:anywhere}
 .chapter-profile dd a:hover{color:var(--green)}
 .chapter-actions{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:26px}
@@ -81,5 +91,13 @@
   .directory-controls label{margin-top:20px}
   .status-filter{display:flex}
   .status-filter button{flex:1}
-  .directory-grid>.chapter-card{padding:24px;min-height:260px}
+  .directory-grid>.chapter-card,.directory-group.is-past .chapter-card{padding:20px;min-height:auto;row-gap:6px}
+  .chapter-card h3,.directory-group.is-past .chapter-card h3{font-size:22px;margin-top:14px}
+  .chapter-card .campus-icon{width:48px;height:48px;padding:8px}
+  .chapter-card .campus-icon i{font-size:14px}
+  .chapter-card-foot{margin-top:14px}
+  .directory-group{margin-top:48px}
 }
+
+/* ---------- 404 ---------- */
+.not-found-links{padding:60px 7vw 110px;display:flex;align-items:center;gap:30px;flex-wrap:wrap}

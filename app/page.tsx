@@ -1,9 +1,6 @@
-"use client";
-
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Arrow, Shell } from "./Interior";
 import { CampusIcon } from "./chapters/ChapterDirectory";
-import { activeChapters, chapterHref, displayName, pastChapters } from "./chapter-data";
+import { activeChapters, chapterHref, displayName, pastChapters, type Chapter } from "./chapter-data";
 
 const heroCampuses = activeChapters.filter(c => c.logo).slice(0, 4);
 const railChapters = [...activeChapters, ...pastChapters];
@@ -15,40 +12,14 @@ const history = [
   ["Warmth in Action", "SOS partnered with NuDay Syria to fundraise for winter coats for refugee children."],
 ];
 
-function Arrow() { return <span aria-hidden="true">↗</span>; }
+function RailCard({ chapter, hidden }: { chapter: Chapter; hidden?: boolean }) {
+  const past = chapter.status !== "active";
+  return <a className={past ? "is-past" : undefined} href={chapterHref(chapter)} tabIndex={hidden ? -1 : undefined}><CampusIcon chapter={chapter}/><span className="campus-copy"><b>{displayName(chapter)}</b><small>{past ? "Past chapter · Revive it" : chapter.location}</small></span><Arrow /></a>;
+}
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible"));
-    }, { threshold: 0.14 });
-    document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <main id="top">
-      <div className="signal"><span>Students shaping Syria’s future</span><a href="#join">Join the movement <Arrow /></a></div>
-
-      <header className="nav-wrap">
-        <a className="brand" href="#top" aria-label="SOS home"><b>SOS</b><span>Students<br />Organize<br />For Syria</span></a>
-        <button className="menu" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>{menuOpen ? "Close" : "Menu"}</button>
-        <nav className={menuOpen ? "nav-open" : ""} aria-label="Main navigation">
-          <a href="/about">About</a>
-          <a href="/our-work">Our work</a>
-          <a href="/campaigns">Campaigns</a>
-          <Link href="/chapters">Chapters</Link>
-          <a href="/conferences">Conferences</a>
-          <a href="/media">Media</a>
-          <a href="/newsletter">Newsletter</a>
-          <a href="/toolkits">Toolkits</a>
-          <a href="/donate">Donate</a>
-          <a className="nav-action" href="/get-involved">Take action <Arrow /></a>
-        </nav>
-      </header>
-
+    <Shell>
       <section className="hero hero-impact">
         <div className="impact-photo" aria-hidden="true"><div className="impact-photo-inner"></div><div className="hero-campus-bubbles">{heroCampuses.map(c => <CampusIcon key={c.name} chapter={c}/>)}</div><span className="photo-stamp">{activeChapters.length} active chapters<br/>One connected movement</span></div>
         <div className="impact-copy">
@@ -109,8 +80,12 @@ export default function Home() {
           <h2>Find your people.<br />Build from where you are.</h2>
           <p>{activeChapters.length} active chapters and counting. Select a campus to find its chapter, or bring a past chapter back to life.</p>
         </div>
-        <div className="chapter-rails" aria-label="SOS college chapters">
-          {[0,1].map((row) => <div className={`chapter-track row-${row}`} key={row}>{[...railChapters, ...railChapters].map((c, i) => <a key={`${row}-${i}`} className={c.status === "active" ? undefined : "is-past"} href={chapterHref(c)}><CampusIcon chapter={c}/><span className="campus-copy"><b>{displayName(c)}</b><small>{c.status === "active" ? c.location : "Past chapter · Revive it"}</small></span><Arrow /></a>)}</div>)}
+        <div className="chapter-rails" role="region" aria-label="Students Organize For Syria college chapters">
+          <ul className="chapter-track row-0">
+            {railChapters.map(c => <li key={c.name}><RailCard chapter={c}/></li>)}
+            {railChapters.map(c => <li key={`dup-${c.name}`} aria-hidden="true"><RailCard chapter={c} hidden/></li>)}
+          </ul>
+          <div className="chapter-track row-1" aria-hidden="true">{[...railChapters, ...railChapters].map((c, i) => <RailCard key={`row1-${i}`} chapter={c} hidden/>)}</div>
         </div>
         <a className="pill pill-cream chapter-cta" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a>
       </section>
@@ -124,12 +99,6 @@ export default function Home() {
         </div>
       </section>
 
-      <footer>
-        <a className="footer-mark" href="#top">SOS</a>
-        <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a><br/><a href="https://www.instagram.com/organize4syria/">Instagram</a> · <a href="https://www.facebook.com/Organize4Syria/">Facebook</a></p>
-        <div className="footer-nav"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><Link href="/chapters">Chapters</Link><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/toolkits">Toolkits</a><a href="/donate">Donate</a><a href="/contact">Contact</a></div>
-        <div className="footer-meta"><span>© 2026 Students Organize For Syria</span><span>Student-led. Always.</span></div>
-      </footer>
-    </main>
+    </Shell>
   );
 }

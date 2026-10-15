@@ -7,7 +7,8 @@
 export const FORM_TYPES = ["contact", "member", "chapter", "newsletter"] as const;
 export type FormType = (typeof FORM_TYPES)[number];
 
-export const HONEYPOT_FIELD = "company_website";
+/** Hidden anti-spam field. Deliberately not a name browsers or password managers autofill. */
+export const HONEYPOT_FIELD = "sos_hp_ref";
 export const ORG_NAME = "Students Organize For Syria";
 export const ORG_EMAIL = "sos@organize4syria.com";
 
@@ -18,6 +19,25 @@ export const CONTACT_TOPICS = [
   "Press or statement",
   "General inquiry",
 ] as const;
+
+/** `/contact?topic=…` values used by links across the site, mapped to the select option. */
+const TOPIC_PARAMS: Record<string, (typeof CONTACT_TOPICS)[number]> = {
+  toolkit: "Chapter toolkit access",
+  chapter: "Start or join a chapter",
+  partner: "Partnership",
+  partnership: "Partnership",
+  press: "Press or statement",
+};
+
+export function topicFromParam(param: unknown): string {
+  const value = Array.isArray(param) ? param[0] : param;
+  return typeof value === "string" ? TOPIC_PARAMS[value.toLowerCase()] ?? "" : "";
+}
+
+export function modeFromParam(param: unknown): "member" | "chapter" {
+  const value = Array.isArray(param) ? param[0] : param;
+  return value === "chapter" ? "chapter" : "member";
+}
 
 export const MEMBER_ROLES = ["General member", "Chapter officer", "Volunteer for campaigns", "Not sure yet"] as const;
 
@@ -143,6 +163,10 @@ export function formatSubmissionText(type: FormType, data: Record<string, string
   for (const [key, spec] of Object.entries(FORM_SCHEMAS[type].fields)) {
     const value = data[key];
     if (!value) continue;
+    if (spec.kind === "consent") {
+      lines.push(`${spec.label}: yes`);
+      continue;
+    }
     lines.push(spec.kind === "multiline" ? `${spec.label}:\n${value}` : `${spec.label}: ${value}`);
   }
   return lines.join("\n");

@@ -112,16 +112,19 @@ main{overflow:clip}.signal{height:32px;justify-content:space-between;gap:24px}.n
    ========================================================================== */
 
 /* Ink grain: two feTurbulence layers multiplied into an alpha mask.
-   - fine grain (.45 base frequency, steep threshold) = sparse specks where the
-     paper tooth didn't take ink
-   - coarse vertical wear (.04 x .005) = soft, uneven woodtype pressure
+   - grain: sparse specks (steep threshold on .45 noise), remapped so a speck
+     never drops below 35% ink — soft, not punched-out
+   - wear: soft vertical woodtype pressure (.04 x .005 noise), remapped to an
+     alpha floor of .87 so whole letters never fade
    Readable source:
    <svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'>
      <filter id='i' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'>
        <feTurbulence type='fractalNoise' baseFrequency='.45' numOctaves='2' seed='3' stitchTiles='stitch'/>
-       <feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 7.05' result='grain'/>
+       <feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 7.3'/>
+       <feComponentTransfer result='grain'><feFuncA type='linear' slope='.65' intercept='.35'/></feComponentTransfer>
        <feTurbulence type='fractalNoise' baseFrequency='.04 .005' numOctaves='3' seed='11' stitchTiles='stitch'/>
-       <feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1 0 0 0 1.4' result='wear'/>
+       <feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1 0 0 0 1.4'/>
+       <feComponentTransfer result='wear'><feFuncA type='linear' slope='.13' intercept='.87'/></feComponentTransfer>
        <feComposite in='grain' in2='wear' operator='arithmetic' k1='1'/>
      </filter>
      <rect width='100%' height='100%' filter='url(#i)'/>
@@ -129,51 +132,46 @@ main{overflow:clip}.signal{height:32px;justify-content:space-between;gap:24px}.n
    It is inlined as a data URI so the mask can never 404 (a failed mask image hides the text). */
 :root{
   --focus:var(--green);
-  --ink-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='i' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.45' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -9 0 0 0 7.05' result='grain'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04 .005' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 0 0 0 1.4' result='wear'/%3E%3CfeComposite in='grain' in2='wear' operator='arithmetic' k1='1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23i%29'/%3E%3C/svg%3E");
+  --ink-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='i' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.45' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -9 0 0 0 7.3'/%3E%3CfeComponentTransfer result='grain'%3E%3CfeFuncA type='linear' slope='.65' intercept='.35'/%3E%3C/feComponentTransfer%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04 .005' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 0 0 0 1.4'/%3E%3CfeComponentTransfer result='wear'%3E%3CfeFuncA type='linear' slope='.13' intercept='.87'/%3E%3C/feComponentTransfer%3E%3CfeComposite in='grain' in2='wear' operator='arithmetic' k1='1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23i%29'/%3E%3C/svg%3E");
 }
 
 /* Bold text: Tailwind's preflight resets headings to inherit (400), which is why
    section titles rendered thin. Headings are heavy by default again. */
 h1,h2,h3{font-weight:800}
 
-/* Display type: heaviest Archivo cut, slightly opened tracking so the heavier
-   strokes don't collide, and balanced line breaks. (.impact-copy h1 is set in
-   Archivo Black, which only has one weight, so it is left out of the weight rule.) */
-.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
-.mission-statement h2,.editorial-split h2,.evolution-intro h2,.support-clarity h2,.network h2,.directory h2,
-.chapter-profile h2,.contact-layout h2,.archive-message h2,.archive-band h2,.legacy-structure h2,
-.application-intro h2,.newsletter-copy h2,.donation-story h2,.donation-panel h2,.toolkit-lock h2,
-.gallery-head h2,.guide-callout h2,.conference-note h2,.legacy-model>h2,.news-empty h2,.empty-campaign h2,
-.conference-list h2,.action-grid h2,.work-index article h2,.origin-columns h2,.giving-head h2,.ink{font-weight:900;text-wrap:balance}
+/* Display headings — one list, used for weight, spacing and the ink texture.
+   Max specificity is (0,1,1) so app/styles/*.css (loaded later) can still override.
+   Opt in from any page with class="ink". (.impact-copy h1 is Archivo Black, a single
+   weight, so it only shares the texture, below.) */
+:is(.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
+  .mission-statement h2,.editorial-split h2,.evolution-intro h2,.support-clarity h2,.network h2,.directory h2,
+  .chapter-profile h2,.contact-layout h2,.archive-message h2,.archive-band h2,.legacy-structure h2,
+  .application-intro h2,.newsletter-copy h2,.donation-story h2,.donation-panel h2,.toolkit-lock h2,
+  .gallery-head h2,.guide-callout h2,.conference-note h2,.legacy-model>h2,.news-empty h2,.empty-campaign h2,
+  .conference-list h2,.action-grid h2,.work-index h2,.origin-columns h2,.giving-head h2,.ink){font-weight:900;letter-spacing:-.035em;word-spacing:.12em;text-wrap:balance;overflow-wrap:normal;hyphens:manual}
 
-/* Letterpress texture — only on large display headings. The text stays real,
-   selectable text; the mask just knocks tiny specks out of the ink.
+/* Letterpress texture: real, selectable text with a speck mask, only where type
+   is ≥ ~48px (tablet/desktop; the homepage hero is that big everywhere).
    `mask-clip:no-clip` keeps tight-leaded glyphs (commas, Q tails) from being
    cropped at the box edge. Unsupported browsers get solid heavy type. */
 @supports ((mask-image:none) or (-webkit-mask-image:none)){
-  .impact-copy h1,.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
+  .impact-copy h1{-webkit-mask-image:var(--ink-grain);mask-image:var(--ink-grain);-webkit-mask-size:320px 320px;mask-size:320px 320px;mask-clip:no-clip}
+  @media(min-width:700px){
+    :is(.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
   .mission-statement h2,.editorial-split h2,.evolution-intro h2,.support-clarity h2,.network h2,.directory h2,
   .chapter-profile h2,.contact-layout h2,.archive-message h2,.archive-band h2,.legacy-structure h2,
   .application-intro h2,.newsletter-copy h2,.donation-story h2,.donation-panel h2,.toolkit-lock h2,
   .gallery-head h2,.guide-callout h2,.conference-note h2,.legacy-model>h2,.news-empty h2,.empty-campaign h2,
-  .conference-list h2,.action-grid h2,.work-index article h2,.origin-columns h2,.giving-head h2,.ink{
-    -webkit-mask-image:var(--ink-grain);mask-image:var(--ink-grain);
-    -webkit-mask-size:320px 320px;mask-size:320px 320px;
-    -webkit-mask-repeat:repeat;mask-repeat:repeat;
-    mask-clip:no-clip;
-  }
-  /* Finer grain on phones so smaller headings stay crisp. */
-  @media(max-width:560px){
-    .page-hero h1,.ink,h2{-webkit-mask-size:230px 230px;mask-size:230px 230px}
+  .conference-list h2,.action-grid h2,.work-index h2,.origin-columns h2,.giving-head h2,.ink){-webkit-mask-image:var(--ink-grain);mask-image:var(--ink-grain);-webkit-mask-size:320px 320px;mask-size:320px 320px;mask-clip:no-clip}
   }
 }
 @media (forced-colors:active),(prefers-contrast:more),print{
-  .impact-copy h1,.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
+  .impact-copy h1,:is(.page-hero h1,.hero h1,.manifesto-copy h2,.campaign-intro h2,.history-head h2,.chapter-title h2,.join h2,
   .mission-statement h2,.editorial-split h2,.evolution-intro h2,.support-clarity h2,.network h2,.directory h2,
   .chapter-profile h2,.contact-layout h2,.archive-message h2,.archive-band h2,.legacy-structure h2,
   .application-intro h2,.newsletter-copy h2,.donation-story h2,.donation-panel h2,.toolkit-lock h2,
   .gallery-head h2,.guide-callout h2,.conference-note h2,.legacy-model>h2,.news-empty h2,.empty-campaign h2,
-  .conference-list h2,.action-grid h2,.work-index article h2,.origin-columns h2,.giving-head h2,.ink{-webkit-mask-image:none;mask-image:none}
+  .conference-list h2,.action-grid h2,.work-index h2,.origin-columns h2,.giving-head h2,.ink){-webkit-mask-image:none;mask-image:none}
 }
 
 /* Interior heroes: centered.
@@ -183,12 +181,12 @@ h1,h2,h3{font-weight:800}
    title (including chapter names that wrap differently on phones) and keeps
    the intro visually tied to the heading. */
 .page-hero{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:0;padding:clamp(56px,7vw,104px) 6vw clamp(56px,6.5vw,96px)}
-.page-hero h1{width:100%;max-width:1500px;margin:0 auto;font-size:clamp(54px,9.2vw,148px);line-height:.86;letter-spacing:-.05em}
+.page-hero h1{width:100%;max-width:1500px;margin:0 auto;font-size:clamp(54px,9.2vw,148px);line-height:.86}
 .page-hero h1 i{font-style:normal}
 .page-hero>p{grid-column:auto;width:100%;max-width:40rem;margin:clamp(26px,3vw,42px) auto 0;font-size:clamp(17px,1.5vw,21px);line-height:1.45;font-weight:600;text-wrap:pretty}
 @media(max-width:560px){
   .page-hero{padding:48px 6vw 52px}
-  .page-hero h1{font-size:clamp(38px,11.4vw,64px);line-height:.9;letter-spacing:-.04em;overflow-wrap:break-word;hyphens:manual}
+  .page-hero h1{font-size:clamp(34px,10.4vw,60px);line-height:.92}
   .page-hero>p{font-size:16px}
 }
 
@@ -203,6 +201,24 @@ h1,h2,h3{font-weight:800}
 .editorial-split+.origin-story{padding-top:clamp(56px,6vw,84px)}
 @media(max-width:900px){.editorial-split{grid-template-columns:1fr;gap:28px;align-items:start}}
 @media(max-width:560px){.editorial-split{padding:64px 6vw 56px}}
+
+/* Overlines: the rule hangs to the left and wrapped lines align with the text,
+   instead of the second line tucking under the rule. */
+/* (Tailwind also generates an `.overline` utility = text-decoration:overline — that was the stray rule over wrapped lines.) */
+.overline{display:flex;align-items:center;gap:10px;text-wrap:balance;text-decoration:none}
+.overline:before{flex:none;margin-right:0}
+.join-copy .overline{display:inline-flex}
+:is(.legacy-structure,.mission-statement,.archive-message,.guide-callout,.media-gallery,.network,.page-hero.green) .overline:before{background:var(--acid)}
+
+/* Press headlines are bold now; give them display leading. */
+.press-list h2{line-height:1.02}
+/* ≤900px the press row is a 2-column grid; keep the headline in the wide column (it was auto-placed into the 30–40px number column). */
+@media(max-width:900px){.press-list h2{grid-column:2}}
+
+/* Chapter network cards: keep the decorative arc in the corner, behind the text. */
+.orbit a>*{position:relative;z-index:1}
+.orbit a:before{z-index:0;width:150px;height:150px;right:-95px;top:auto;bottom:-105px;opacity:.55}
+.orbit a:hover:before{transform:scale(1.25) rotate(45deg)}
 
 /* Skip link + main landmark */
 .skip-link{position:absolute;left:16px;top:-80px;z-index:300;background:var(--ink);color:white;padding:12px 18px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;transition:top .15s}
@@ -224,14 +240,15 @@ footer,.campaigns,.chapter-section,.page-hero.green,.page-hero.red,.mission-stat
 .footer-meta{opacity:.72}
 .footer-nav a:focus-visible{color:var(--acid)}
 
-/* Small screens: never scroll sideways, long words wrap instead of overflowing. */
+/* Small screens: never scroll sideways. Display words are sized to fit whole
+   (no mid-word breaks), so these sizes are tuned to the longest words at 375px. */
 body{overflow-x:clip}
-h1,h2,h3{overflow-wrap:break-word}
 @media(max-width:560px){
   .manifesto-copy h2,.campaign-intro h2,.chapter-title h2,.history-head h2,.join h2,.mission-statement h2,.archive-message h2,
   .application-intro h2,.newsletter-copy h2,.donation-story h2,.toolkit-lock h2,.gallery-head h2,.legacy-structure h2,
   .editorial-split h2,.evolution-intro h2,.giving-head h2,.news-empty h2,.contact-layout h2,.chapter-profile h2,.directory h2,
-  .network h2,.support-clarity h2,.conference-note h2,.conference-list h2,.legacy-model>h2,.empty-campaign h2{font-size:clamp(36px,11vw,56px);letter-spacing:-.045em}
-  .action-grid h2,.work-index article h2,.origin-columns h2,.donation-panel h2,.guide-callout h2{font-size:clamp(34px,10vw,50px)}
+  .network h2,.support-clarity h2,.conference-note h2,.conference-list h2,.legacy-model>h2,.empty-campaign h2{font-size:clamp(32px,10vw,52px)}
+  .work-index article h2,.origin-columns h2,.guide-callout h2{font-size:clamp(30px,9vw,46px)}
+  .action-grid h2,.donation-panel h2{font-size:clamp(28px,8.4vw,40px);margin-right:0}
   .signal{font-size:9px}
 }

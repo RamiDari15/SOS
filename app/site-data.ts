@@ -30,10 +30,11 @@ export function statementLinkLabel(s: Statement) { return s.source === "Instagra
  * and set `image: "/donate/campus.jpg"` plus a descriptive `alt`. Slots without an image render a textured placeholder frame.
  */
 export type GivingSlot = { title: string; caption: string; image?: string; alt?: string };
+// TODO(board): replace with approved captions + photos.
 export const givingSlots: readonly GivingSlot[] = [
-  { title: "Campus organizing", caption: "Chapter tools, student actions, and local organizing resources." },
-  { title: "National connection", caption: "Shared campaigns, training, and collaboration across the student network." },
-  { title: "Movement continuity", caption: "Communications, organizer care, and long-term movement infrastructure." },
+  { title: "Campus organizing", caption: "Support for student chapters organizing on their campuses." },
+  { title: "National connection", caption: "Support for the national network that connects chapters." },
+  { title: "Movement continuity", caption: "Support for keeping the movement running over time." },
 ];
 
 export function slugify(value: string) { return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }

@@ -20,6 +20,23 @@ export type FormsEnv = Partial<Record<EnvKey, string>>;
  * falling back to Cloudflare's `cloudflare:workers` env bindings. The Cloudflare import is
  * resolved at runtime only, so `next build` never tries to bundle it.
  */
+let cloudflareEnv: Promise<Record<string, unknown> | null> | undefined;
+
+/** Look up Cloudflare's env bindings once per isolate; resolves to null off Workers. */
+function getCloudflareEnv(): Promise<Record<string, unknown> | null> {
+  cloudflareEnv ??= (async () => {
+    try {
+      const specifier = "cloudflare:workers";
+      const mod = (await import(/* webpackIgnore: true */ /* turbopackIgnore: true */ /* @vite-ignore */ specifier)) as { env?: Record<string, unknown> };
+      return mod.env ?? null;
+    } catch {
+      // Not running on Cloudflare Workers; process.env is the source of truth.
+      return null;
+    }
+  })();
+  return cloudflareEnv;
+}
+
 export async function readFormsEnv(): Promise<FormsEnv> {
   const out: FormsEnv = {};
   const proc = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process;
@@ -28,15 +45,10 @@ export async function readFormsEnv(): Promise<FormsEnv> {
     if (typeof v === "string" && v.trim()) out[key] = v.trim();
   }
   if (ENV_KEYS.some((k) => !out[k])) {
-    try {
-      const specifier = "cloudflare:workers";
-      const mod = (await import(/* webpackIgnore: true */ /* turbopackIgnore: true */ /* @vite-ignore */ specifier)) as { env?: Record<string, unknown> };
-      for (const key of ENV_KEYS) {
-        const v = mod.env?.[key];
-        if (!out[key] && typeof v === "string" && v.trim()) out[key] = v.trim();
-      }
-    } catch {
-      // Not running on Cloudflare Workers; process.env is the source of truth.
+    const cf = await getCloudflareEnv();
+    for (const key of ENV_KEYS) {
+      const v = cf?.[key];
+      if (!out[key] && typeof v === "string" && v.trim()) out[key] = v.trim();
     }
   }
   return out;
@@ -47,13 +59,32 @@ export type DeliveryResult = { configured: Channel[]; delivered: Channel[]; fail
 
 const TIMEOUT_MS = 10_000;
 
-async function postWithTimeout(url: string, init: RequestInit): Promise<Response> {
+/** POST and read the body, all within one timeout. */
+async function postWithTimeout(url: string, init: RequestInit): Promise<{ ok: boolean; text: string }> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    return await fetch(url, { ...init, signal: controller.signal });
+    const res = await fetch(url, { ...init, signal: controller.signal });
+    const text = (await res.text()).slice(0, 2000);
+    return { ok: res.ok, text };
   } finally {
     clearTimeout(timer);
+  }
+}
+
+/**
+ * A webhook only counts as delivered when it answers `ok` or JSON `{"ok":true}`.
+ * A bare 200 is not enough: Google Apps Script returns 200 with an HTML error page
+ * when the script throws or the deployment is wrong.
+ */
+export function webhookAccepted(body: string): boolean {
+  const text = body.trim();
+  if (text.toLowerCase() === "ok") return true;
+  try {
+    const parsed = JSON.parse(text) as unknown;
+    return typeof parsed === "object" && parsed !== null && (parsed as { ok?: unknown }).ok === true;
+  } catch {
+    return false;
   }
 }
 
@@ -82,7 +113,7 @@ export async function deliverSubmission(
     };
     tasks.push(
       postWithTimeout(env.FORMS_WEBHOOK_URL, { method: "POST", headers, body: JSON.stringify(payload), redirect: "follow" })
-        .then((r): [Channel, boolean] => [ "webhook", r.ok ])
+        .then((r): [Channel, boolean] => ["webhook", r.ok && webhookAccepted(r.text)])
         .catch((): [Channel, boolean] => ["webhook", false]),
     );
   }

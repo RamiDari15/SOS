@@ -8,7 +8,7 @@
 .form-hp{position:absolute!important;left:-10000px!important;top:auto;width:1px;height:1px;overflow:hidden}
 
 /* Submission states */
-.cool-form .pill[disabled]{opacity:.6;cursor:progress;transform:none}
+.cool-form .pill[aria-disabled="true"]{opacity:.6;cursor:progress;transform:none;box-shadow:none}
 .cool-form input:focus-visible,.cool-form select:focus-visible,.cool-form textarea:focus-visible{outline:2px solid var(--acid);outline-offset:2px}
 .cool-form [aria-invalid="true"]{border-bottom-color:#ff9b8f}
 .field-error{display:block;margin-top:6px;font-style:normal;font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:none;color:#ffb4aa}

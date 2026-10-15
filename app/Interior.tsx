@@ -65,8 +65,9 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
         <a className="nav-action" href="/get-involved" onClick={close}>Take action <Arrow /></a>
       </nav>
     </header>
-    <main id="main-content" tabIndex={-1}>{children}</main>
-    <footer>
+    {/* While the mobile menu is open, the page behind it is inert so focus and screen readers stay in the menu. */}
+    <main id="main-content" tabIndex={-1} inert={open || undefined}>{children}</main>
+    <footer inert={open || undefined}>
       <a className="footer-mark" href="/" aria-label="Students Organize For Syria home">SOS</a>
       <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a><br/><a href="https://www.instagram.com/organize4syria/">Instagram</a> · <a href="https://www.facebook.com/Organize4Syria/">Facebook</a></p>
       <nav className="footer-nav" aria-label="Footer"><a href="/about">About</a><a href="/our-work">Our work</a><a href="/campaigns">Campaigns</a><a href="/chapters">Chapters</a><a href="/conferences">Conferences</a><a href="/media">Media</a><a href="/newsletter">Newsletter</a><a href="/toolkits">Toolkits</a><a href="/donate">Donate</a><a href="/contact">Contact</a></nav>

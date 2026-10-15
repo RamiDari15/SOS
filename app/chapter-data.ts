@@ -243,12 +243,12 @@ export const chapters: Chapter[] = [
 /** National contact used when a chapter has no public chapter email. */
 export const nationalEmail = "sos@organize4syria.com";
 
-const byName = (a: Chapter, b: Chapter) => a.name.localeCompare(b.name);
-
-export const activeChapters = chapters.filter(c => c.status === "active").sort(byName);
-export const pastChapters = chapters.filter(c => c.status === "inactive").sort(byName);
-
 export const displayName = (c: Chapter) => c.shortName ?? c.name;
+
+const byDisplayName = (a: Chapter, b: Chapter) => displayName(a).localeCompare(displayName(b));
+
+export const activeChapters = chapters.filter(c => c.status === "active").sort(byDisplayName);
+export const pastChapters = chapters.filter(c => c.status === "inactive").sort(byDisplayName);
 
 export const instagramUrl = (handle: string) => `https://www.instagram.com/${handle.replace(/^@/, "")}/`;
 
