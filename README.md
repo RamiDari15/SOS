@@ -112,11 +112,20 @@ configured with environment variables (see `.env.example`):
 | `RESEND_API_KEY` | Resend API key. Needs `FORMS_TO_EMAIL`. |
 | `FORMS_TO_EMAIL` | Inbox(es) for submission emails, comma-separated. |
 | `FORMS_FROM_EMAIL` | Optional sender on a Resend-verified domain (default `onboarding@resend.dev`). |
+| `SUPABASE_URL` | `https://<project-ref>.supabase.co`. Needs `SUPABASE_SERVICE_ROLE_KEY`. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service-role key (server only, never `NEXT_PUBLIC_`). Rows go into `public.form_submissions`. |
+| `FORMS_IP_SALT` | Optional. If set, `ip_hash` stores SHA-256(IP + salt); if not set, no IP data is stored. |
+
+Every configured channel runs in parallel; the visitor sees success if at least one of them
+succeeded. **Supabase:** run `supabase/migrations/0001_form_submissions.sql` in the project's SQL
+editor (or `supabase db push`). It creates `form_submissions` (`id`, `created_at`, `type`, `fields`
+jsonb, `page`, `ip_hash`) with row-level security on and no policies, so only the service-role key
+can read or write it. Read submissions in the Supabase table editor or export them as CSV.
 
 A webhook counts as delivered only when it answers HTTP 2xx with the body `ok` or JSON
 `{"ok":true}`. Anything else (including a 200 HTML error page from Apps Script) counts as a failure.
 
-If neither channel is configured the route answers `503 {"error":"not_configured"}`, and if
+If no channel is configured the route answers `503 {"error":"not_configured"}`, and if
 every configured channel fails it answers `502`. In both cases the form shows a
 `mailto:sos@organize4syria.com` link with the visitor's message already filled in, so nothing is lost.
 The site never shows a success message unless delivery actually worked.

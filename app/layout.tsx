@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-    openGraph: { title, description, type: "website", images: [{ url: image, width: 1200, height: 630, alt: "We are shaping the future — Students Organizing for Syria" }] },
+    openGraph: { title, description, type: "website", images: [{ url: image, width: 1200, height: 630, alt: "We are shaping the future — Students Organize For Syria" }] },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }

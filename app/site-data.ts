@@ -55,9 +55,8 @@ export const conferences = [
 
 export const press = [
   ["USA Today College", "Student activists organize for a free Syria", "https://www.usatoday.com/story/college/2015/09/16/student-activists-organize-for-a-free-syria/37406537/"],
-  ["BarakaBits", "Five ways you can help Syria for real", "http://www.barakabits.com/2015/03/5-ways-you-can-help-syria-for-real"],
-  ["Syrian American Medical Society", "SAMS highlights Students Organize For Syria", "https://www.sams-usa.net/foundation/blog/523/"],
-  ["The State Press", "Arizona State University’s mock refugee tent", "http://www.statepress.com/article/2015/03/asu-students-experience-living-like-syrian-refugees/"],
-  ["The Eastern Echo", "Eastern Michigan University hosts Tea With a Syrian", "http://www.easternecho.com/article/2015/03/tea-with-a-syrian"],
+  ["BarakaBits", "Five ways you can help Syria for real", "https://www.barakabits.com/2015/03/5-ways-you-can-help-syria-for-real"],
+  ["The State Press", "Arizona State University’s mock refugee tent", "https://www.statepress.com/article/2015/03/asu-students-experience-living-like-syrian-refugees/"],
+  ["The Eastern Echo", "Eastern Michigan University hosts Tea With a Syrian", "https://www.easternecho.com/article/2015/03/tea-with-a-syrian"],
   ["The Independent Florida Alligator", "University of Florida SOS shows students the life of a refugee", "https://www.alligator.org/news/did-you-notice-the-blue-tent-on-plaza-of-americas/article_bfd0ef48-41ed-11e8-9f26-3f0f31f6ef6d.html"],
 ] as const;

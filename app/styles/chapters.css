@@ -101,3 +101,9 @@ ul.chapter-track>li{display:flex}
 
 /* ---------- 404 ---------- */
 .not-found-links{padding:60px 7vw 110px;display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+
+/* ---------- Homepage chapter section CTAs ---------- */
+.chapter-cta-row{display:flex;align-items:center;gap:32px;flex-wrap:wrap;padding:0 7vw}
+.chapter-cta-row .chapter-cta{margin-left:0}
+.chapter-cta-row .line-link{margin-top:0;color:white}
+.chapter-cta-row .line-link:hover{color:var(--acid)}

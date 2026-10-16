@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1500" width="1000" height="1500"><style>
+    @font-face{font-family:"Archivo";font-weight:100 900;src:url(fonts/Archivo.woff2) format("woff2")}
+    @font-face{font-family:"Archivo Black";src:url(fonts/ArchivoBlack.woff2) format("woff2")}
+    .wood{font-family:"Archivo Black","Archivo",sans-serif;text-transform:uppercase}
+    .label{font-family:"Archivo",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.16em}
+  </style>
+  <defs>
+    <!-- Letterpress ink: sparse specks + soft vertical pressure, applied to printed layers. -->
+    <filter id="ink" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="2" seed="13" result="n1"/>
+      <feColorMatrix in="n1" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 7.1" result="g1"/>
+      <feComponentTransfer in="g1" result="grain"><feFuncA type="linear" slope=".75" intercept=".25"/></feComponentTransfer>
+      <feTurbulence type="fractalNoise" baseFrequency=".035 .004" numOctaves="3" seed="21" result="n2"/>
+      <feColorMatrix in="n2" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.2 0 0 0 1.5" result="w1"/>
+      <feComponentTransfer in="w1" result="wear"><feFuncA type="linear" slope=".2" intercept=".8"/></feComponentTransfer>
+      <feComposite in="grain" in2="wear" operator="arithmetic" k1="1" result="mask"/>
+      <feComposite in="SourceGraphic" in2="mask" operator="in"/>
+    </filter>
+    <!-- Paper tooth: faint mottling over the whole sheet. -->
+    <filter id="tooth" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="34"/>
+      <feColorMatrix values="0 0 0 0 .1  0 0 0 0 .1  0 0 0 0 .09  0 0 0 -1.4 .8"/>
+    </filter>
+    
+    <pattern id="dots-l-ink" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#1b1c1a"/></pattern>
+    <pattern id="dots-m-ink" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#1b1c1a"/></pattern>
+    <pattern id="lines-ink" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#1b1c1a"/></pattern>
+    <pattern id="dots-l-paper" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#f4f6f1"/></pattern>
+    <pattern id="dots-m-paper" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#f4f6f1"/></pattern>
+    <pattern id="lines-paper" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#f4f6f1"/></pattern>
+    <pattern id="dots-l-cream" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#dfe8df"/></pattern>
+    <pattern id="dots-m-cream" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#dfe8df"/></pattern>
+    <pattern id="lines-cream" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#dfe8df"/></pattern>
+    <pattern id="dots-l-warm" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#ece6d6"/></pattern>
+    <pattern id="dots-m-warm" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#ece6d6"/></pattern>
+    <pattern id="lines-warm" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#ece6d6"/></pattern>
+    <pattern id="dots-l-green" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#0d6844"/></pattern>
+    <pattern id="dots-m-green" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#0d6844"/></pattern>
+    <pattern id="lines-green" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#0d6844"/></pattern>
+    <pattern id="dots-l-emerald" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#16845a"/></pattern>
+    <pattern id="dots-m-emerald" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#16845a"/></pattern>
+    <pattern id="lines-emerald" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#16845a"/></pattern>
+    <pattern id="dots-l-forest" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#063f2c"/></pattern>
+    <pattern id="dots-m-forest" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#063f2c"/></pattern>
+    <pattern id="lines-forest" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#063f2c"/></pattern>
+    <pattern id="dots-l-acid" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#acd0b9"/></pattern>
+    <pattern id="dots-m-acid" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#acd0b9"/></pattern>
+    <pattern id="lines-acid" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#acd0b9"/></pattern>
+    <pattern id="dots-l-red" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#a84a42"/></pattern>
+    <pattern id="dots-m-red" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#a84a42"/></pattern>
+    <pattern id="lines-red" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#a84a42"/></pattern>
+    <pattern id="dots-l-shade" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#933f38"/></pattern>
+    <pattern id="dots-m-shade" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#933f38"/></pattern>
+    <pattern id="lines-shade" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#933f38"/></pattern>
+  </defs>
+  <rect width="1000" height="1500" fill="#f4f6f1"/>
+  <g filter="url(#ink)">
+    <path d="M-18 189.8Q398.8 183.2 815.6 192.4" stroke="#16845a" stroke-width="79" stroke-linecap="round" fill="none" opacity=".88"/><path d="M7.5 332.9Q506.8 295.8 1006.2 347.8" stroke="#a84a42" stroke-width="99.4" stroke-linecap="round" fill="none" opacity=".88"/><rect x="264.9" y="352.9" width="14" height="96.6" rx="7" fill="#a84a42" opacity=".85"/><path d="M64.8 465.1Q524.6 441.4 984.5 474.6" stroke="#acd0b9" stroke-width="106.2" stroke-linecap="round" fill="none" opacity=".88"/><path d="M38.5 625.2Q436.6 569.8 834.8 647.4" stroke="#063f2c" stroke-width="78.1" stroke-linecap="round" fill="none" opacity=".88"/><path d="M50.4 759Q472.1 764.2 893.8 756.9" stroke="#acd0b9" stroke-width="88.5" stroke-linecap="round" fill="none" opacity=".88"/><rect x="426.6" y="779" width="14" height="144.4" rx="7" fill="#acd0b9" opacity=".85"/><path d="M41.9 883.9Q440.1 895.9 838.3 879.1" stroke="#a84a42" stroke-width="65.6" stroke-linecap="round" fill="none" opacity=".88"/><path d="M-39.6 1033.4Q443.8 1025.6 927.3 1036.6" stroke="#16845a" stroke-width="102.2" stroke-linecap="round" fill="none" opacity=".88"/><path d="M32.9 1185.7Q503.9 1167.3 974.9 1193" stroke="#a84a42" stroke-width="85.2" stroke-linecap="round" fill="none" opacity=".88"/><rect x="422.4" y="1205.7" width="14" height="100.4" rx="7" fill="#a84a42" opacity=".85"/><path d="M-38.5 1317.3Q437.7 1371.7 913.8 1295.5" stroke="#acd0b9" stroke-width="68.9" stroke-linecap="round" fill="none" opacity=".88"/>
+    <!-- Window frame drawn over the paint -->
+    <g fill="none" stroke="#1b1c1a" stroke-width="22">
+      <rect x="120" y="140" width="760" height="1220"/>
+      <path d="M500 140V1360M120 547H880M120 954H880"/>
+    </g>
+    <rect x="80" y="1360" width="840" height="40" fill="#1b1c1a"/>
+    <path d="M310 300C317 343 317 343 360 350C317 357 317 357 310 400C303 357 303 357 260 350C303 343 303 343 310 300Z" fill="#f4f6f1"/><path d="M690 722C695.32 754.68 695.32 754.68 728 760C695.32 765.32 695.32 765.32 690 798C684.68 765.32 684.68 765.32 652 760C684.68 754.68 684.68 754.68 690 722Z" fill="#f4f6f1"/><path d="M300 1130C304.2 1155.8 304.2 1155.8 330 1160C304.2 1164.2 304.2 1164.2 300 1190C295.8 1164.2 295.8 1164.2 270 1160C295.8 1155.8 295.8 1155.8 300 1130Z" fill="#f4f6f1"/>
+  </g>
+  <rect width="1000" height="1500" filter="url(#tooth)" opacity="0.14"/></svg>

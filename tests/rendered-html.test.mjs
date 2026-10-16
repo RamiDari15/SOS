@@ -1,91 +1,158 @@
+// Server smoke tests for the Students Organize For Syria site.
+// They import the built Worker (dist/server/index.js) and call its fetch handler directly,
+// so run `npm run build` first (`npm test` does that for you).
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
-const developmentPreviewMeta =
-  /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
-const templateRoot = new URL("../", import.meta.url);
-const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
+// Form delivery must be unconfigured here so /api/forms answers 503 not_configured.
+for (const key of [
+  "FORMS_WEBHOOK_URL",
+  "FORMS_WEBHOOK_SECRET",
+  "RESEND_API_KEY",
+  "FORMS_TO_EMAIL",
+  "FORMS_FROM_EMAIL",
+  "SUPABASE_URL",
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "FORMS_IP_SALT",
+]) delete process.env[key];
 
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
-
-  return worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
+const ORIGIN = "http://localhost";
+let workerPromise;
+function loadWorker() {
+  workerPromise ??= (async () => {
+    const workerUrl = new URL("../dist/server/index.js", import.meta.url);
+    workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
+    return (await import(workerUrl.href)).default;
+  })();
+  return workerPromise;
 }
 
-test("server-renders the starter loading skeleton", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+const env = { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } };
+const ctx = { waitUntil() {}, passThroughOnException() {} };
 
-  const html = await response.text();
-  assert.match(html, developmentPreviewMeta);
-  assert.match(html, /<title>Your site is taking shape<\/title>/i);
-  assert.match(html, /Building your site/);
-  assert.match(html, /Your site is taking shape/);
-  assert.match(
-    html,
-    /Your first version will appear here automatically when it’s ready\./,
-  );
-  assert.doesNotMatch(html, /Codex/);
-  assert.match(html, /react-loading-skeleton/);
-  assert.match(html, /role="status"/);
+async function request(path, init = {}) {
+  const worker = await loadWorker();
+  return worker.fetch(new Request(ORIGIN + path, { ...init, headers: { accept: "text/html", ...(init.headers ?? {}) } }), env, ctx);
+}
+
+/** Visible text of the first <h1>, with tags removed and whitespace collapsed. */
+function h1Text(html) {
+  const match = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i);
+  if (!match) return "";
+  return match[1]
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#x27;|&#39;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const PAGES = [
+  ["/", /Students\s+shaping Syria’s\s+future/i],
+  ["/about", /Born from urgency/i],
+  ["/our-work", /Power is something/i],
+  ["/campaigns", /Attention is not enough/i],
+  ["/chapters", /Find your people/i],
+  ["/conferences", /Ideas gather/i],
+  ["/media", /The student voice/i],
+  ["/news", /Our voices/i],
+  ["/newsletter", /Field notes/i],
+  ["/get-involved", /There is a place/i],
+  ["/toolkits", /Built for/i],
+  ["/donate", /Fuel student/i],
+  ["/contact", /Let’s build/i],
+];
+
+for (const [path, heading] of PAGES) {
+  test(`GET ${path} renders 200 with its heading`, async () => {
+    const res = await request(path);
+    assert.equal(res.status, 200);
+    assert.match(res.headers.get("content-type") ?? "", /^text\/html\b/i);
+    const html = await res.text();
+    assert.match(h1Text(html), heading);
+    assert.match(html, /<title>[^<]+<\/title>/i, "page has a <title>");
+    assert.match(html, /Students Organize For Syria/, "official name appears");
+  });
+}
+
+test("/chapters lists 14 active and 11 past chapters, and each chapter page renders", async () => {
+  const html = await (await request("/chapters")).text();
+  const active = html.match(/class="chapter-card is-active"/g) ?? [];
+  const past = html.match(/class="chapter-card is-past"/g) ?? [];
+  assert.equal(active.length, 14, "active chapter cards");
+  assert.equal(past.length, 11, "past chapter cards");
+
+  const slugs = [...new Set([...html.matchAll(/href="\/chapters\/([a-z0-9-]+)"/g)].map((m) => m[1]))];
+  assert.equal(slugs.length, 25, "one detail link per chapter");
+  for (const slug of slugs) {
+    const res = await request(`/chapters/${slug}`);
+    assert.equal(res.status, 200, `/chapters/${slug}`);
+    assert.notEqual(h1Text(await res.text()), "", `/chapters/${slug} has an h1`);
+  }
 });
 
-test("keeps the loading skeleton scoped and disposable", async () => {
-  const [preview, css, page, layout, packageJson, files] = await Promise.all([
-    readFile(new URL("SkeletonPreview.tsx", previewRoot), "utf8"),
-    readFile(new URL("preview.css", previewRoot), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readdir(previewRoot),
-  ]);
+test("unknown chapter returns 404", async () => {
+  const res = await request("/chapters/not-a-real-chapter-xyz");
+  assert.equal(res.status, 404);
+});
 
-  assert.deepEqual(files.sort(), ["SkeletonPreview.tsx", "preview.css"]);
-  assert.match(preview, /from "react-loading-skeleton"/);
-  assert.match(preview, /baseColor="#eceae7"/);
-  assert.match(preview, /highlightColor="#f9f8f6"/);
-  assert.match(preview, /duration=\{2\.8\}/);
-  assert.match(preview, /sites-skeleton-search-placeholder/);
-  assert.match(packageJson, /"react-loading-skeleton": "3\.5\.0"/);
+test("?form=chapter and ?topic=toolkit render the right form on first paint", async () => {
+  const involved = await (await request("/get-involved?form=chapter")).text();
+  assert.match(involved, /Chapter starter/);
+  assert.match(involved, /name="phone"/);
+  const contact = await (await request("/contact?topic=toolkit")).text();
+  assert.match(contact, /<option[^>]*selected[^>]*>Chapter toolkit access<\/option>|<option value="Chapter toolkit access"[^>]*selected/);
+});
 
-  const shellIndex = preview.indexOf('className="sites-skeleton-shell"');
-  const statusIndex = preview.indexOf('className="sites-skeleton-status"');
-  assert.ok(shellIndex >= 0 && statusIndex > shellIndex);
-  assert.match(css, /position:\s*fixed/);
-  assert.match(css, /inset:\s*0/);
-  assert.match(css, /opacity:\s*0\.52/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.doesNotMatch(css, /#020617|canvas|pets|progress/i);
-  assert.doesNotMatch(
-    preview,
-    /loading-spinner|status-mark|status-progress|canvas|cookie|random/i,
-  );
+let ipCounter = 0;
+function postForm(body, headers = {}) {
+  return request("/api/forms", {
+    method: "POST",
+    headers: { "content-type": "application/json", accept: "application/json", "cf-connecting-ip": `203.0.113.${++ipCounter}`, ...headers },
+    body: typeof body === "string" ? body : JSON.stringify(body),
+  });
+}
 
-  assert.match(page, /export const metadata:\s*Metadata/);
-  assert.match(page, /"codex-preview": "development"/);
-  assert.match(page, /<SkeletonPreview \/>/);
-  assert.match(layout, /title:\s*"Starter Project"/);
-  assert.doesNotMatch(layout, /codex-preview|_sites-preview|themeColor|\bViewport\b/);
-  assert.doesNotMatch(css, /(^|\s)(html|body)\s*\{/m);
+const validContact = { type: "contact", fields: { name: "Test Person", email: "test@example.edu", topic: "General inquiry", message: "Smoke test" } };
 
-  await assert.rejects(
-    access(new URL("public/_sites-preview", templateRoot)),
-  );
+test("/api/forms rejects bad input with 400 and field errors", async () => {
+  let res = await postForm({ type: "contact", fields: { name: "", email: "nope", topic: "Other", message: "" } });
+  assert.equal(res.status, 400);
+  const body = await res.json();
+  assert.equal(body.error, "validation_failed");
+  assert.deepEqual(Object.keys(body.fieldErrors).sort(), ["email", "message", "name", "topic"]);
+
+  res = await postForm({ type: "unknown", fields: {} });
+  assert.equal(res.status, 400);
+  res = await postForm("{not json");
+  assert.equal(res.status, 400);
+  res = await postForm({ type: "newsletter", fields: { email: "a@b.co", firstName: "A", lastName: "B" } });
+  assert.equal(res.status, 400, "newsletter without consent");
+});
+
+test("/api/forms answers 503 not_configured for valid input when no delivery is set up", async () => {
+  for (const payload of [
+    validContact,
+    { type: "member", fields: { name: "A", email: "a@b.co", school: "U", major: "History", role: "Not sure yet" } },
+    { type: "chapter", fields: { name: "A", email: "a@b.co", school: "U", region: "OH", phone: "555 123 4567", why: "Because" } },
+    { type: "newsletter", fields: { email: "a@b.co", firstName: "A", lastName: "B", consent: "on" } },
+  ]) {
+    const res = await postForm(payload);
+    assert.equal(res.status, 503, payload.type);
+    assert.deepEqual(await res.json(), { error: "not_configured" });
+  }
+});
+
+test("/api/forms refuses cross-origin posts, oversize bodies and non-JSON", async () => {
+  assert.equal((await postForm(validContact, { origin: "https://evil.example" })).status, 403);
+  assert.equal((await postForm(validContact, { origin: ORIGIN })).status, 503, "same origin is allowed");
+  assert.equal((await postForm({ ...validContact, pad: "x".repeat(40_000) })).status, 413);
+  assert.equal((await postForm("name=x", { "content-type": "application/x-www-form-urlencoded" })).status, 415);
+});
+
+test("/api/forms rate-limits one IP after 5 accepted submissions", async () => {
+  const statuses = [];
+  for (let i = 0; i < 6; i++) statuses.push((await postForm(validContact, { "cf-connecting-ip": "198.51.100.77" })).status);
+  assert.deepEqual(statuses, [503, 503, 503, 503, 503, 429]);
 });

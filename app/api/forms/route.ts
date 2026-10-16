@@ -86,7 +86,8 @@ export async function POST(request: Request) {
   const result = validateSubmission(type, input);
   if (!result.ok) return json({ error: "validation_failed", fieldErrors: result.fieldErrors }, 400);
 
-  const wait = rateLimited(clientIp(request));
+  const ip = clientIp(request);
+  const wait = rateLimited(ip);
   if (wait) return json({ error: "rate_limited" }, 429, { "retry-after": String(wait) });
 
   const env = await readFormsEnv();
@@ -95,6 +96,7 @@ export async function POST(request: Request) {
     data: result.data,
     submittedAt: new Date().toISOString(),
     page: typeof page === "string" ? page.slice(0, 200).replace(/[^\w\-/?=&.#%]/g, "") : undefined,
+    ip: ip === "unknown" ? undefined : ip,
   });
 
   if (delivery.configured.length === 0) return json({ error: "not_configured" }, 503);

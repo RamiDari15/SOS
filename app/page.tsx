@@ -1,9 +1,12 @@
+import Link from "next/link";
 import { Arrow, Shell } from "./Interior";
 import { CampusIcon } from "./chapters/ChapterDirectory";
 import { activeChapters, chapterHref, displayName, pastChapters, type Chapter } from "./chapter-data";
 
 const heroCampuses = activeChapters.filter(c => c.logo).slice(0, 4);
 const railChapters = [...activeChapters, ...pastChapters];
+// Second rail starts mid-list so the two rows never line up card for card.
+const railRowTwo = [...railChapters.slice(Math.ceil(railChapters.length / 2)), ...railChapters.slice(0, Math.ceil(railChapters.length / 2))];
 
 const history = [
   ["Books Not Bombs", "With Karam Foundation, SOS helped fund scholarships and support education in Syria."],
@@ -37,11 +40,11 @@ export default function Home() {
         <div className="section-label"><span>01</span> The movement</div>
         <p className="manifesto-lead">SOS began with students responding to crisis. Today, we are students <strong>shaping what comes next.</strong></p>
         <div className="manifesto-grid">
-          <div className="manifesto-art"><img src="/brand/dragonfly.jpg" alt="Red and cobalt dragonfly print artwork" /></div>
+          <div className="manifesto-art"><img src="/art/olive-branch.jpg" alt="Print of a pale green olive branch across a deep green circle with the words Rooted in memory, growing forward" /></div>
           <div className="manifesto-copy">
             <h2>Building power,<br />not just programs.</h2>
-            <p>We organize young people across campuses and communities to advocate, act, and create a future for Syria shaped by Syrians.</p>
-            <p>Training, mentorship, partnerships, and professional pathways make our organizers stronger. They support the mission. <b>The movement is the mission.</b></p>
+            <p>Students Organize For Syria’s ultimate goal is to effectively mobilize for Syria from within the diaspora. We are committed to sustaining a strong, united student network that honors the Syrian revolution, champions advocacy, and empowers a new generation to take part in rebuilding and shaping Syria’s future.</p>
+            <p>Training, mentorship, and partnerships make our organizers stronger. <b>The movement is the mission.</b></p>
             <a className="line-link" href="#campaigns">What we’re building <Arrow /></a>
           </div>
         </div>
@@ -51,12 +54,12 @@ export default function Home() {
         <div className="campaign-intro" data-reveal>
           <div className="section-label light"><span>02</span> Our work</div>
           <h2>People power<br />has a purpose.</h2>
-          <p>Our campaigns give student organizers a clear way to turn attention into action—and action into lasting community power.</p>
+          <p>Our work gives student organizers a clear way to turn attention into action, and action into lasting community power.</p>
         </div>
         <div className="campaign-stack">
-          <article className="campaign-card green" data-reveal><span>Organize</span><h3>Campus<br />power</h3><p>Build chapters that make Syria visible, mobilize peers, and create local action.</p><a href="#chapters"><Arrow /></a></article>
-          <article className="campaign-card paper" data-reveal><span>Advocate</span><h3>Change the<br />narrative</h3><p>Center Syrian voices in public conversation and move people from awareness to solidarity.</p><a href="#history"><Arrow /></a></article>
-          <article className="campaign-card red" data-reveal><span>Sustain</span><h3>Back the<br />organizers</h3><p>Give young leaders the tools, relationships, and pathways to stay in the work.</p><a href="#join"><Arrow /></a></article>
+          <article className="campaign-card green" data-reveal><span>Organize</span><h3>Campus<br />power</h3><p>Build chapters that make Syria visible, mobilize peers, and create local action.</p><a href="#chapters" aria-label="Find a campus chapter"><Arrow /></a></article>
+          <article className="campaign-card paper" data-reveal><span>Advocate</span><h3>Change the<br />narrative</h3><p>Center Syrian voices in public conversation and move people from awareness to solidarity.</p><a href="#history" aria-label="See what students have done"><Arrow /></a></article>
+          <article className="campaign-card red" data-reveal><span>Sustain</span><h3>Back the<br />organizers</h3><p>Give young leaders the tools, relationships, and pathways to stay in the work.</p><a href="#join" aria-label="Get involved"><Arrow /></a></article>
         </div>
       </section>
 
@@ -66,7 +69,7 @@ export default function Home() {
           <h2>Our history is<br /><i>proof of power.</i></h2>
         </div>
         <div className="history-grid">
-          <div className="history-visual"><img src="/brand/art-speaks.jpg" alt="Activist poster reading Art Speaks" /></div>
+          <div className="history-visual"><img src="/art/voices-poster.jpg" alt="Red letterpress poster with a black megaphone sending out sound waves and the words Our voice carries further" /></div>
           <div className="history-list">
             {history.map(([title, text], i) => <article key={title} data-reveal><span>0{i + 1}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}
           </div>
@@ -78,20 +81,20 @@ export default function Home() {
         <div className="chapter-title" data-reveal>
           <div className="section-label light"><span>04</span> Across the country</div>
           <h2>Find your people.<br />Build from where you are.</h2>
-          <p>{activeChapters.length} active chapters and counting. Select a campus to find its chapter, or bring a past chapter back to life.</p>
+          <p>{activeChapters.length} active chapters and {pastChapters.length} past chapters ready to be revived. Select a campus to see its chapter.</p>
         </div>
         <div className="chapter-rails" role="region" aria-label="Students Organize For Syria college chapters">
           <ul className="chapter-track row-0">
             {railChapters.map(c => <li key={c.name}><RailCard chapter={c}/></li>)}
             {railChapters.map(c => <li key={`dup-${c.name}`} aria-hidden="true"><RailCard chapter={c} hidden/></li>)}
           </ul>
-          <div className="chapter-track row-1" aria-hidden="true">{[...railChapters, ...railChapters].map((c, i) => <RailCard key={`row1-${i}`} chapter={c} hidden/>)}</div>
+          <div className="chapter-track row-1" aria-hidden="true">{[...railRowTwo, ...railRowTwo].map((c, i) => <RailCard key={`row1-${i}`} chapter={c} hidden/>)}</div>
         </div>
-        <a className="pill pill-cream chapter-cta" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a>
+        <div className="chapter-cta-row"><a className="pill pill-cream chapter-cta" href="/get-involved?form=chapter#apply">Start a chapter <Arrow /></a><Link className="line-link" href="/chapters">See all chapters <Arrow /></Link></div>
       </section>
 
       <section className="join" id="join">
-        <div className="join-art"><img src="/brand/archive-frame.jpg" alt="Historic floral manuscript frame" /></div>
+        <div className="join-art"><img src="/art/archive-pattern.jpg" alt="Geometric green star pattern around a cream arched panel reading SOS Archive, Rooted in history" /></div>
         <div className="join-copy" data-reveal>
           <p className="overline">There is a place for you here</p>
           <h2>Don’t watch<br />the future.<br /><i>Shape it.</i></h2>

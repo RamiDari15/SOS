@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1500" width="1000" height="1500"><style>
+    @font-face{font-family:"Archivo";font-weight:100 900;src:url(fonts/Archivo.woff2) format("woff2")}
+    @font-face{font-family:"Archivo Black";src:url(fonts/ArchivoBlack.woff2) format("woff2")}
+    .wood{font-family:"Archivo Black","Archivo",sans-serif;text-transform:uppercase}
+    .label{font-family:"Archivo",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.16em}
+  </style>
+  <defs>
+    <!-- Letterpress ink: sparse specks + soft vertical pressure, applied to printed layers. -->
+    <filter id="ink" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="2" seed="7" result="n1"/>
+      <feColorMatrix in="n1" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 7.1" result="g1"/>
+      <feComponentTransfer in="g1" result="grain"><feFuncA type="linear" slope=".75" intercept=".25"/></feComponentTransfer>
+      <feTurbulence type="fractalNoise" baseFrequency=".035 .004" numOctaves="3" seed="15" result="n2"/>
+      <feColorMatrix in="n2" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.2 0 0 0 1.5" result="w1"/>
+      <feComponentTransfer in="w1" result="wear"><feFuncA type="linear" slope=".2" intercept=".8"/></feComponentTransfer>
+      <feComposite in="grain" in2="wear" operator="arithmetic" k1="1" result="mask"/>
+      <feComposite in="SourceGraphic" in2="mask" operator="in"/>
+    </filter>
+    <!-- Paper tooth: faint mottling over the whole sheet. -->
+    <filter id="tooth" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="28"/>
+      <feColorMatrix values="0 0 0 0 .1  0 0 0 0 .1  0 0 0 0 .09  0 0 0 -1.4 .8"/>
+    </filter>
+    
+    <pattern id="dots-l-ink" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#1b1c1a"/></pattern>
+    <pattern id="dots-m-ink" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#1b1c1a"/></pattern>
+    <pattern id="lines-ink" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#1b1c1a"/></pattern>
+    <pattern id="dots-l-paper" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#f4f6f1"/></pattern>
+    <pattern id="dots-m-paper" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#f4f6f1"/></pattern>
+    <pattern id="lines-paper" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#f4f6f1"/></pattern>
+    <pattern id="dots-l-cream" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#dfe8df"/></pattern>
+    <pattern id="dots-m-cream" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#dfe8df"/></pattern>
+    <pattern id="lines-cream" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#dfe8df"/></pattern>
+    <pattern id="dots-l-warm" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#ece6d6"/></pattern>
+    <pattern id="dots-m-warm" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#ece6d6"/></pattern>
+    <pattern id="lines-warm" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#ece6d6"/></pattern>
+    <pattern id="dots-l-green" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#0d6844"/></pattern>
+    <pattern id="dots-m-green" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#0d6844"/></pattern>
+    <pattern id="lines-green" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#0d6844"/></pattern>
+    <pattern id="dots-l-emerald" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#16845a"/></pattern>
+    <pattern id="dots-m-emerald" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#16845a"/></pattern>
+    <pattern id="lines-emerald" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#16845a"/></pattern>
+    <pattern id="dots-l-forest" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#063f2c"/></pattern>
+    <pattern id="dots-m-forest" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#063f2c"/></pattern>
+    <pattern id="lines-forest" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#063f2c"/></pattern>
+    <pattern id="dots-l-acid" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#acd0b9"/></pattern>
+    <pattern id="dots-m-acid" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#acd0b9"/></pattern>
+    <pattern id="lines-acid" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#acd0b9"/></pattern>
+    <pattern id="dots-l-red" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#a84a42"/></pattern>
+    <pattern id="dots-m-red" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#a84a42"/></pattern>
+    <pattern id="lines-red" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#a84a42"/></pattern>
+    <pattern id="dots-l-shade" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#933f38"/></pattern>
+    <pattern id="dots-m-shade" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#933f38"/></pattern>
+    <pattern id="lines-shade" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#933f38"/></pattern>
+  </defs>
+  <rect width="1000" height="1500" fill="#ece6d6"/>
+  <g filter="url(#ink)">
+    <circle cx="500" cy="720" r="420" fill="#063f2c"/>
+    <circle cx="500" cy="720" r="420" fill="url(#lines-green)" opacity=".5"/>
+    <circle cx="500" cy="720" r="455" fill="none" stroke="#063f2c" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/>
+    <path d="M170 1020 186.5 996 203 972.1 219.5 948.3 236 924.7 252.5 901.4 269 878.4 285.5 855.9 302 833.7 318.5 812.1 335 791 351.5 770.5 368 750.7 384.5 731.6 401 713.3 417.5 695.7 434 678.9 450.5 662.9 467 647.7 483.5 633.4 500 620 516.5 607.4 533 595.7 549.5 584.9 566 574.9 582.5 565.7 599 557.3 615.5 549.6 632 542.7 648.5 536.5 665 531 681.5 526.1 698 521.7 714.5 517.9 731 514.4 747.5 511.4 764 508.7 780.5 506.3 797 504.1 813.5 502 830 500 " fill="none" stroke="#f4f6f1" stroke-width="9" stroke-linecap="round"/>
+    <g transform="translate(214 956.2) rotate(-108.3)"><path d="M0 0Q61.1 -24.4 122.1 0Q61.1 24.4 0 0Z" fill="#acd0b9"/><path d="M6 0H100.2" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(258 893.7) rotate(-4.7)"><path d="M0 0Q57.7 -23.1 115.4 0Q57.7 23.1 0 0Z" fill="#acd0b9"/><path d="M6 0H94.6" stroke="#063f2c" stroke-width="3"/></g><ellipse cx="228" cy="927.7" rx="15" ry="20" fill="#a84a42"/><g transform="translate(302 833.7) rotate(-109.2)"><path d="M0 0Q59.8 -23.9 119.6 0Q59.8 23.9 0 0Z" fill="#f4f6f1"/><path d="M6 0H98.1" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(346 777.3) rotate(6.1)"><path d="M0 0Q59.8 -23.9 119.7 0Q59.8 23.9 0 0Z" fill="#acd0b9"/><path d="M6 0H98.1" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(390 725.4) rotate(-99.8)"><path d="M0 0Q59.5 -23.8 118.9 0Q59.5 23.8 0 0Z" fill="#acd0b9"/><path d="M6 0H97.5" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(434 678.9) rotate(16.8)"><path d="M0 0Q54.4 -21.8 108.8 0Q54.4 21.8 0 0Z" fill="#f4f6f1"/><path d="M6 0H89.2" stroke="#063f2c" stroke-width="3"/></g><ellipse cx="404" cy="712.9" rx="15" ry="20" fill="#a84a42"/><g transform="translate(478 638.1) rotate(-92.6)"><path d="M0 0Q54 -21.6 108.1 0Q54 21.6 0 0Z" fill="#acd0b9"/><path d="M6 0H88.6" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(522 603.4) rotate(14.2)"><path d="M0 0Q56.8 -22.7 113.6 0Q56.8 22.7 0 0Z" fill="#acd0b9"/><path d="M6 0H93.2" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(566 574.9) rotate(-84.7)"><path d="M0 0Q53.5 -21.4 106.9 0Q53.5 21.4 0 0Z" fill="#f4f6f1"/><path d="M6 0H87.7" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(610 552.1) rotate(28)"><path d="M0 0Q56.3 -22.5 112.7 0Q56.3 22.5 0 0Z" fill="#acd0b9"/><path d="M6 0H92.4" stroke="#063f2c" stroke-width="3"/></g><ellipse cx="580" cy="586.1" rx="15" ry="20" fill="#a84a42"/><g transform="translate(654 534.6) rotate(-70.6)"><path d="M0 0Q53.5 -21.4 107 0Q53.5 21.4 0 0Z" fill="#acd0b9"/><path d="M6 0H87.8" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(698 521.7) rotate(35.9)"><path d="M0 0Q48.4 -19.4 96.9 0Q48.4 19.4 0 0Z" fill="#f4f6f1"/><path d="M6 0H79.4" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(742 512.4) rotate(-65.9)"><path d="M0 0Q46.9 -18.8 93.8 0Q46.9 18.8 0 0Z" fill="#acd0b9"/><path d="M6 0H76.9" stroke="#063f2c" stroke-width="3"/></g><g transform="translate(786 505.6) rotate(51.8)"><path d="M0 0Q43.1 -17.2 86.2 0Q43.1 17.2 0 0Z" fill="#acd0b9"/><path d="M6 0H70.7" stroke="#063f2c" stroke-width="3"/></g><ellipse cx="756" cy="539.6" rx="15" ry="20" fill="#a84a42"/>
+    <path d="M250 386C254.76 415.24 254.76 415.24 284 420C254.76 424.76 254.76 424.76 250 454C245.24 424.76 245.24 424.76 216 420C245.24 415.24 245.24 415.24 250 386Z" fill="#acd0b9"/><path d="M760 954C763.64 976.36 763.64 976.36 786 980C763.64 983.64 763.64 983.64 760 1006C756.36 983.64 756.36 983.64 734 980C756.36 976.36 756.36 976.36 760 954Z" fill="#acd0b9"/><path d="M820 256C826.16 293.84 826.16 293.84 864 300C826.16 306.16 826.16 306.16 820 344C813.84 306.16 813.84 306.16 776 300C813.84 293.84 813.84 293.84 820 256Z" fill="#a84a42"/>
+    <text class="label" x="500" y="1290" text-anchor="middle" font-size="30" fill="#063f2c">Rooted in memory</text>
+    <text class="wood" x="500" y="1395" text-anchor="middle" font-size="96" textLength="640" lengthAdjust="spacingAndGlyphs" fill="#a84a42">GROWING FORWARD</text>
+  </g>
+  <rect width="1000" height="1500" filter="url(#tooth)" opacity="0.14"/></svg>
