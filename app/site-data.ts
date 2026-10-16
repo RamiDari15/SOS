@@ -17,12 +17,12 @@ export const statements: readonly Statement[] = [
   // Date not given in the board notes; the year is read from the original Instagram post.
   { date: "2023", title: "In Solidarity with Gaza", summary: "Our statement in solidarity with Gaza.", url: "https://www.instagram.com/p/CyeO14JpQ7_/", source: "Instagram" },
   { date: "Feb 6, 2023", title: "Statement Regarding the Earthquake", summary: "Our statement regarding the earthquake.", url: "https://www.instagram.com/p/CocrQGMJWhP/", source: "Instagram" },
-  { date: "May 31, 2020", title: "Statement on BLM protests", summary: "A solidarity statement responding to protests against police brutality in the United States.", url: "https://organize4syria.com/statement-on-blm-protests/", source: "organize4syria.com" },
-  { date: "Mar 18, 2020", title: "Statement on Idlib", summary: "A statement addressing displacement, humanitarian conditions, and violence affecting civilians in Idlib.", url: "https://organize4syria.com/statement-on-idlib/", source: "organize4syria.com" },
-  { date: "Mar 15, 2020", title: "Remembrance Day", summary: "A reflection marking nine years since the first protests in Daraa and the beginning of the Syrian revolution.", url: "https://organize4syria.com/remembrance-day/", source: "organize4syria.com" },
+  { date: "May 31, 2020", title: "Statement on BLM protests", summary: "A solidarity statement responding to protests against police brutality in the United States.", url: "https://web.archive.org/web/2021/https://organize4syria.com/statement-on-blm-protests/", source: "organize4syria.com" },
+  { date: "Mar 18, 2020", title: "Statement on Idlib", summary: "A statement addressing displacement, humanitarian conditions, and violence affecting civilians in Idlib.", url: "https://web.archive.org/web/2021/https://organize4syria.com/statement-on-idlib/", source: "organize4syria.com" },
+  { date: "Mar 15, 2020", title: "Remembrance Day", summary: "A reflection marking nine years since the first protests in Daraa and the beginning of the Syrian revolution.", url: "https://web.archive.org/web/2021/https://organize4syria.com/remembrance-day/", source: "organize4syria.com" },
 ];
 
-export function statementLinkLabel(s: Statement) { return s.source === "Instagram" ? "Read on Instagram ↗" : "Read statement ↗"; }
+export function statementLinkLabel(s: Statement) { return s.source === "Instagram" ? "Read on Instagram ↗" : "Read archived statement ↗"; }
 
 /**
  * "Where your money goes" photo slots on /donate.

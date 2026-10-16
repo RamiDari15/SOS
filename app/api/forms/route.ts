@@ -15,9 +15,11 @@ const RATE_WINDOW_MS = 60_000;
 const hits = new Map<string, number[]>();
 
 function clientIp(request: Request): string {
+  // Trust only the header the hosting platform sets itself: Vercel overwrites x-real-ip,
+  // Cloudflare sets cf-connecting-ip. The other platform's header is client-controlled.
+  const platformHeader = process.env.VERCEL ? "x-real-ip" : "cf-connecting-ip";
   return (
-    request.headers.get("cf-connecting-ip") ||
-    request.headers.get("x-real-ip") ||
+    request.headers.get(platformHeader) ||
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     "unknown"
   );

@@ -245,7 +245,7 @@ export const nationalEmail = "sos@organize4syria.com";
 
 export const displayName = (c: Chapter) => c.shortName ?? c.name;
 
-const byDisplayName = (a: Chapter, b: Chapter) => displayName(a).localeCompare(displayName(b));
+const byDisplayName = (a: Chapter, b: Chapter) => displayName(a).localeCompare(displayName(b), "en");
 
 export const activeChapters = chapters.filter(c => c.status === "active").sort(byDisplayName);
 export const pastChapters = chapters.filter(c => c.status === "inactive").sort(byDisplayName);

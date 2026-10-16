@@ -19,11 +19,12 @@ const renamedChapterSlugs: Record<string, string> = {
   "south-florida": "university-of-south-florida",
   "wayne-state": "wayne-state-university",
   "yale": "yale-university",
+  "indiana-university-indianapolis": "indiana-university",
 };
 
 const removedChapterSlugs = [
   "brown", "butler", "colorado-boulder", "columbia", "university-of-florida", "illinois-state",
-  "indiana-university-indianapolis", "north-carolina", "upenn", "toledo", "washington",
+  "north-carolina", "upenn", "toledo", "washington",
   "wellesley", "wesleyan", "west-virginia",
 ];
 
