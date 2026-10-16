@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630"><style>
+    @font-face{font-family:"Archivo";font-weight:100 900;src:url(fonts/Archivo.woff2) format("woff2")}
+    @font-face{font-family:"Archivo Black";src:url(fonts/ArchivoBlack.woff2) format("woff2")}
+    .wood{font-family:"Archivo Black","Archivo",sans-serif;text-transform:uppercase}
+    .label{font-family:"Archivo",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.16em}
+  </style>
+  <defs>
+    <!-- Letterpress ink: sparse specks + soft vertical pressure, applied to printed layers. -->
+    <filter id="ink" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="2" seed="17" result="n1"/>
+      <feColorMatrix in="n1" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 7.1" result="g1"/>
+      <feComponentTransfer in="g1" result="grain"><feFuncA type="linear" slope=".75" intercept=".25"/></feComponentTransfer>
+      <feTurbulence type="fractalNoise" baseFrequency=".035 .004" numOctaves="3" seed="25" result="n2"/>
+      <feColorMatrix in="n2" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.2 0 0 0 1.5" result="w1"/>
+      <feComponentTransfer in="w1" result="wear"><feFuncA type="linear" slope=".2" intercept=".8"/></feComponentTransfer>
+      <feComposite in="grain" in2="wear" operator="arithmetic" k1="1" result="mask"/>
+      <feComposite in="SourceGraphic" in2="mask" operator="in"/>
+    </filter>
+    <!-- Paper tooth: faint mottling over the whole sheet. -->
+    <filter id="tooth" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="38"/>
+      <feColorMatrix values="0 0 0 0 .1  0 0 0 0 .1  0 0 0 0 .09  0 0 0 -1.4 .8"/>
+    </filter>
+    
+    <pattern id="dots-l-ink" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#1b1c1a"/></pattern>
+    <pattern id="dots-m-ink" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#1b1c1a"/></pattern>
+    <pattern id="lines-ink" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#1b1c1a"/></pattern>
+    <pattern id="dots-l-paper" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#f4f6f1"/></pattern>
+    <pattern id="dots-m-paper" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#f4f6f1"/></pattern>
+    <pattern id="lines-paper" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#f4f6f1"/></pattern>
+    <pattern id="dots-l-cream" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#dfe8df"/></pattern>
+    <pattern id="dots-m-cream" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#dfe8df"/></pattern>
+    <pattern id="lines-cream" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#dfe8df"/></pattern>
+    <pattern id="dots-l-warm" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#ece6d6"/></pattern>
+    <pattern id="dots-m-warm" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#ece6d6"/></pattern>
+    <pattern id="lines-warm" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#ece6d6"/></pattern>
+    <pattern id="dots-l-green" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#0d6844"/></pattern>
+    <pattern id="dots-m-green" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#0d6844"/></pattern>
+    <pattern id="lines-green" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#0d6844"/></pattern>
+    <pattern id="dots-l-emerald" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#16845a"/></pattern>
+    <pattern id="dots-m-emerald" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#16845a"/></pattern>
+    <pattern id="lines-emerald" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#16845a"/></pattern>
+    <pattern id="dots-l-forest" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#063f2c"/></pattern>
+    <pattern id="dots-m-forest" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#063f2c"/></pattern>
+    <pattern id="lines-forest" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#063f2c"/></pattern>
+    <pattern id="dots-l-acid" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#acd0b9"/></pattern>
+    <pattern id="dots-m-acid" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#acd0b9"/></pattern>
+    <pattern id="lines-acid" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#acd0b9"/></pattern>
+    <pattern id="dots-l-red" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#a84a42"/></pattern>
+    <pattern id="dots-m-red" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#a84a42"/></pattern>
+    <pattern id="lines-red" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#a84a42"/></pattern>
+    <pattern id="dots-l-shade" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="#933f38"/></pattern>
+    <pattern id="dots-m-shade" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="#933f38"/></pattern>
+    <pattern id="lines-shade" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="#933f38"/></pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#f4f6f1"/>
+  <g><!-- flat print (no grain) keeps the PNG small and crisp in link previews -->
+    <circle cx="1010" cy="170" r="250" fill="#acd0b9"/>
+    <circle cx="1010" cy="170" r="250" fill="url(#dots-l-emerald)" opacity=".3"/>
+    <text class="wood" x="60" y="370" font-size="330" textLength="640" lengthAdjust="spacingAndGlyphs" fill="#1b1c1a">SOS</text>
+    <text class="wood" x="745" y="270" font-size="58" fill="#063f2c">STUDENTS</text>
+    <text class="wood" x="745" y="335" font-size="58" fill="#063f2c">ORGANIZE</text>
+    <text class="wood" x="745" y="400" font-size="58" fill="#0d6844">FOR SYRIA</text>
+    <path d="M700 80C705.6 114.4 705.6 114.4 740 120C705.6 125.6 705.6 125.6 700 160C694.4 125.6 694.4 125.6 660 120C694.4 114.4 694.4 114.4 700 80Z" fill="#a84a42"/>
+    <g fill="url(#dots-m-emerald)"><circle cx="-43.7" cy="509.6" r="17.7"/><path d="M-75.2 600.2V554.2Q-75.2 533.2 -54.2 533.2H-33.2Q-12.1 533.2 -12.1 554.2V600.2Z"/><circle cx="25.9" cy="507" r="17.7"/><path d="M-5.6 597.5V551.6Q-5.6 530.6 15.4 530.6H36.4Q57.4 530.6 57.4 551.6V597.5Z"/><circle cx="85.9" cy="513.5" r="15.5"/><path d="M58.4 592.6V552.5Q58.4 534.1 76.7 534.1H95.1Q113.5 534.1 113.5 552.5V592.6Z"/><circle cx="149.6" cy="503.9" r="17.5"/><path d="M118.4 593.5V548Q118.4 527.3 139.2 527.3H159.9Q180.7 527.3 180.7 548V593.5Z"/><circle cx="208.6" cy="514" r="17.3"/><path d="M177.9 602.2V557.5Q177.9 537 198.4 537H218.8Q239.3 537 239.3 557.5V602.2Z"/><circle cx="275.8" cy="507.4" r="16.4"/><path d="M246.7 591V548.6Q246.7 529.2 266.1 529.2H285.5Q304.9 529.2 304.9 548.6V591Z"/><circle cx="328.9" cy="507.8" r="17"/><path d="M298.7 594.7V550.6Q298.7 530.4 318.8 530.4H339Q359.1 530.4 359.1 550.6V594.7Z"/><circle cx="390.2" cy="510.5" r="16.6"/><path d="M360.6 595.6V552.4Q360.6 532.7 380.4 532.7H400.1Q419.8 532.7 419.8 552.4V595.6Z"/><circle cx="454.1" cy="510.9" r="17.5"/><path d="M423 600.3V555Q423 534.2 443.7 534.2H464.5Q485.2 534.2 485.2 555V600.3Z"/><circle cx="523.8" cy="514" r="18"/><path d="M491.7 606.2V559.4Q491.7 538.1 513.1 538.1H534.5Q555.9 538.1 555.9 559.4V606.2Z"/><circle cx="574.5" cy="513.3" r="16.1"/><path d="M545.9 595.6V553.8Q545.9 534.8 564.9 534.8H584Q603.1 534.8 603.1 553.8V595.6Z"/><circle cx="637.7" cy="507.4" r="16.5"/><path d="M608.5 591.5V548.8Q608.5 529.3 628 529.3H647.5Q667 529.3 667 548.8V591.5Z"/><circle cx="699.5" cy="512.5" r="17.2"/><path d="M668.9 600.4V555.8Q668.9 535.5 689.3 535.5H709.7Q730.1 535.5 730.1 555.8V600.4Z"/><circle cx="759.1" cy="508.4" r="17.4"/><path d="M728.1 597.5V552.3Q728.1 531.7 748.7 531.7H769.4Q790 531.7 790 552.3V597.5Z"/><circle cx="824.8" cy="508.4" r="17.8"/><path d="M793.2 599.3V553.2Q793.2 532.1 814.3 532.1H835.4Q856.5 532.1 856.5 553.2V599.3Z"/><circle cx="885.3" cy="507" r="17.2"/><path d="M854.8 594.7V550.2Q854.8 529.9 875.1 529.9H895.4Q915.8 529.9 915.8 550.2V594.7Z"/><circle cx="947.6" cy="511.3" r="17.3"/><path d="M916.8 599.8V554.9Q916.8 534.3 937.4 534.3H957.9Q978.4 534.3 978.4 554.9V599.8Z"/><circle cx="1017.3" cy="502.2" r="17.5"/><path d="M986.2 591.8V546.3Q986.2 525.6 1007 525.6H1027.7Q1048.5 525.6 1048.5 546.3V591.8Z"/><circle cx="1074.8" cy="518.6" r="16.2"/><path d="M1046 601.7V559.6Q1046 540.3 1065.2 540.3H1084.5Q1103.7 540.3 1103.7 559.6V601.7Z"/><circle cx="1133.5" cy="519.6" r="16.5"/><path d="M1104.1 604V561.2Q1104.1 541.6 1123.7 541.6H1143.3Q1162.8 541.6 1162.8 561.2V604Z"/><circle cx="1194.5" cy="514.8" r="15.8"/><path d="M1166.4 595.5V554.6Q1166.4 535.8 1185.1 535.8H1203.8Q1222.5 535.8 1222.5 554.6V595.5Z"/></g>
+    <g fill="#063f2c"><circle cx="-13.7" cy="571.7" r="20.9"/><path d="M-50.8 678.5V624.3Q-50.8 599.6 -26 599.6H-1.3Q23.5 599.6 23.5 624.3V678.5Z"/><circle cx="79.7" cy="580" r="22"/><path d="M40.7 692.2V635.3Q40.7 609.3 66.7 609.3H92.7Q118.7 609.3 118.7 635.3V692.2Z"/><circle cx="160.5" cy="584.3" r="21.9"/><path d="M121.6 696.1V639.4Q121.6 613.5 147.5 613.5H173.4Q199.4 613.5 199.4 639.4V696.1Z"/><circle cx="233.2" cy="579.3" r="20.6"/><path d="M196.5 684.6V631.2Q196.5 606.8 221 606.8H245.4Q269.8 606.8 269.8 631.2V684.6Z"/><circle cx="321.8" cy="574.3" r="22.8"/><path d="M281.4 690.6V631.6Q281.4 604.6 308.3 604.6H335.3Q362.3 604.6 362.3 631.6V690.6Z"/><circle cx="402.4" cy="585.2" r="21.4"/><path d="M364.4 694.4V639Q364.4 613.7 389.7 613.7H415.1Q440.4 613.7 440.4 639V694.4Z"/><circle cx="493" cy="585.9" r="20.1"/><path d="M457.4 688.4V636.4Q457.4 612.6 481.1 612.6H504.9Q528.7 612.6 528.7 636.4V688.4Z"/><circle cx="566" cy="578.6" r="22.7"/><path d="M525.6 694.7V635.8Q525.6 608.9 552.6 608.9H579.5Q606.4 608.9 606.4 635.8V694.7Z"/><circle cx="661.9" cy="579.6" r="22.6"/><path d="M621.8 694.9V636.4Q621.8 609.7 648.6 609.7H675.3Q702 609.7 702 636.4V694.9Z"/><circle cx="742.3" cy="588.8" r="20.1"/><path d="M706.5 691.6V639.5Q706.5 615.6 730.4 615.6H754.2Q778.1 615.6 778.1 639.5V691.6Z"/><circle cx="815.6" cy="578" r="20.1"/><path d="M779.8 681V628.8Q779.8 604.9 803.7 604.9H827.5Q851.4 604.9 851.4 628.8V681Z"/><circle cx="901.4" cy="577.2" r="19.9"/><path d="M866 678.9V627.4Q866 603.8 889.6 603.8H913.2Q936.8 603.8 936.8 627.4V678.9Z"/><circle cx="987.9" cy="584.9" r="20.4"/><path d="M951.5 689.4V636.4Q951.5 612.2 975.8 612.2H1000Q1024.2 612.2 1024.2 636.4V689.4Z"/><circle cx="1074.9" cy="573.9" r="20.6"/><path d="M1038.3 679.1V625.7Q1038.3 601.4 1062.7 601.4H1087.1Q1111.5 601.4 1111.5 625.7V679.1Z"/><circle cx="1148.8" cy="569.8" r="23"/><path d="M1107.9 687.5V627.8Q1107.9 600.5 1135.2 600.5H1162.5Q1189.8 600.5 1189.8 627.8V687.5Z"/><circle cx="1233.2" cy="575.3" r="21.1"/><path d="M1195.6 683.3V628.5Q1195.6 603.5 1220.7 603.5H1245.7Q1270.8 603.5 1270.8 628.5V683.3Z"/></g>
+    <rect y="575" width="1200" height="55" fill="#063f2c"/>
+    <text class="label" x="60" y="611" font-size="22" fill="#acd0b9">Shaping what comes next</text>
+    <text class="label" x="1140" y="611" text-anchor="end" font-size="22" fill="#f4f6f1">organize4syria.com</text>
+  </g></svg>

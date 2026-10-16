@@ -1,0 +1,120 @@
+/* content styles (layered after globals.css) */
+
+/* ---------- Statements (media + news) ---------- */
+.release-archive{scroll-margin-top:90px}
+.release-archive .statement-link{font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.1em;color:var(--red);white-space:nowrap;border-bottom:1px solid currentColor;padding-bottom:3px;transition:color .2s,border-color .2s}
+.release-archive .statement-link:hover,.release-archive .statement-link:focus-visible{color:var(--green)}
+.release-archive article:has(.statement-link:hover){background:linear-gradient(90deg,transparent,rgba(13,104,68,.06))}
+@media(max-width:900px){.release-archive .statement-link{grid-column:3;justify-self:start}}
+
+/* Media: two remaining path cards */
+.media-paths.media-paths-two{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.media-paths.media-paths-two{grid-template-columns:1fr}}
+
+/* News: CTA row */
+.news-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.pill-outline{background:transparent;border:1px solid currentColor;color:inherit}
+.news-empty .pill-outline{background:transparent;border:1px solid var(--ink)}
+.news-empty>div:last-child>p{font-size:19px;line-height:1.55;max-width:620px}
+
+/* ---------- About: evolution intro (replaces the wide editorial split) ---------- */
+.evolution-intro{padding:110px 7vw 95px;border-bottom:1px solid var(--line)}
+.evolution-intro h2{font-size:clamp(52px,7vw,110px);line-height:.88;text-transform:uppercase;margin:34px 0 55px;max-width:1200px}
+.evolution-intro h2 i{font-style:normal;color:var(--green)}
+.evolution-copy{display:grid;grid-template-columns:1.25fr 1fr;gap:6vw;align-items:start;border-top:1px solid var(--line);padding-top:35px}
+.evolution-copy p{margin:0;font-size:17px;line-height:1.6}
+.evolution-copy .big-copy{font-size:clamp(21px,2vw,27px);line-height:1.3;font-weight:650}
+@media(max-width:900px){.evolution-copy{grid-template-columns:1fr;gap:25px}}
+@media(max-width:560px){.evolution-intro{padding:80px 6vw 70px}}
+
+/* ---------- About: story timeline ---------- */
+.story-timeline{padding:110px 7vw 0;background:var(--cream)}
+.story-timeline ol{list-style:none;margin:55px 0 0;padding:0;position:relative}
+.story-timeline ol:before{content:"";position:absolute;left:calc(200px + 2vw);top:12px;bottom:12px;width:1px;background:var(--line)}
+.story-timeline li{display:grid;grid-template-columns:200px 1fr;gap:4vw;padding:38px 0;border-bottom:1px solid var(--line);position:relative}
+.story-timeline li:before{content:"";position:absolute;left:calc(200px + 2vw - 6px);top:50px;width:13px;height:13px;border-radius:50%;background:var(--paper);border:2px solid var(--green);transition:background .25s}
+.story-timeline li:hover:before{background:var(--green)}
+.story-year{font-size:clamp(32px,3.4vw,54px);overflow-wrap:anywhere;hyphens:none;font-weight:850;line-height:.9;letter-spacing:-.06em;color:var(--green);text-transform:uppercase}
+.story-body{max-width:760px}
+.story-body>span{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}
+.story-body h3{font-size:clamp(28px,3.2vw,46px);line-height:.95;letter-spacing:-.045em;text-transform:uppercase;margin:14px 0 14px}
+.story-body p{line-height:1.6;margin:0}
+.story-body a{display:inline-block;margin-top:16px;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid currentColor;padding-bottom:3px}
+.story-body a:hover,.story-body a:focus-visible{color:var(--green)}
+.story-timeline li.story-today{border-bottom:0;margin-top:20px;padding:56px 0 80px;background:var(--forest);color:white;box-shadow:0 0 0 100vmax var(--forest);clip-path:inset(0 -100vmax)}
+.story-timeline li.story-today:before{background:var(--acid);border-color:var(--acid)}
+.story-today .story-year{color:var(--acid)}
+.story-today .story-body{max-width:900px}
+.story-today .story-body>span{color:var(--acid)}
+.story-today .story-body p{font-size:clamp(18px,1.7vw,24px);line-height:1.45}
+@media(max-width:900px){
+  .story-timeline ol:before{left:6px}
+  .story-timeline li{grid-template-columns:1fr;gap:12px;padding-left:34px}
+  .story-timeline li:before{left:0;top:44px}
+  .story-timeline li.story-today{padding-left:34px}
+  .story-timeline li.story-today:before{top:62px}
+}
+@media(max-width:560px){.story-timeline{padding:80px 6vw 0}.story-timeline li.story-today{padding-bottom:60px}}
+
+/* About: legacy org chart — odd count, let the last role span the row */
+.structure-map>i:last-child{grid-column:1/-1}
+
+/* ---------- Our work: pillars without percentages ---------- */
+.legacy-model .pillars article b{display:block;font-size:clamp(40px,5vw,76px);line-height:.95;text-transform:uppercase}
+.legacy-model .pillars article span{margin-top:14px}
+
+/* ---------- Donate: where your money goes ---------- */
+.giving-uses{padding:110px 7vw;background:var(--paper)}
+.giving-head h2{font-size:clamp(52px,7vw,100px);line-height:.88;text-transform:uppercase;margin:34px 0 0}
+.giving-head h2 i{font-style:normal;color:var(--green)}
+.giving-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:60px}
+.giving-grid figure{margin:0;display:flex;flex-direction:column}
+.giving-grid img,.giving-placeholder{width:100%;aspect-ratio:16/10;object-fit:cover}
+.giving-grid img{filter:saturate(.8) contrast(1.05)}
+.giving-placeholder{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:22px;color:var(--forest);border:1px solid var(--line);
+  background:
+    radial-gradient(circle at 78% 22%,rgba(255,255,255,.55) 0 18%,transparent 19%),
+    repeating-linear-gradient(135deg,rgba(6,63,44,.07) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(45deg,rgba(6,63,44,.05) 0 1px,transparent 1px 13px),
+    linear-gradient(160deg,var(--cream),var(--acid))}
+.giving-grid figure:nth-child(2) .giving-placeholder{background:
+    radial-gradient(circle at 22% 70%,rgba(255,255,255,.45) 0 22%,transparent 23%),
+    repeating-linear-gradient(135deg,rgba(6,63,44,.07) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(45deg,rgba(6,63,44,.05) 0 1px,transparent 1px 13px),
+    linear-gradient(200deg,var(--acid),var(--cream))}
+.giving-grid figure:nth-child(3) .giving-placeholder{background:
+    radial-gradient(circle at 60% 85%,rgba(255,255,255,.4) 0 25%,transparent 26%),
+    repeating-linear-gradient(135deg,rgba(6,63,44,.07) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(45deg,rgba(6,63,44,.05) 0 1px,transparent 1px 13px),
+    linear-gradient(120deg,var(--cream),var(--paper) 55%,var(--acid))}
+.giving-placeholder:after{content:"";position:absolute;inset:12px;border:1px dashed rgba(6,63,44,.35);pointer-events:none}
+.giving-placeholder span{font-size:10px;font-weight:850;letter-spacing:.14em}
+.giving-placeholder small{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.7}
+.giving-grid figcaption{padding:22px 0 0;border-top:1px solid var(--line);margin-top:18px}
+.giving-grid figcaption span{font-size:9px;color:var(--green);font-weight:800}
+.giving-grid figcaption h3{font-size:28px;line-height:.95;text-transform:uppercase;letter-spacing:-.03em;margin:10px 0 10px}
+.giving-grid figcaption p{font-size:14px;line-height:1.5;margin:0;max-width:380px}
+@media(max-width:900px){.giving-grid{grid-template-columns:1fr 1fr}.giving-grid figure:last-child{grid-column:1/-1}.giving-grid figure:last-child img,.giving-grid figure:last-child .giving-placeholder{aspect-ratio:21/9}}
+@media(max-width:560px){.giving-uses{padding:80px 6vw}.giving-grid{grid-template-columns:1fr;gap:28px;margin-top:40px}.giving-grid img,.giving-placeholder,.giving-grid figure:last-child img,.giving-grid figure:last-child .giving-placeholder{aspect-ratio:2/1}.giving-placeholder{padding:16px}.giving-placeholder:after{inset:8px}.giving-grid figcaption{padding-top:14px;margin-top:12px}.giving-grid figcaption h3{font-size:24px}}
+
+/* Donate: keep the EIN on one line */
+.nowrap{white-space:nowrap}
+
+/* ---------- Donate: email giving panel ---------- */
+.amount-grid{margin-bottom:24px}
+.amount-other{display:block;margin:0 0 24px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--acid)}
+.amount-other span{display:flex;align-items:center;gap:8px;margin-top:10px;border-bottom:1px solid #62635f;transition:border-color .2s}
+.amount-other span:focus-within{border-color:var(--acid)}
+.amount-other b{font-size:24px;color:white}
+.amount-other input{flex:1;min-width:0;background:transparent;border:0;outline:none;color:white;font:inherit;font-size:24px;font-weight:800;padding:12px 0;letter-spacing:0;text-transform:none}
+.amount-other input::placeholder{color:#777}
+.donation-panel .give-email{display:flex;width:100%;max-width:440px;justify-content:space-between;margin-top:6px}
+.donation-panel .give-email:hover,.donation-panel .give-email:focus-visible{background:var(--acid);color:var(--ink)}
+.donation-panel .give-alt{margin:14px 0 0;font-size:12px;line-height:1.5;color:#b7beb8}
+.donation-panel .give-alt a{color:white;border-bottom:1px solid currentColor;overflow-wrap:anywhere}
+.give-status{display:flex;align-items:center;gap:10px;margin-top:34px;padding-top:22px;border-top:1px solid #3b3c39;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--acid)}
+.give-status i{width:8px;height:8px;border-radius:50%;background:var(--acid);box-shadow:0 0 0 0 rgba(172,208,185,.6);animation:give-pulse 2.4s ease-out infinite}
+@keyframes give-pulse{0%{box-shadow:0 0 0 0 rgba(172,208,185,.55)}70%{box-shadow:0 0 0 10px rgba(172,208,185,0)}100%{box-shadow:0 0 0 0 rgba(172,208,185,0)}}
+@media(prefers-reduced-motion:reduce){.give-status i{animation:none}}
+.donation-panel .donation-legal{margin-top:12px;font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.donation-note a{overflow-wrap:anywhere}

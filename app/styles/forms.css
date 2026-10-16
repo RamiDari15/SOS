@@ -1,0 +1,22 @@
+/* forms styles (layered after globals.css) */
+
+/* Guide callout: copy + link column (get-involved) */
+.guide-callout>div>p{font-size:17px;line-height:1.6;margin-top:0}
+.guide-callout .guide-link{margin-top:18px;max-width:100%}
+
+/* Honeypot: kept off-screen for people and assistive tech, still in the DOM for bots */
+.form-hp{position:absolute!important;left:-10000px!important;top:auto;width:1px;height:1px;overflow:hidden}
+
+/* Submission states */
+.cool-form .pill[aria-disabled="true"]{opacity:.6;cursor:progress;transform:none;box-shadow:none}
+.cool-form input:focus-visible,.cool-form select:focus-visible,.cool-form textarea:focus-visible{outline:2px solid var(--acid);outline-offset:2px}
+.cool-form [aria-invalid="true"]{border-bottom-color:#ff9b8f}
+.field-error{display:block;margin-top:6px;font-style:normal;font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:none;color:#ffb4aa}
+.form-status:empty{display:none}
+.form-status{margin-top:14px;font-size:13px;line-height:1.5}
+.form-status p{margin:0 0 10px}
+.form-status.is-error{border-left:3px solid #ff9b8f;padding:12px 0 12px 14px}
+.form-status .form-fallback-link{max-width:100%;white-space:normal;overflow-wrap:anywhere;gap:14px;min-width:0}
+.form-success h2:focus{outline:none}
+.form-success h2:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+@media (prefers-reduced-motion:reduce){.cool-form input,.cool-form select,.cool-form textarea{transition:none}}
