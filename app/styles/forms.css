@@ -20,3 +20,40 @@
 .form-success h2:focus{outline:none}
 .form-success h2:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 @media (prefers-reduced-motion:reduce){.cool-form input,.cool-form select,.cool-form textarea{transition:none}}
+
+/* ---------- Newsletter page ---------- */
+.newsletter-stage{align-items:start}
+.newsletter-copy h2{margin:28px 0 34px}
+.newsletter-perks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.newsletter-perks li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.newsletter-perks span{font-size:10px;font-weight:800;color:var(--green);padding-top:4px}
+.newsletter-perks b{display:block;font-size:15px;text-transform:uppercase;letter-spacing:.04em}
+.newsletter-perks p{margin:6px 0 0;font-size:15px;line-height:1.5}
+.newsletter-facts{margin:34px 0 0;display:grid;gap:16px}
+.newsletter-facts div{display:grid;grid-template-columns:120px 1fr;gap:14px}
+.newsletter-facts dt{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding-top:3px}
+.newsletter-facts dd{margin:0;font-size:15px;line-height:1.5}
+.newsletter-facts a,.newsletter-unsubscribe a,.newsletter-success a{border-bottom:1px solid currentColor}
+.newsletter-facts a:hover,.newsletter-unsubscribe a:hover{color:var(--green)}
+.cool-form .optional{display:inline;margin-left:8px;font-size:9px;font-weight:700;letter-spacing:.08em;color:#9a9a9a}
+.newsletter-form .form-fineprint a{border-bottom:1px solid currentColor}
+.newsletter-success p{line-height:1.6;max-width:560px}
+.newsletter-success b{overflow-wrap:anywhere}
+
+.newsletter-latest{padding:100px 7vw 90px}
+.newsletter-latest-head{display:flex;align-items:end;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:1px solid;padding-bottom:22px}
+.newsletter-latest-head .overline{flex-basis:100%;margin:0;color:var(--green)}
+.newsletter-latest-head h2{margin:0;font-size:clamp(40px,5vw,72px);line-height:.9;text-transform:uppercase;letter-spacing:-.05em}
+.newsletter-latest-head .line-link{margin-top:0}
+.newsletter-latest-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:34px}
+.latest-card{display:flex;flex-direction:column;min-height:260px;padding:28px;background:var(--cream);box-shadow:0 0 0 1px var(--line);transition:transform .25s,background .25s,box-shadow .25s}
+.latest-card time{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--green)}
+.latest-card h3{margin:auto 0 12px;padding-top:40px;font-size:clamp(24px,2.4vw,34px);line-height:.95;text-transform:uppercase;letter-spacing:-.03em}
+.latest-card p{margin:0;font-size:14px;line-height:1.5}
+.latest-card b{margin-top:22px;padding-top:14px;border-top:1px solid currentColor;font-size:10px;text-transform:uppercase;letter-spacing:.08em;display:flex;justify-content:space-between}
+.latest-card:hover,.latest-card:focus-visible{background:var(--ink);color:white;transform:translateY(-6px);box-shadow:10px 10px 0 var(--acid)}
+.latest-card:hover time,.latest-card:focus-visible time{color:var(--acid)}
+.newsletter-unsubscribe{margin:34px 0 0;font-size:14px}
+@media(max-width:900px){.newsletter-latest-grid{grid-template-columns:1fr}.latest-card{min-height:0}.latest-card h3{padding-top:24px}}
+@media(max-width:560px){.newsletter-latest{padding:70px 6vw}.newsletter-facts div{grid-template-columns:1fr;gap:4px}}
+@media(prefers-reduced-motion:reduce){.latest-card{transition:none}.latest-card:hover,.latest-card:focus-visible{transform:none}}

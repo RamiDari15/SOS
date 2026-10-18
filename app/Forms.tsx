@@ -9,7 +9,7 @@ import { CONTACT_TOPICS, FormType, HONEYPOT_FIELD, MEMBER_ROLES, ORG_EMAIL, ORG_
 type Status =
   | { kind: "idle" }
   | { kind: "submitting" }
-  | { kind: "success" }
+  | { kind: "success"; fields: Record<string, string> }
   | { kind: "invalid" }
   | { kind: "fallback"; mailto: string; reason: "not_configured" | "rate_limited" | "failed" };
 
@@ -60,7 +60,7 @@ function useFormSubmission(type: FormType) {
       res = null;
     }
     if (res?.ok) {
-      setStatus({ kind: "success" });
+      setStatus({ kind: "success", fields: trimmed(fields) });
       return;
     }
     let payload: { error?: string; fieldErrors?: Record<string, string> } = {};
@@ -280,27 +280,30 @@ export function NewsletterForm() {
   const { status, onSubmit, fieldProps, errorFor, reset } = useFormSubmission("newsletter");
   const busy = status.kind === "submitting";
 
-  if (status.kind === "success")
+  if (status.kind === "success") {
+    const { firstName, email } = status.fields;
     return (
-      <SuccessPanel title="You’re on the early list." again="Add another email" onAgain={reset}>
-        We’ll send launch updates to the email you provided.
+      <SuccessPanel className="newsletter-success" title={firstName ? `You’re subscribed, ${firstName}.` : "You’re subscribed."} again="Subscribe another email" onAgain={reset}>
+        The next monthly newsletter from {ORG_NAME} will arrive at <b>{email || "the email you entered"}</b>. If you don’t see it, check your spam or promotions folder and add {ORG_EMAIL} to your contacts. Want to get involved sooner? <a href="/get-involved">Find your next step</a>.
       </SuccessPanel>
     );
+  }
 
   return (
-    <form className="cool-form newsletter-form" onSubmit={onSubmit} aria-busy={busy} aria-label="Newsletter early list">
-      <div className="form-heading"><span>Monthly dispatch</span><b>Early access</b></div>
+    <form className="cool-form newsletter-form" id="subscribe" onSubmit={onSubmit} aria-busy={busy} aria-label="Subscribe to the monthly newsletter">
+      <div className="form-heading"><span>Monthly newsletter</span><b>Free · once a month</b></div>
       <label><span>Email address</span><input {...fieldProps("email")} autoComplete="email" required maxLength={254} type="email" placeholder="you@school.edu" />{errorFor("email")}</label>
       <div className="form-row">
         <label><span>First name</span><input {...fieldProps("firstName")} autoComplete="given-name" required maxLength={80} placeholder="First name" />{errorFor("firstName")}</label>
         <label><span>Last name</span><input {...fieldProps("lastName")} autoComplete="family-name" required maxLength={80} placeholder="Last name" />{errorFor("lastName")}</label>
       </div>
-      <label className="check"><input {...fieldProps("consent")} type="checkbox" required /><span>I want updates from {ORG_NAME}.</span></label>
+      <label><span>School / chapter <small className="optional">Optional</small></span><input {...fieldProps("school")} autoComplete="organization" maxLength={160} placeholder="So we can share news from your campus" />{errorFor("school")}</label>
+      <label className="check"><input {...fieldProps("consent")} type="checkbox" required /><span>I want monthly updates from {ORG_NAME}.</span></label>
       {errorFor("consent")}
       <Honeypot />
-      <SubmitButton busy={busy}>Join the early list</SubmitButton>
+      <SubmitButton busy={busy}>Subscribe</SubmitButton>
       <FormStatus status={status} />
-      <p className="form-fineprint">Questions? Email <a href={`mailto:${ORG_EMAIL}`}>{ORG_EMAIL}</a>.</p>
+      <p className="form-fineprint">We only use your email for {ORG_NAME} updates. Unsubscribe any time by replying to any newsletter or emailing <a href={`mailto:${ORG_EMAIL}?subject=Unsubscribe`}>{ORG_EMAIL}</a>.</p>
     </form>
   );
 }

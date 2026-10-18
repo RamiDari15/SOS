@@ -307,7 +307,7 @@ async function main() {
     try {
       await goto(page, "/contact?topic=toolkit");
       const form = page.locator("#contact-form");
-      assert((await form.locator('select[name="topic"]').inputValue()) === "Chapter toolkit access", "?topic=toolkit preselects toolkit access");
+      assert((await form.locator('select[name="topic"]').inputValue()) === "Toolkit request", "?topic=toolkit preselects toolkit request");
       await goto(page, "/contact?topic=chapter");
       assert((await form.locator('select[name="topic"]').inputValue()) === "Start or join a chapter", "?topic=chapter preselects chapter");
 
@@ -357,26 +357,46 @@ async function main() {
   });
 
   // ---------------------------------------------------------------- newsletter + get-involved submit
-  await check("newsletter form: consent required, 503 fallback mailto, success on 2xx", async () => {
+  await check("newsletter page: real content, consent required, optional school, 503 fallback, success says what happens next", async () => {
     const { context, page, errors } = await openPage({ width: 375, height: 800 });
     try {
       await goto(page, "/newsletter");
+      const body = await page.locator("main").innerText();
+      assert(!/coming soon/i.test(body) && !/issue 001/i.test(body), "no placeholder copy on /newsletter");
+      const cards = page.locator(".newsletter-latest .latest-card");
+      assert((await cards.count()) === 3, `expected 3 latest statements, got ${await cards.count()}`);
+      for (const href of await cards.evaluateAll((as) => as.map((a) => a.getAttribute("href")))) assert(href === "/media#statements", `latest card href ${href}`);
+      assert((await page.locator('a[href="mailto:sos@organize4syria.com?subject=Unsubscribe"]').count()) >= 1, "unsubscribe mailto present");
+
       const form = page.locator("form.newsletter-form");
+      assert((await form.locator('input[name="school"]').getAttribute("required")) === null, "school is optional");
       await form.locator('input[name="email"]').fill("reader@example.edu");
       await form.locator('input[name="firstName"]').fill("Rana");
       await form.locator('input[name="lastName"]').fill("K");
-      await form.getByRole("button", { name: /join the early list/i }).click();
+      await form.getByRole("button", { name: /subscribe/i }).click();
       await page.waitForTimeout(300);
       assert((await form.locator(".form-status.is-error").count()) === 0, "unchecked consent blocks the submit");
       await form.locator('input[name="consent"]').check();
-      await form.getByRole("button", { name: /join the early list/i }).click();
+      await form.getByRole("button", { name: /subscribe/i }).click();
       const link = form.locator(".form-status.is-error a[href^='mailto:']");
       await link.waitFor({ timeout: 5000 });
       const mailto = decodeURIComponent((await link.getAttribute("href")) ?? "");
-      assert(/Newsletter early list/.test(mailto) && /: yes/.test(mailto), `newsletter mailto: ${mailto.slice(0, 160)}`);
+      assert(/Newsletter signup/.test(mailto) && /: yes/.test(mailto), `newsletter mailto: ${mailto.slice(0, 160)}`);
+      assert(!/School \/ chapter/.test(mailto), "empty optional school is left out of the mailto");
+
+      let posted;
+      page.on("request", (req) => {
+        if (req.url().endsWith("/api/forms")) posted = req.postDataJSON();
+      });
+      await form.locator('input[name="school"]').fill("Loyola University Chicago");
       await page.route("**/api/forms", (route) => route.fulfill({ status: 200, contentType: "application/json", body: '{"ok":true}' }));
-      await form.getByRole("button", { name: /join the early list/i }).click();
-      await page.locator(".form-success h2", { hasText: /early list/i }).waitFor({ timeout: 5000 });
+      await form.getByRole("button", { name: /subscribe/i }).click();
+      const success = page.locator(".form-success");
+      await success.locator("h2", { hasText: /subscribed, Rana/i }).waitFor({ timeout: 5000 });
+      assert(posted?.type === "newsletter" && posted.fields.school === "Loyola University Chicago", "school is posted");
+      const text = await success.innerText();
+      assert(/reader@example\.edu/.test(text) && /monthly/i.test(text), `success says what happens next: ${text.slice(0, 160)}`);
+      await shot(page, "newsletter-success-375");
       assert(errors.length === 0, errors.join("\n"));
     } finally {
       await context.close();
