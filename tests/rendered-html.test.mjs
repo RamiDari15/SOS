@@ -109,7 +109,10 @@ test("/newsletter is a finished signup page with the latest statements", async (
   const strip = html.slice(html.indexOf("newsletter-latest"));
   for (const title of expected) assert.ok(strip.includes(title), `latest statement "${title}"`);
   assert.equal((strip.match(/class="latest-card"/g) ?? []).length, 3, "three latest cards");
-  assert.match(strip, /href="\/media#statements"/);
+  assert.match(strip, /href="\/media#statements"/, "All statements link");
+  for (const title of expected) assert.match(strip, new RegExp(`aria-label="${title}, [^"]*opens in a new tab\\)"`), `card link names "${title}"`);
+  assert.doesNotMatch(html, /reply to any newsletter/i);
+  assert.match(html, /We never sell or share it/);
 });
 
 test("toolkit templates render, download files exist, unknown template is 404", async () => {

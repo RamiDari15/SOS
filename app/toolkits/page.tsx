@@ -2,23 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero, Shell } from "../Interior";
 import { CopyButton } from "./ToolkitActions";
-import { BOILERPLATE, CONTACT_EMAIL, MISSION, ORG_NAME, brandFiles, chapterSteps, nameRules, socials, templateFile, templates } from "./toolkit-data";
+import { BOILERPLATE, brandColors, CONTACT_EMAIL, MISSION, ORG_NAME, brandFiles, chapterSteps, nameRules, socials, templateFile, templates } from "./toolkit-data";
 
 export const metadata: Metadata = {
   title: "Chapter toolkit | Students Organize For Syria",
   description: "Free tools for starting and running a Students Organize For Syria chapter: organizing steps, messaging guide, printable templates, and brand files.",
 };
-
-// Colors and type already used across the site (see app/globals.css and app/layout.tsx).
-const palette = [
-  { name: "Ink", hex: "#1B1C1A" },
-  { name: "Paper", hex: "#F4F6F1" },
-  { name: "Forest", hex: "#063F2C" },
-  { name: "Green", hex: "#0D6844" },
-  { name: "Sage", hex: "#ACD0B9" },
-  { name: "Mist", hex: "#DFE8DF" },
-  { name: "Clay red", hex: "#A84A42" },
-];
 
 const sections = [
   { id: "start", label: "Start a chapter" },
@@ -29,7 +18,7 @@ const sections = [
 
 const n = (i: number) => String(i + 1).padStart(2, "0");
 
-export default function Toolkits(){return <Shell>
+export default function Toolkits(){return <Shell active="toolkits">
   <PageHero index="10" kicker="Chapter toolkit" tone="green" title={<>Built for<br/><i>organizers.</i></>} intro={`Free, public tools for starting and running a ${ORG_NAME} chapter: organizing steps, messaging, printable templates, and brand files.`}/>
 
   <nav className="toolkit-index" aria-label="Toolkit sections">{sections.map((s,i)=><a key={s.id} href={`#${s.id}`}><span>{n(i)}</span>{s.label}<b aria-hidden="true">↓</b></a>)}</nav>
@@ -45,8 +34,8 @@ export default function Toolkits(){return <Shell>
     <div className="toolkit-head"><p className="overline">02 · Messaging guide</p><h2 id="messaging-title" className="ink">Say it the<br/>same way.</h2><p>Use these when you write posts, flyers, emails, event descriptions, or introductions for partners and press.</p></div>
     <div className="name-rules">{nameRules.map((r,i)=><article key={r.title}><span>{n(i)}</span><h3>{r.title}</h3><p>{r.body}</p></article>)}</div>
     <div className="copy-blocks">
-      <article className="copy-block is-mission"><div className="copy-block-head"><p>Mission statement · approved, use word for word</p><CopyButton text={MISSION} label="Copy mission"/></div><blockquote>{MISSION}</blockquote></article>
-      <article className="copy-block"><div className="copy-block-head"><p>Short description · for bios, flyers, and partner emails</p><CopyButton text={BOILERPLATE} label="Copy description"/></div><blockquote>{BOILERPLATE}</blockquote></article>
+      <article className="copy-block is-mission"><div className="copy-block-head"><p>Mission statement · approved, use word for word</p><CopyButton text={MISSION} targetId="copy-mission" label="Copy mission"/></div><blockquote id="copy-mission">{MISSION}</blockquote></article>
+      <article className="copy-block"><div className="copy-block-head"><p>Short description · for bios, flyers, and partner emails</p><CopyButton text={BOILERPLATE} targetId="copy-description" label="Copy description"/></div><blockquote id="copy-description">{BOILERPLATE}</blockquote></article>
     </div>
     <dl className="toolkit-contacts">
       {socials.map(s=><div key={s.label}><dt>{s.label}</dt><dd><a href={s.url} target="_blank" rel="noreferrer" aria-label={`${ORG_NAME} on ${s.label}, ${s.handle} (opens in a new tab)`}>{s.handle} ↗</a></dd></div>)}
@@ -65,7 +54,7 @@ export default function Toolkits(){return <Shell>
     {brandFiles.length > 0
       ? <ul className="brand-files">{brandFiles.map(f=><li key={f.file}><div><h3>{f.title}</h3>{f.note && <p>{f.note}</p>}</div><a href={f.file} download>{f.format} <span aria-hidden="true">↓</span></a></li>)}</ul>
       : <div className="brand-request"><p>Logo files and social templates are shared by the national team.</p><a className="line-link" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Brand files request")}`}>Email for logo files ↗</a></div>}
-    <div className="brand-palette" role="list" aria-label="Brand colors">{palette.map(c=><div role="listitem" key={c.hex}><i style={{background:c.hex}} aria-hidden="true"/><b>{c.name}</b><code>{c.hex}</code></div>)}</div>
+    <div className="brand-palette" role="list" aria-label="Brand colors">{brandColors.map(c=><div role="listitem" key={c.hex}><i style={{background:c.hex}} aria-hidden="true"/><b>{c.name}</b><code>{c.hex}</code></div>)}</div>
     <div className="brand-type"><div><span>Display</span><b>Archivo Black</b></div><div><span>Body</span><b className="is-body">Archivo</b></div><p>Both are free on Google Fonts.</p></div>
   </section>
 

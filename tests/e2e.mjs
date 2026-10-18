@@ -365,11 +365,19 @@ async function main() {
       assert(!/coming soon/i.test(body) && !/issue 001/i.test(body), "no placeholder copy on /newsletter");
       const cards = page.locator(".newsletter-latest .latest-card");
       assert((await cards.count()) === 3, `expected 3 latest statements, got ${await cards.count()}`);
-      for (const href of await cards.evaluateAll((as) => as.map((a) => a.getAttribute("href")))) assert(href === "/media#statements", `latest card href ${href}`);
+      for (const card of await cards.evaluateAll((as) => as.map((a) => ({ href: a.getAttribute("href"), target: a.getAttribute("target"), label: a.getAttribute("aria-label"), title: a.querySelector("h3")?.textContent })))) {
+        assert(/^https:\/\//.test(card.href ?? "") && card.target === "_blank", `latest card opens its statement in a new tab: ${card.href}`);
+        assert(card.label?.startsWith(card.title ?? "\u0000"), `latest card label names its statement: ${card.label}`);
+      }
+      assert((await page.locator('.newsletter-latest a[href="/media#statements"]').count()) === 1, "All statements link");
+      assert(!/reply to any newsletter/i.test(body), "unsubscribe copy only offers email");
       assert((await page.locator('a[href="mailto:sos@organize4syria.com?subject=Unsubscribe"]').count()) >= 1, "unsubscribe mailto present");
 
       const form = page.locator("form.newsletter-form");
-      assert((await form.locator('input[name="school"]').getAttribute("required")) === null, "school is optional");
+      const school = form.locator('input[name="school"]');
+      assert((await school.getAttribute("required")) === null, "school is optional");
+      const hintId = await school.getAttribute("aria-describedby");
+      assert(hintId && /Helps us connect you with your campus chapter/.test(await page.locator(`[id="${hintId}"]`).innerText()), "school hint is wired with aria-describedby");
       await form.locator('input[name="email"]').fill("reader@example.edu");
       await form.locator('input[name="firstName"]').fill("Rana");
       await form.locator('input[name="lastName"]').fill("K");
@@ -392,10 +400,14 @@ async function main() {
       await page.route("**/api/forms", (route) => route.fulfill({ status: 200, contentType: "application/json", body: '{"ok":true}' }));
       await form.getByRole("button", { name: /subscribe/i }).click();
       const success = page.locator(".form-success");
-      await success.locator("h2", { hasText: /subscribed, Rana/i }).waitFor({ timeout: 5000 });
+      await success.locator("h2", { hasText: /on the list, Rana/i }).waitFor({ timeout: 5000 });
+      assert(await success.locator("h2").evaluate((el) => el === document.activeElement), "focus moves to the success heading");
+      assert((await success.getAttribute("aria-live")) === null, "success panel is not a second live region");
       assert(posted?.type === "newsletter" && posted.fields.school === "Loyola University Chicago", "school is posted");
       const text = await success.innerText();
-      assert(/reader@example\.edu/.test(text) && /monthly/i.test(text), `success says what happens next: ${text.slice(0, 160)}`);
+      assert(/We’ll email reader@example\.edu when the Students Organize For Syria newsletter goes out/.test(text), `success says what happens next: ${text.slice(0, 160)}`);
+      assert(!/spam/i.test(text), "no spam-folder advice");
+      assert((await success.locator('a[href="/get-involved"]').count()) === 1, "next-step link");
       await shot(page, "newsletter-success-375");
       assert(errors.length === 0, errors.join("\n"));
     } finally {

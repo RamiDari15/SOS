@@ -83,14 +83,19 @@ function useFormSubmission(type: FormType) {
     });
   }
 
-  /** Props that wire an input to its error message. */
-  function fieldProps(name: string) {
+  /** Props that wire an input to its error message, and to its hint when `withHint` is set (render it with hintFor). */
+  function fieldProps(name: string, withHint = false) {
     const err = fieldErrors[name];
+    const describedBy = [withHint ? `${uid}-${name}-hint` : "", err ? `${uid}-${name}-err` : ""].filter(Boolean).join(" ");
     return {
       name,
       "aria-invalid": err ? true : undefined,
-      "aria-describedby": err ? `${uid}-${name}-err` : undefined,
+      "aria-describedby": describedBy || undefined,
     } as const;
+  }
+
+  function hintFor(name: string, text: string) {
+    return <small className="field-hint" id={`${uid}-${name}-hint`}>{text}</small>;
   }
 
   function errorFor(name: string) {
@@ -103,7 +108,7 @@ function useFormSubmission(type: FormType) {
     setFieldErrors({});
   }
 
-  return { status, onSubmit, fieldProps, errorFor, reset };
+  return { status, onSubmit, fieldProps, errorFor, hintFor, reset };
 }
 
 function Honeypot() {
@@ -278,7 +283,7 @@ export function MovementForms({ initialMode = "member" }: { initialMode?: "membe
 /* ---------- monthly newsletter signup ---------- */
 
 export function NewsletterForm() {
-  const { status, onSubmit, fieldProps, errorFor, reset } = useFormSubmission("newsletter");
+  const { status, onSubmit, fieldProps, errorFor, hintFor, reset } = useFormSubmission("newsletter");
   const busy = status.kind === "submitting";
 
   if (status.kind === "success") {
@@ -298,7 +303,7 @@ export function NewsletterForm() {
         <label><span>First name</span><input {...fieldProps("firstName")} autoComplete="given-name" required maxLength={80} placeholder="First name" />{errorFor("firstName")}</label>
         <label><span>Last name</span><input {...fieldProps("lastName")} autoComplete="family-name" required maxLength={80} placeholder="Last name" />{errorFor("lastName")}</label>
       </div>
-      <label><span>School / chapter <small className="optional">Optional</small></span><input {...fieldProps("school")} autoComplete="organization" maxLength={160} placeholder="So we can share news from your campus" />{errorFor("school")}</label>
+      <label><span>School / chapter</span><input {...fieldProps("school", true)} autoComplete="organization" maxLength={160} placeholder="e.g. UCLA" />{hintFor("school", "Optional. Helps us connect you with your campus chapter.")}{errorFor("school")}</label>
       <label className="check"><input {...fieldProps("consent")} type="checkbox" required /><span>I want monthly updates from {ORG_NAME}.</span></label>
       {errorFor("consent")}
       <Honeypot />

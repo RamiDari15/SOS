@@ -11,13 +11,25 @@ export const EIN = "81-3410686";
 export const CONTACT_EMAIL = "sos@organize4syria.com";
 export const GUIDE_URL = "https://docs.google.com/document/d/1Dvi09bJSaOUSksVLpYMAYP8v7EqP3DoLh3_c36PnejM/view?usp=sharing";
 
-/** Approved by the board. Do not edit without board approval (keep it word for word). */
+/** Board-approved mission (wording unchanged; "For" capitalised to match the official name). Do not edit without board approval. */
 export const MISSION =
-  "Students Organize for Syria’s ultimate goal is to effectively mobilize for Syria from within the diaspora. We are committed to sustaining a strong, united student network that honors the Syrian revolution, champions advocacy, and empowers a new generation to take part in rebuilding and shaping Syria’s future.";
+  "Students Organize For Syria’s ultimate goal is to effectively mobilize for Syria from within the diaspora. We are committed to sustaining a strong, united student network that honors the Syrian revolution, champions advocacy, and empowers a new generation to take part in rebuilding and shaping Syria’s future.";
 
 /** Built only from copy already published on the site (About page, homepage, chapters). */
 export const BOILERPLATE =
   "Students Organize For Syria (SOS) is a national, student-led movement rooted in advocacy, solidarity, and action for Syria. SOS grew from two student efforts, Save Our Syrian Freedom at Arizona State University (2012) and Students for Syrian Relief at Yale (2013), into a unified, nationwide student network. Today, SOS chapters give students concrete ways to organize, advocate, mobilize resources, and grow together.";
+
+/** Brand colors. Keep in sync with public/toolkit/brand/README.txt and the tokens in app/globals.css. */
+export const brandColors = [
+  { name: "Ink", hex: "#1B1C1A" },
+  { name: "Paper", hex: "#F4F6F1" },
+  { name: "Cream", hex: "#DFE8DF" },
+  { name: "Green", hex: "#0D6844" },
+  { name: "Emerald", hex: "#16845A" },
+  { name: "Forest", hex: "#063F2C" },
+  { name: "Acid", hex: "#ACD0B9" },
+  { name: "Red", hex: "#A84A42" },
+] as const;
 
 export const socials = [
   { label: "Instagram", handle: "@organize4syria", url: "https://www.instagram.com/organize4syria/" },

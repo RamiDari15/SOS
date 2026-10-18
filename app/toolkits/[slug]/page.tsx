@@ -19,9 +19,9 @@ function Section({ s }: { s: TemplateSection }) {
   return <section className={`sheet-section is-${s.kind}`}>
     <h2>{s.heading}</h2>
     {s.note && <p className="sheet-note">{s.note}</p>}
-    {s.kind === "fields" && <dl className="sheet-fields">{s.items.map(item => <div key={item}><dt>{item}</dt><dd/></div>)}</dl>}
+    {s.kind === "fields" && <dl className="sheet-fields">{s.items.map(item => <div key={item}><dt>{item}</dt><dd aria-hidden="true"/></div>)}</dl>}
     {s.kind === "checklist" && <ul className="sheet-checklist">{s.items.map(item => <li key={item}><i aria-hidden="true"/>{item}</li>)}</ul>}
-    {s.kind === "prompts" && <div className="sheet-prompts">{s.items.map(item => <div key={item}><p>{item}</p><span/><span/></div>)}</div>}
+    {s.kind === "prompts" && <div className="sheet-prompts">{s.items.map(item => <div key={item}><p>{item}</p><span aria-hidden="true"/><span aria-hidden="true"/></div>)}</div>}
     {s.kind === "table" && <table className="sheet-table"><thead><tr>{s.columns.map(c => <th key={c} scope="col">{c}</th>)}</tr></thead><tbody>{Array.from({ length: s.rows }, (_, r) => <tr key={r}>{s.columns.map(c => <td key={c}/>)}</tr>)}</tbody></table>}
   </section>;
 }
@@ -30,7 +30,7 @@ export default async function TemplatePage({ params }: { params: Promise<{ slug:
   const t = findTemplate((await params).slug);
   if (!t) notFound();
   const others = templates.filter(o => o.slug !== t.slug);
-  return <Shell>
+  return <Shell active="toolkits">
     <div className="template-toolbar">
       <Link className="line-link" href="/toolkits#templates"><span aria-hidden="true">←</span> All templates</Link>
       <div><a className="line-link" href={templateFile(t)} download={`${t.slug}.md`}>Download .md</a><PrintButton/></div>
