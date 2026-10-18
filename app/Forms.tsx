@@ -145,7 +145,8 @@ function SuccessPanel({ title, children, again, onAgain, className = "" }: { tit
   const ref = useRef<HTMLHeadingElement>(null);
   useEffect(() => ref.current?.focus(), []);
   return (
-    <div className={`form-success ${className}`} role="status" aria-live="polite">
+    // No live region here: focus moves to the heading, which announces the result once.
+    <div className={`form-success ${className}`}>
       <span aria-hidden="true">✓</span>
       <h2 ref={ref} tabIndex={-1}>{title}</h2>
       <p>{children}</p>
@@ -274,7 +275,7 @@ export function MovementForms({ initialMode = "member" }: { initialMode?: "membe
   );
 }
 
-/* ---------- newsletter early list ---------- */
+/* ---------- monthly newsletter signup ---------- */
 
 export function NewsletterForm() {
   const { status, onSubmit, fieldProps, errorFor, reset } = useFormSubmission("newsletter");
@@ -283,15 +284,15 @@ export function NewsletterForm() {
   if (status.kind === "success") {
     const { firstName, email } = status.fields;
     return (
-      <SuccessPanel className="newsletter-success" title={firstName ? `You’re subscribed, ${firstName}.` : "You’re subscribed."} again="Subscribe another email" onAgain={reset}>
-        The next monthly newsletter from {ORG_NAME} will arrive at <b>{email || "the email you entered"}</b>. If you don’t see it, check your spam or promotions folder and add {ORG_EMAIL} to your contacts. Want to get involved sooner? <a href="/get-involved">Find your next step</a>.
+      <SuccessPanel className="newsletter-success" title={firstName ? `You’re on the list, ${firstName}.` : "You’re on the list."} again="Subscribe another email" onAgain={reset}>
+        We’ll email <b>{email || "you"}</b> when the {ORG_NAME} newsletter goes out. Want to do more in the meantime? <a href="/get-involved">Find your next step</a>.
       </SuccessPanel>
     );
   }
 
   return (
     <form className="cool-form newsletter-form" id="subscribe" onSubmit={onSubmit} aria-busy={busy} aria-label="Subscribe to the monthly newsletter">
-      <div className="form-heading"><span>Monthly newsletter</span><b>Free · once a month</b></div>
+      <div className="form-heading"><span>Monthly newsletter</span><b>Free</b></div>
       <label><span>Email address</span><input {...fieldProps("email")} autoComplete="email" required maxLength={254} type="email" placeholder="you@school.edu" />{errorFor("email")}</label>
       <div className="form-row">
         <label><span>First name</span><input {...fieldProps("firstName")} autoComplete="given-name" required maxLength={80} placeholder="First name" />{errorFor("firstName")}</label>
@@ -303,7 +304,7 @@ export function NewsletterForm() {
       <Honeypot />
       <SubmitButton busy={busy}>Subscribe</SubmitButton>
       <FormStatus status={status} />
-      <p className="form-fineprint">We only use your email for {ORG_NAME} updates. Unsubscribe any time by replying to any newsletter or emailing <a href={`mailto:${ORG_EMAIL}?subject=Unsubscribe`}>{ORG_EMAIL}</a>.</p>
+      <p className="form-fineprint">We use your email only to send {ORG_NAME} updates. We never sell or share it. To unsubscribe, email <a href={`mailto:${ORG_EMAIL}?subject=Unsubscribe`}>{ORG_EMAIL}</a> with “Unsubscribe”.</p>
     </form>
   );
 }

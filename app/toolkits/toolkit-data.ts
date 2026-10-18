@@ -125,4 +125,27 @@ export const templateFile = (t: Template) => `/toolkit/docs/${t.slug}.md`;
 
 export type BrandFile = { title: string; file: string; format: string; note?: string };
 
-export const brandFiles: BrandFile[] = [];
+export const brandFiles: BrandFile[] = [
+  { title: "Read me first", file: "/toolkit/brand/README.txt", format: "TXT", note: "What every file is for, logo rules, colors, and fonts." },
+  { title: "Dark logo (vector)", file: "/toolkit/brand/logo/sos-logo-dark.svg", format: "SVG", note: "For white or light backgrounds." },
+  { title: "Dark logo (image)", file: "/toolkit/brand/logo/sos-logo-dark.png", format: "PNG", note: "For white or light backgrounds." },
+  { title: "Light logo (vector)", file: "/toolkit/brand/logo/sos-logo-light.svg", format: "SVG", note: "For dark backgrounds. The PNG looks blank on a white screen; that is normal." },
+  { title: "Light logo (image)", file: "/toolkit/brand/logo/sos-logo-light.png", format: "PNG", note: "For dark backgrounds. The PNG looks blank on a white screen; that is normal." },
+  { title: "Green logo (vector)", file: "/toolkit/brand/logo/sos-logo-green.svg", format: "SVG", note: "For white or paper backgrounds." },
+  { title: "Green logo (image)", file: "/toolkit/brand/logo/sos-logo-green.png", format: "PNG", note: "For white or paper backgrounds." },
+  { title: "Square SOS mark (vector)", file: "/toolkit/brand/logo/sos-mark-green.svg", format: "SVG", note: "For profile pictures and icons." },
+  { title: "Square SOS mark (image)", file: "/toolkit/brand/logo/sos-mark-green.png", format: "PNG", note: "For profile pictures and icons." },
+  { title: "Color palette", file: "/toolkit/brand/colors/sos-color-palette.png", format: "PNG", note: "All eight brand colors with HEX and RGB values." },
+  { title: "Event announcement, 1080×1080 post", file: "/toolkit/brand/templates/sos-event-post.png", format: "PNG", note: "With example text to replace." },
+  { title: "Event announcement, 1080×1080 post, blank", file: "/toolkit/brand/templates/sos-event-post-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
+  { title: "Event announcement, 1080×1920 story", file: "/toolkit/brand/templates/sos-event-story.png", format: "PNG", note: "With example text to replace." },
+  { title: "Event announcement, 1080×1920 story, blank", file: "/toolkit/brand/templates/sos-event-story-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
+  { title: "Chapter meeting, 1080×1080 post", file: "/toolkit/brand/templates/sos-meeting-post.png", format: "PNG", note: "With example text to replace." },
+  { title: "Chapter meeting, 1080×1080 post, blank", file: "/toolkit/brand/templates/sos-meeting-post-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
+  { title: "Chapter meeting, 1080×1920 story", file: "/toolkit/brand/templates/sos-meeting-story.png", format: "PNG", note: "With example text to replace." },
+  { title: "Chapter meeting, 1080×1920 story, blank", file: "/toolkit/brand/templates/sos-meeting-story-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
+  { title: "Statement or quote, 1080×1080 post", file: "/toolkit/brand/templates/sos-statement-post.png", format: "PNG", note: "With example text to replace." },
+  { title: "Statement or quote, 1080×1080 post, blank", file: "/toolkit/brand/templates/sos-statement-post-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
+  { title: "Statement or quote, 1080×1920 story", file: "/toolkit/brand/templates/sos-statement-story.png", format: "PNG", note: "With example text to replace." },
+  { title: "Statement or quote, 1080×1920 story, blank", file: "/toolkit/brand/templates/sos-statement-story-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
+];

@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, PageHero, Shell } from "../Interior";
 import { NewsletterForm } from "../Forms";
-import { statements } from "../site-data";
+import { statementLinkLabel, statements } from "../site-data";
 
 export const metadata: Metadata = {
   title: "Newsletter | Students Organize For Syria",
   description:
-    "Subscribe to the monthly Students Organize For Syria newsletter: chapter updates, organizer voices, opportunities to act, and new statements.",
+    "A monthly email from Students Organize For Syria with chapter updates, organizer voices, opportunities to act, and new statements.",
 };
 
 const perks = [
   ["Chapter updates", "What chapters across the country are organizing, from campus events to new and revived chapters."],
   ["Organizer voices", "Stories and reflections from the students doing the work."],
   ["Opportunities to act", "Campaigns, events, and ways to show up for Syria on your campus and in your community."],
-  ["New statements", "Official Students Organize For Syria statements as soon as they are published."],
+  ["New statements", "New official statements."],
 ] as const;
 
 const UNSUBSCRIBE = "mailto:sos@organize4syria.com?subject=Unsubscribe";
@@ -28,7 +28,7 @@ export default function Newsletter() {
         kicker="Monthly newsletter"
         tone="green"
         title={<>Field notes<br /><i>from the movement.</i></>}
-        intro="One email a month from Students Organize For Syria with chapter updates, organizer voices, opportunities to act, and new statements."
+        intro="A monthly email from Students Organize For Syria with chapter updates, organizer voices, opportunities to act, and new statements."
       />
       <section className="newsletter-stage" aria-labelledby="newsletter-what">
         <div className="newsletter-copy">
@@ -43,9 +43,9 @@ export default function Newsletter() {
             ))}
           </ul>
           <dl className="newsletter-facts">
-            <div><dt>How often</dt><dd>Monthly. One email, no daily noise.</dd></div>
-            <div><dt>Your privacy</dt><dd>Your email is only used for Students Organize For Syria updates.</dd></div>
-            <div><dt>Unsubscribe</dt><dd>Any time: reply to any newsletter or <a href={UNSUBSCRIBE}>email us with “Unsubscribe”</a>.</dd></div>
+            <div><dt>How often</dt><dd>Monthly.</dd></div>
+            <div><dt>Your privacy</dt><dd>We use your email only to send Students Organize For Syria updates. We never sell or share it.</dd></div>
+            <div><dt>Unsubscribe</dt><dd>Any time: email <a href={UNSUBSCRIBE}>sos@organize4syria.com</a> with “Unsubscribe”.</dd></div>
           </dl>
         </div>
         <NewsletterForm />
@@ -58,15 +58,22 @@ export default function Newsletter() {
         </div>
         <div className="newsletter-latest-grid">
           {latest.map((s) => (
-            <Link key={s.title} href="/media#statements" className="latest-card">
+            <a
+              key={s.title}
+              href={s.url}
+              target="_blank"
+              rel="noreferrer"
+              className="latest-card"
+              aria-label={`${s.title}, ${s.date}: ${statementLinkLabel(s).replace(" ↗", "")} (opens in a new tab)`}
+            >
               <time>{s.date}</time>
               <h3>{s.title}</h3>
               <p>{s.summary}</p>
-              <b>Read in the archive <Arrow /></b>
-            </Link>
+              <b>{statementLinkLabel(s)}</b>
+            </a>
           ))}
         </div>
-        <p className="newsletter-unsubscribe">Want to stop getting emails? <a href={UNSUBSCRIBE}>Email us</a> and we’ll take you off the list.</p>
+        <p className="newsletter-unsubscribe">Want to stop getting emails? Email <a href={UNSUBSCRIBE}>sos@organize4syria.com</a> with “Unsubscribe”.</p>
       </section>
     </Shell>
   );

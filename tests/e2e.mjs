@@ -26,7 +26,7 @@ function loadPlaywright() {
 const { chromium } = loadPlaywright();
 const executablePath = process.env.CHROMIUM_PATH || (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
 
-const PAGES = ["/", "/about", "/our-work", "/campaigns", "/chapters", "/conferences", "/media", "/news", "/newsletter", "/get-involved", "/toolkits", "/donate", "/contact"];
+const PAGES = ["/", "/about", "/our-work", "/campaigns", "/chapters", "/conferences", "/media", "/news", "/newsletter", "/get-involved", "/toolkits", "/toolkits/meeting-agenda", "/toolkits/event-checklist", "/toolkits/campaign-worksheet", "/toolkits/semester-report", "/donate", "/contact"];
 
 const results = [];
 let browser;

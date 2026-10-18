@@ -112,6 +112,18 @@ test("/newsletter is a finished signup page with the latest statements", async (
   assert.match(strip, /href="\/media#statements"/);
 });
 
+test("toolkit templates render, download files exist, unknown template is 404", async () => {
+  for (const slug of ["meeting-agenda", "event-checklist", "campaign-worksheet", "semester-report"]) {
+    const res = await request(`/toolkits/${slug}`);
+    assert.equal(res.status, 200, `/toolkits/${slug}`);
+    const html = await res.text();
+    assert.notEqual(h1Text(html), "", `/toolkits/${slug} has an h1`);
+    assert.match(html, new RegExp(`href="/toolkit/docs/${slug}\\.md"`), `${slug} links its .md download`);
+    await readFile(new URL(`../public/toolkit/docs/${slug}.md`, import.meta.url), "utf8");
+  }
+  assert.equal((await request("/toolkits/not-a-template")).status, 404);
+});
+
 test("unknown chapter returns 404", async () => {
   const res = await request("/chapters/not-a-real-chapter-xyz");
   assert.equal(res.status, 404);
