@@ -2,6 +2,7 @@
 // They import the built Worker (dist/server/index.js) and call its fetch handler directly,
 // so run `npm run build` first (`npm test` does that for you).
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 // Form delivery must be unconfigured here so /api/forms answers 503 not_configured.
@@ -57,7 +58,7 @@ const PAGES = [
   ["/conferences", /Ideas gather/i],
   ["/media", /The student voice/i],
   ["/news", /Our voices/i],
-  ["/newsletter", /Field notes/i],
+  ["/newsletter", /Field notes\s+from the movement/i],
   ["/get-involved", /There is a place/i],
   ["/toolkits", /Built for/i],
   ["/donate", /Fuel student/i],
@@ -92,6 +93,40 @@ test("/chapters lists 14 active and 11 past chapters, and each chapter page rend
   }
 });
 
+test("/newsletter is a finished signup page with the latest statements", async () => {
+  const html = await (await request("/newsletter")).text();
+  assert.doesNotMatch(html, /coming soon/i, "no placeholder copy");
+  assert.doesNotMatch(html, /Issue 001/i, "no fake issue preview");
+  assert.match(html, /<form[^>]*class="cool-form newsletter-form"/);
+  for (const name of ["email", "firstName", "lastName", "school", "consent"]) assert.match(html, new RegExp(`name="${name}"`), `field ${name}`);
+  assert.match(html, /[Mm]onthly/);
+  assert.match(html, /mailto:sos@organize4syria\.com\?subject=Unsubscribe/, "unsubscribe mailto");
+  // The three newest statements are the first three entries of `statements` in app/site-data.ts.
+  const source = await readFile(new URL("../app/site-data.ts", import.meta.url), "utf8");
+  const block = source.slice(source.indexOf("export const statements"));
+  const expected = [...block.matchAll(/title: "([^"]+)"/g)].slice(0, 3).map((m) => m[1].replace(/&/g, "&amp;"));
+  assert.equal(expected.length, 3, "found three statements in site-data.ts");
+  const strip = html.slice(html.indexOf("newsletter-latest"));
+  for (const title of expected) assert.ok(strip.includes(title), `latest statement "${title}"`);
+  assert.equal((strip.match(/class="latest-card"/g) ?? []).length, 3, "three latest cards");
+  assert.match(strip, /href="\/media#statements"/, "All statements link");
+  for (const title of expected) assert.match(strip, new RegExp(`aria-label="${title}, [^"]*opens in a new tab\\)"`), `card link names "${title}"`);
+  assert.doesNotMatch(html, /reply to any newsletter/i);
+  assert.match(html, /We never sell or share it/);
+});
+
+test("toolkit templates render, download files exist, unknown template is 404", async () => {
+  for (const slug of ["meeting-agenda", "event-checklist", "campaign-worksheet", "semester-report"]) {
+    const res = await request(`/toolkits/${slug}`);
+    assert.equal(res.status, 200, `/toolkits/${slug}`);
+    const html = await res.text();
+    assert.notEqual(h1Text(html), "", `/toolkits/${slug} has an h1`);
+    assert.match(html, new RegExp(`href="/toolkit/docs/${slug}\\.md"`), `${slug} links its .md download`);
+    await readFile(new URL(`../public/toolkit/docs/${slug}.md`, import.meta.url), "utf8");
+  }
+  assert.equal((await request("/toolkits/not-a-template")).status, 404);
+});
+
 test("unknown chapter returns 404", async () => {
   const res = await request("/chapters/not-a-real-chapter-xyz");
   assert.equal(res.status, 404);
@@ -102,7 +137,7 @@ test("?form=chapter and ?topic=toolkit render the right form on first paint", as
   assert.match(involved, /Chapter starter/);
   assert.match(involved, /name="phone"/);
   const contact = await (await request("/contact?topic=toolkit")).text();
-  assert.match(contact, /<option[^>]*selected[^>]*>Chapter toolkit access<\/option>|<option value="Chapter toolkit access"[^>]*selected/);
+  assert.match(contact, /<option[^>]*selected[^>]*>Toolkit request<\/option>|<option value="Toolkit request"[^>]*selected/);
 });
 
 let ipCounter = 0;
@@ -129,6 +164,9 @@ test("/api/forms rejects bad input with 400 and field errors", async () => {
   assert.equal(res.status, 400);
   res = await postForm({ type: "newsletter", fields: { email: "a@b.co", firstName: "A", lastName: "B" } });
   assert.equal(res.status, 400, "newsletter without consent");
+  res = await postForm({ type: "newsletter", fields: { email: "a@b.co", firstName: "A", lastName: "B", consent: "on", school: "x".repeat(161) } });
+  assert.equal(res.status, 400, "newsletter school over 160 chars");
+  assert.ok((await res.json()).fieldErrors.school);
 });
 
 test("/api/forms answers 503 not_configured for valid input when no delivery is set up", async () => {
@@ -137,6 +175,7 @@ test("/api/forms answers 503 not_configured for valid input when no delivery is 
     { type: "member", fields: { name: "A", email: "a@b.co", school: "U", major: "History", role: "Not sure yet" } },
     { type: "chapter", fields: { name: "A", email: "a@b.co", school: "U", region: "OH", phone: "555 123 4567", why: "Because" } },
     { type: "newsletter", fields: { email: "a@b.co", firstName: "A", lastName: "B", consent: "on" } },
+    { type: "newsletter", fields: { email: "a@b.co", firstName: "A", lastName: "B", consent: "on", school: "Loyola University Chicago" } },
   ]) {
     const res = await postForm(payload);
     assert.equal(res.status, 503, payload.type);

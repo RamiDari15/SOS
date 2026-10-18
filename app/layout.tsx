@@ -5,6 +5,7 @@ import "./globals.css";
 import "./styles/chapters.css";
 import "./styles/forms.css";
 import "./styles/content.css";
+import "./styles/toolkit.css";
 
 const archivo = Archivo({ variable: "--font-body", subsets: ["latin"] });
 const archivoBlack = Archivo_Black({ variable: "--font-display", weight: "400", subsets: ["latin"] });

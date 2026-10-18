@@ -13,7 +13,7 @@ const NAV_ITEMS: { key?: string; href: string; label: string }[] = [
   { key: "conferences", href: "/conferences", label: "Conferences" },
   { key: "news", href: "/media", label: "Media" },
   { key: "newsletter", href: "/newsletter", label: "Newsletter" },
-  { href: "/toolkits", label: "Toolkits" },
+  { key: "toolkits", href: "/toolkits", label: "Toolkits" },
   { key: "donate", href: "/donate", label: "Donate" },
 ];
 

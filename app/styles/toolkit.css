@@ -1,0 +1,181 @@
+/* toolkit styles (layered after globals.css) */
+
+/* ---------- Section index ---------- */
+.toolkit-index{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--ink);background:var(--paper)}
+.toolkit-index a{display:flex;align-items:center;gap:14px;padding:22px 2.2vw;border-right:1px solid var(--line);font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.08em;transition:background .2s,color .2s}
+.toolkit-index a:last-child{border-right:0}
+.toolkit-index a span{font-size:9px;color:var(--green)}
+.toolkit-index a b{margin-left:auto;font-size:14px;transition:transform .2s}
+.toolkit-index a:hover,.toolkit-index a:focus-visible{background:var(--acid)}
+.toolkit-index a:hover b{transform:translateY(3px)}
+
+/* ---------- Shared section layout ---------- */
+.toolkit-section{padding:clamp(72px,8vw,112px) 7vw;scroll-margin-top:70px;border-bottom:1px solid var(--line)}
+.toolkit-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);column-gap:6vw;align-items:end;margin-bottom:clamp(40px,5vw,64px)}
+.toolkit-head .overline{grid-column:1/-1;margin:0 0 26px}
+.toolkit-head h2{font-size:clamp(46px,6.2vw,94px);line-height:.88;letter-spacing:-.065em;text-transform:uppercase;margin:0}
+.toolkit-head>p:last-child{margin:0;font-size:17px;line-height:1.6;max-width:520px}
+
+/* ---------- 01 Start a chapter ---------- */
+.toolkit-steps{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.toolkit-steps li{display:grid;grid-template-columns:90px minmax(0,1fr);gap:24px;padding:30px 0;border-bottom:1px solid var(--line)}
+.toolkit-steps li>span{font-size:clamp(30px,3.4vw,50px);font-weight:850;line-height:.9;letter-spacing:-.06em;color:var(--green)}
+.toolkit-steps h3{margin:0 0 10px;font-size:clamp(24px,2.4vw,34px);line-height:1;text-transform:uppercase;letter-spacing:-.04em}
+.toolkit-steps p{margin:0;max-width:720px;line-height:1.6}
+.toolkit-steps a{display:inline-block;margin-top:16px;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid;padding-bottom:3px}
+.toolkit-steps a:hover,.toolkit-steps a:focus-visible{color:var(--green)}
+
+/* ---------- 02 Messaging ---------- */
+.toolkit-messaging{background:var(--cream)}
+.name-rules{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink)}
+.name-rules article{padding:28px 24px 32px 0;border-right:1px solid var(--line);margin-right:24px}
+.name-rules article:last-child{border-right:0;margin-right:0}
+.name-rules span{font-size:9px;font-weight:800;color:var(--green)}
+.name-rules h3{margin:18px 0 10px;font-size:22px;line-height:1;text-transform:uppercase;letter-spacing:-.03em}
+.name-rules p{margin:0;font-size:14px;line-height:1.55;overflow-wrap:anywhere}
+.copy-blocks{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:50px}
+.copy-block{background:var(--paper);border:1px solid var(--line);padding:28px;display:flex;flex-direction:column}
+.copy-block.is-mission{background:var(--forest);color:white;border-color:var(--forest)}
+.copy-block-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid currentColor;padding-bottom:14px}
+.copy-block-head p{margin:0;font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.12em;opacity:.8}
+.copy-block blockquote{margin:24px 0 0;font-size:clamp(17px,1.4vw,21px);line-height:1.5}
+.toolkit-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.toolkit-copy{border:1px solid currentColor;background:transparent;color:inherit;border-radius:100px;padding:9px 14px;font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;transition:background .2s,color .2s}
+.toolkit-copy:hover,.toolkit-copy:focus-visible{background:var(--acid);color:var(--ink);border-color:var(--acid)}
+.toolkit-contacts{display:grid;grid-template-columns:repeat(4,1fr);margin:50px 0 0;border-top:1px solid var(--ink)}
+.toolkit-contacts div{padding:18px 18px 0 0}
+.toolkit-contacts dt{font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.12em;color:var(--green)}
+.toolkit-contacts dd{margin:8px 0 0;font-size:17px;font-weight:700;overflow-wrap:anywhere}
+.toolkit-contacts a{border-bottom:1px solid transparent}
+.toolkit-contacts a:hover,.toolkit-contacts a:focus-visible{border-color:currentColor}
+
+/* ---------- 03 Templates ---------- */
+.template-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.template-grid article{border:1px solid var(--ink);padding:26px;min-height:330px;display:flex;flex-direction:column;background:var(--paper);transition:transform .3s,box-shadow .3s}
+.template-grid article:hover,.template-grid article:focus-within{transform:translateY(-6px);box-shadow:10px 10px 0 var(--green)}
+.template-grid article>span{font-size:9px;font-weight:800;color:var(--green)}
+.template-grid h3{margin:auto 0 12px;font-size:clamp(26px,2.3vw,34px);line-height:.95;text-transform:uppercase;letter-spacing:-.045em}
+.template-grid p{margin:0;font-size:14px;line-height:1.5}
+.template-actions{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.template-actions a{font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.08em}
+.template-open{background:var(--ink);color:white;border-radius:100px;padding:11px 15px;display:inline-flex;gap:14px}
+.template-open:hover,.template-open:focus-visible{background:var(--green)}
+.template-download{border-bottom:1px solid;padding-bottom:3px}
+.template-download:hover,.template-download:focus-visible{color:var(--green)}
+
+/* ---------- 04 Brand kit ---------- */
+.toolkit-brand{background:var(--forest);color:white;border-bottom:0}
+.toolkit-brand .overline{color:var(--acid)}
+.toolkit-brand .overline:before{background:var(--acid)}
+.brand-files{list-style:none;margin:0 0 40px;padding:0;border-top:1px solid rgba(255,255,255,.4)}
+.brand-files li{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.2)}
+.brand-files h3{margin:0;font-size:20px;text-transform:uppercase;letter-spacing:-.02em}
+.brand-files p{margin:6px 0 0;font-size:13px;opacity:.75}
+.brand-files a{flex:none;border:1px solid var(--acid);color:var(--acid);border-radius:100px;padding:10px 16px;font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.08em}
+.brand-files a:hover,.brand-files a:focus-visible{background:var(--acid);color:var(--ink)}
+.brand-request{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;border:1px dashed rgba(255,255,255,.45);padding:24px 28px;margin-bottom:40px}
+.brand-request p{margin:0;font-size:16px}
+.brand-request .line-link{margin:0;color:var(--acid)}
+.brand-palette{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
+.brand-palette>div{display:flex;flex-direction:column;gap:4px}
+.brand-palette i{display:block;aspect-ratio:1;border:1px solid rgba(255,255,255,.3);margin-bottom:8px}
+.brand-palette b{font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.brand-palette code{font-size:11px;opacity:.75;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.brand-type{display:grid;grid-template-columns:1fr 1fr auto;gap:24px;align-items:end;margin-top:40px;padding-top:26px;border-top:1px solid rgba(255,255,255,.3)}
+.brand-type span{display:block;font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.12em;color:var(--acid);margin-bottom:8px}
+.brand-type b{font-family:var(--font-display),sans-serif;font-weight:400;font-size:clamp(28px,3.4vw,52px);line-height:1;text-transform:uppercase;letter-spacing:-.03em}
+.brand-type b.is-body{font-family:var(--font-body),sans-serif;font-weight:500;text-transform:none;letter-spacing:-.02em}
+.brand-type p{margin:0;font-size:13px;opacity:.75}
+
+/* ---------- Contact CTA ---------- */
+.toolkit-contact{display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:end;padding:clamp(72px,8vw,110px) 7vw;background:var(--acid)}
+.toolkit-contact h2{font-size:clamp(46px,6vw,90px);line-height:.88;letter-spacing:-.065em;text-transform:uppercase;margin:26px 0 0}
+.toolkit-contact p:not(.overline){font-size:17px;line-height:1.6;max-width:480px;margin:0 0 26px}
+
+/* ---------- Printable template pages ---------- */
+.template-toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:26px 7vw;border-bottom:1px solid var(--line)}
+.template-toolbar .line-link{margin:0}
+.template-toolbar>div{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.toolkit-print{border:0;cursor:pointer}
+.template-sheet{max-width:900px;margin:clamp(36px,5vw,70px) auto;padding:clamp(28px,5vw,64px);background:white;border:1px solid var(--line);box-shadow:14px 14px 0 var(--cream);color:var(--ink)}
+.sheet-header{border-bottom:3px solid var(--ink);padding-bottom:22px;margin-bottom:10px}
+.sheet-header>p:first-child{margin:0;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+.sheet-header>p:first-child b{color:var(--green);margin-right:6px}
+.sheet-header h1{margin:18px 0 12px;font-size:clamp(34px,5vw,58px);line-height:.92;letter-spacing:-.055em;text-transform:uppercase}
+.sheet-summary{margin:0;font-size:16px;line-height:1.5;max-width:640px}
+.sheet-section{padding:26px 0 8px;break-inside:avoid;page-break-inside:avoid}
+.sheet-section h2{margin:0 0 14px;font-size:15px;font-weight:850;text-transform:uppercase;letter-spacing:.08em;color:var(--green)}
+.sheet-note{margin:-6px 0 14px;font-size:13px;line-height:1.5;opacity:.75}
+.sheet-fields{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px;margin:0}
+.sheet-fields div{display:flex;align-items:flex-end;gap:10px;min-height:38px}
+.sheet-fields dt{flex:none;max-width:60%;font-size:12px;font-weight:700}
+.sheet-fields dd{flex:1;margin:0;border-bottom:1px solid #888;min-height:22px}
+.sheet-checklist{list-style:none;margin:0;padding:0;columns:2;column-gap:28px}
+.sheet-checklist li{display:flex;gap:12px;align-items:flex-start;padding:7px 0;font-size:14px;line-height:1.4;break-inside:avoid}
+.sheet-checklist i{flex:none;width:15px;height:15px;border:1.5px solid var(--ink);margin-top:2px}
+.sheet-prompts>div{margin-bottom:14px}
+.sheet-prompts p{margin:0 0 4px;font-size:14px;font-weight:700}
+.sheet-prompts span{display:block;height:30px;border-bottom:1px solid #888}
+.sheet-table{width:100%;border-collapse:collapse;font-size:13px}
+.sheet-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:8px;border:1px solid var(--ink);background:var(--cream)}
+.sheet-table td{height:34px;border:1px solid #999;padding:6px 8px}
+.sheet-footer{margin:30px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:10px;text-transform:uppercase;letter-spacing:.1em;opacity:.7}
+.template-more{padding:clamp(56px,6vw,90px) 7vw;background:var(--cream)}
+.template-more>div{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+.template-more a{display:grid;grid-template-columns:1fr auto;gap:10px;padding:22px;border:1px solid var(--ink);background:var(--paper);transition:background .2s}
+.template-more a:hover,.template-more a:focus-visible{background:var(--acid)}
+.template-more b{font-size:20px;text-transform:uppercase;letter-spacing:-.03em}
+.template-more span{grid-column:1;font-size:13px;line-height:1.45}
+.template-more i{grid-column:2;grid-row:1;font-style:normal}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1100px){
+  .template-grid{grid-template-columns:1fr 1fr}
+  .name-rules{grid-template-columns:1fr 1fr}
+  .name-rules article:nth-child(2n){border-right:0;margin-right:0}
+  .brand-palette{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:900px){
+  .toolkit-index{grid-template-columns:1fr 1fr}
+  .toolkit-index a:nth-child(2){border-right:0}
+  .toolkit-index a:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .toolkit-head{grid-template-columns:1fr;row-gap:22px}
+  .copy-blocks,.toolkit-contact{grid-template-columns:1fr}
+  .toolkit-contacts{grid-template-columns:1fr 1fr}
+  .template-more>div{grid-template-columns:1fr}
+  .brand-type{grid-template-columns:1fr 1fr}
+  .brand-type p{grid-column:1/-1}
+}
+@media(max-width:560px){
+  .toolkit-index a{padding:16px 6vw;font-size:10px}
+  .toolkit-section,.toolkit-contact{padding:64px 6vw}
+  .toolkit-steps li{grid-template-columns:44px minmax(0,1fr);gap:14px}
+  .name-rules,.template-grid,.toolkit-contacts{grid-template-columns:1fr}
+  .name-rules article{border-right:0;margin-right:0;border-bottom:1px solid var(--line)}
+  .template-grid article{min-height:0}
+  .template-grid h3{margin-top:40px}
+  .copy-block{padding:22px}
+  .brand-palette{grid-template-columns:repeat(4,1fr)}
+  .brand-type{grid-template-columns:1fr}
+  .template-toolbar{padding:20px 6vw}
+  .template-sheet{margin:24px 4vw;padding:22px;box-shadow:none}
+  .sheet-fields{grid-template-columns:1fr}
+  .sheet-checklist{columns:1}
+  .sheet-table{font-size:11px}
+  .sheet-table th,.sheet-table td{padding:5px}
+  .template-more{padding:56px 6vw}
+}
+
+/* ---------- Print: only the sheet ---------- */
+@media print{
+  @page{margin:14mm}
+  body{background:white!important}
+  .skip-link,.signal,.nav-wrap,.site>footer,.template-toolbar,.template-more,.toolkit-index{display:none!important}
+  main{overflow:visible!important}
+  main:before{display:none!important}
+  .template-sheet{margin:0;max-width:none;padding:0;border:0;box-shadow:none}
+  .sheet-header h1{font-size:30pt}
+  .sheet-checklist i,.sheet-table th,.sheet-table td{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet-table tr{break-inside:avoid}
+  a{color:inherit}
+}

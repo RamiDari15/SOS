@@ -26,7 +26,7 @@ function loadPlaywright() {
 const { chromium } = loadPlaywright();
 const executablePath = process.env.CHROMIUM_PATH || (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
 
-const PAGES = ["/", "/about", "/our-work", "/campaigns", "/chapters", "/conferences", "/media", "/news", "/newsletter", "/get-involved", "/toolkits", "/donate", "/contact"];
+const PAGES = ["/", "/about", "/our-work", "/campaigns", "/chapters", "/conferences", "/media", "/news", "/newsletter", "/get-involved", "/toolkits", "/toolkits/meeting-agenda", "/toolkits/event-checklist", "/toolkits/campaign-worksheet", "/toolkits/semester-report", "/donate", "/contact"];
 
 const results = [];
 let browser;
@@ -307,7 +307,7 @@ async function main() {
     try {
       await goto(page, "/contact?topic=toolkit");
       const form = page.locator("#contact-form");
-      assert((await form.locator('select[name="topic"]').inputValue()) === "Chapter toolkit access", "?topic=toolkit preselects toolkit access");
+      assert((await form.locator('select[name="topic"]').inputValue()) === "Toolkit request", "?topic=toolkit preselects toolkit request");
       await goto(page, "/contact?topic=chapter");
       assert((await form.locator('select[name="topic"]').inputValue()) === "Start or join a chapter", "?topic=chapter preselects chapter");
 
@@ -357,26 +357,58 @@ async function main() {
   });
 
   // ---------------------------------------------------------------- newsletter + get-involved submit
-  await check("newsletter form: consent required, 503 fallback mailto, success on 2xx", async () => {
+  await check("newsletter page: real content, consent required, optional school, 503 fallback, success says what happens next", async () => {
     const { context, page, errors } = await openPage({ width: 375, height: 800 });
     try {
       await goto(page, "/newsletter");
+      const body = await page.locator("main").innerText();
+      assert(!/coming soon/i.test(body) && !/issue 001/i.test(body), "no placeholder copy on /newsletter");
+      const cards = page.locator(".newsletter-latest .latest-card");
+      assert((await cards.count()) === 3, `expected 3 latest statements, got ${await cards.count()}`);
+      for (const card of await cards.evaluateAll((as) => as.map((a) => ({ href: a.getAttribute("href"), target: a.getAttribute("target"), label: a.getAttribute("aria-label"), title: a.querySelector("h3")?.textContent })))) {
+        assert(/^https:\/\//.test(card.href ?? "") && card.target === "_blank", `latest card opens its statement in a new tab: ${card.href}`);
+        assert(card.label?.startsWith(card.title ?? "\u0000"), `latest card label names its statement: ${card.label}`);
+      }
+      assert((await page.locator('.newsletter-latest a[href="/media#statements"]').count()) === 1, "All statements link");
+      assert(!/reply to any newsletter/i.test(body), "unsubscribe copy only offers email");
+      assert((await page.locator('a[href="mailto:sos@organize4syria.com?subject=Unsubscribe"]').count()) >= 1, "unsubscribe mailto present");
+
       const form = page.locator("form.newsletter-form");
+      const school = form.locator('input[name="school"]');
+      assert((await school.getAttribute("required")) === null, "school is optional");
+      const hintId = await school.getAttribute("aria-describedby");
+      assert(hintId && /Helps us connect you with your campus chapter/.test(await page.locator(`[id="${hintId}"]`).innerText()), "school hint is wired with aria-describedby");
       await form.locator('input[name="email"]').fill("reader@example.edu");
       await form.locator('input[name="firstName"]').fill("Rana");
       await form.locator('input[name="lastName"]').fill("K");
-      await form.getByRole("button", { name: /join the early list/i }).click();
+      await form.getByRole("button", { name: /subscribe/i }).click();
       await page.waitForTimeout(300);
       assert((await form.locator(".form-status.is-error").count()) === 0, "unchecked consent blocks the submit");
       await form.locator('input[name="consent"]').check();
-      await form.getByRole("button", { name: /join the early list/i }).click();
+      await form.getByRole("button", { name: /subscribe/i }).click();
       const link = form.locator(".form-status.is-error a[href^='mailto:']");
       await link.waitFor({ timeout: 5000 });
       const mailto = decodeURIComponent((await link.getAttribute("href")) ?? "");
-      assert(/Newsletter early list/.test(mailto) && /: yes/.test(mailto), `newsletter mailto: ${mailto.slice(0, 160)}`);
+      assert(/Newsletter signup/.test(mailto) && /: yes/.test(mailto), `newsletter mailto: ${mailto.slice(0, 160)}`);
+      assert(!/School \/ chapter/.test(mailto), "empty optional school is left out of the mailto");
+
+      let posted;
+      page.on("request", (req) => {
+        if (req.url().endsWith("/api/forms")) posted = req.postDataJSON();
+      });
+      await form.locator('input[name="school"]').fill("Loyola University Chicago");
       await page.route("**/api/forms", (route) => route.fulfill({ status: 200, contentType: "application/json", body: '{"ok":true}' }));
-      await form.getByRole("button", { name: /join the early list/i }).click();
-      await page.locator(".form-success h2", { hasText: /early list/i }).waitFor({ timeout: 5000 });
+      await form.getByRole("button", { name: /subscribe/i }).click();
+      const success = page.locator(".form-success");
+      await success.locator("h2", { hasText: /on the list, Rana/i }).waitFor({ timeout: 5000 });
+      assert(await success.locator("h2").evaluate((el) => el === document.activeElement), "focus moves to the success heading");
+      assert((await success.getAttribute("aria-live")) === null, "success panel is not a second live region");
+      assert(posted?.type === "newsletter" && posted.fields.school === "Loyola University Chicago", "school is posted");
+      const text = await success.innerText();
+      assert(/We’ll email reader@example\.edu when the Students Organize For Syria newsletter goes out/.test(text), `success says what happens next: ${text.slice(0, 160)}`);
+      assert(!/spam/i.test(text), "no spam-folder advice");
+      assert((await success.locator('a[href="/get-involved"]').count()) === 1, "next-step link");
+      await shot(page, "newsletter-success-375");
       assert(errors.length === 0, errors.join("\n"));
     } finally {
       await context.close();

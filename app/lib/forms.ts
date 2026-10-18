@@ -14,7 +14,7 @@ export const ORG_EMAIL = "sos@organize4syria.com";
 
 export const CONTACT_TOPICS = [
   "Start or join a chapter",
-  "Chapter toolkit access",
+  "Toolkit request",
   "Partnership",
   "Press or statement",
   "General inquiry",
@@ -22,7 +22,7 @@ export const CONTACT_TOPICS = [
 
 /** `/contact?topic=…` values used by links across the site, mapped to the select option. */
 const TOPIC_PARAMS: Record<string, (typeof CONTACT_TOPICS)[number]> = {
-  toolkit: "Chapter toolkit access",
+  toolkit: "Toolkit request",
   chapter: "Start or join a chapter",
   partner: "Partnership",
   partnership: "Partnership",
@@ -85,12 +85,13 @@ export const FORM_SCHEMAS: Record<FormType, { title: string; fields: Record<stri
     },
   },
   newsletter: {
-    title: "Newsletter early list",
+    title: "Newsletter signup",
     fields: {
       email: { label: "Email address", kind: "email", required: true, max: 254 },
       firstName: { label: "First name", kind: "text", required: true, max: 80 },
       lastName: { label: "Last name", kind: "text", required: true, max: 80 },
-      consent: { label: `I want updates from ${ORG_NAME}`, kind: "consent", required: true, max: 3 },
+      school: { label: "School / chapter", kind: "text", max: 160 },
+      consent: { label: `I want monthly updates from ${ORG_NAME}`, kind: "consent", required: true, max: 3 },
     },
   },
 };
