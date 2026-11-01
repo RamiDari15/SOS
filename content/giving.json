@@ -1,0 +1,22 @@
+{
+  "slots": [
+    {
+      "title": "Campus organizing",
+      "caption": "Support for student chapters organizing on their campuses.",
+      "image": "",
+      "alt": ""
+    },
+    {
+      "title": "National connection",
+      "caption": "Support for the national network that connects chapters.",
+      "image": "",
+      "alt": ""
+    },
+    {
+      "title": "Movement continuity",
+      "caption": "Support for keeping the movement running over time.",
+      "image": "",
+      "alt": ""
+    }
+  ]
+}

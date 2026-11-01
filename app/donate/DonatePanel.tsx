@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
+import { contactEmail } from "../site-settings";
 
-const DONATION_EMAIL = "sos@organize4syria.com";
+const DONATION_EMAIL = contactEmail;
 const PRESETS = ["25", "50", "100", "250", "500"];
 
 /**

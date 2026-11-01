@@ -4,13 +4,16 @@
  * the client (app/Forms.tsx) for the mailto fallback. No secrets here.
  */
 
+import { contactEmail } from "../site-settings";
+
 export const FORM_TYPES = ["contact", "member", "chapter", "newsletter"] as const;
 export type FormType = (typeof FORM_TYPES)[number];
 
 /** Hidden anti-spam field. Deliberately not a name browsers or password managers autofill. */
 export const HONEYPOT_FIELD = "sos_hp_ref";
 export const ORG_NAME = "Students Organize For Syria";
-export const ORG_EMAIL = "sos@organize4syria.com";
+/** Public contact address, edited in the admin under Site settings (content/settings.json). */
+export const ORG_EMAIL = contactEmail;
 
 export const CONTACT_TOPICS = [
   "Start or join a chapter",
