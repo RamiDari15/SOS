@@ -1,9 +1,8 @@
 STUDENTS ORGANIZE FOR SYRIA (SOS) — BRAND KIT
 =============================================
 
-These are free files for SOS chapters and members to use. They match the
-current website. The board may redesign the logo in the future; if it does,
-this kit will be updated, so download a fresh copy before big print runs.
+These are free files for SOS chapters and members to use. The logos are the
+official SOS logos from the national board.
 
 Always write the name as: Students Organize For Syria (capital F in "For").
 Short form: SOS.
@@ -11,31 +10,38 @@ Short form: SOS.
 
 LOGO  (logo/)
 -------------
-sos-logo-dark.svg / .png    Dark logo. Use on white, paper or light backgrounds.
-sos-logo-light.svg / .png   Light logo. Use on dark green, black or photos with a
-                            dark area. (The PNG is transparent, so it looks blank on
-                            a white screen. That is normal.)
-sos-logo-green.svg / .png   Green logo. Use on white or paper backgrounds.
-sos-mark-green.svg / .png   Square "SOS" mark on green, for profile pictures and
-                            app icons.
+sos-logo-black.png      THE OFFICIAL LOGO. Black SOS with the Arabic name and
+                        "Students Organize For Syria". Use it whenever you can,
+                        on white, paper or light backgrounds.
+sos-english-green.png   "Students Organize For Syria" wordmark with the star, in
+                        green. For light backgrounds when the full name matters.
+sos-english-cream.png   The same wordmark in cream, for dark backgrounds. (The file
+                        is transparent, so it looks blank on a white screen.)
+sos-arabic-green.png    Arabic wordmark, green, for light backgrounds.
+sos-arabic-cream.png    Arabic wordmark, cream, for dark backgrounds.
+sos-bird-green.png      Red star with the Arabic and English names in green.
+sos-bird-cream.png      The same in cream, for dark backgrounds.
+sos-star.png            The red star alone. Use it for profile pictures, icons and
+                        small spaces.
+sos-header-black.png    Wide banner (1250x313) with the black logo, for email
+sos-header-green.png    headers, the top of documents, and web banners.
 
-- SVG files scale to any size without blurring (best for print, Canva and
-  Figma). PNG files are 2000px wide with a transparent background.
-- The logo text is already converted to shapes, so you don't need the font.
+- All files are high-resolution PNGs with a transparent background (except the
+  two headers), so they work in Canva, Google Docs and Figma.
 
 Do:
-- Keep clear space around the logo. The space should be at least half the
-  height of the letters "SOS" on every side. The files already include it.
+- Keep clear space around the logo. The files already include some; don't
+  crop into it.
 - Resize the logo by dragging a corner, so it keeps its proportions.
 - Pick the version with the most contrast against your background.
 - Make sure the small "Students Organize For Syria" text stays readable. If
-  the logo is smaller than about 120px (3 cm) wide, use the square SOS mark
-  instead.
+  the logo is smaller than about 120px (3 cm) wide, use the red star
+  (sos-star.png) instead.
 
 Don't:
 - Stretch, squash, tilt or rotate the logo.
 - Change its colors, add shadows, outlines or effects.
-- Retype the logo in another font or rearrange its parts.
+- Retype the logo, redraw it, or rearrange its parts.
 - Put it on a busy photo or a background with low contrast.
 - Combine it with another organization's logo so it looks like one mark.
 - Use it to suggest SOS endorses something it hasn't approved.

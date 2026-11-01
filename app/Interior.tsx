@@ -56,7 +56,7 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
     <a className="skip-link" href="#main-content">Skip to content</a>
     <div className="signal"><span>Students shaping Syria’s future</span><Link href="/get-involved">Join the movement <Arrow /></Link></div>
     <header className="nav-wrap">
-      <Link className="brand" href="/" aria-label="Students Organize For Syria home"><b>SOS</b><span>Students<br />Organize<br />For Syria</span></Link>
+      <Link className="brand" href="/" aria-label="Students Organize For Syria home"><img src="/brand/sos-logo-black.png" width={480} height={279} alt="" /></Link>
       <button ref={menuButton} type="button" className="menu" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="site-nav">{open ? "Close" : "Menu"}</button>
       <nav id="site-nav" className={open ? "nav-open" : ""} aria-label="Main navigation">
         {NAV_ITEMS.map(item => {
@@ -69,7 +69,7 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
     {/* While the mobile menu is open, the page behind it is inert so focus and screen readers stay in the menu. */}
     <main id="main-content" tabIndex={-1} inert={open || undefined}>{children}</main>
     <footer inert={open || undefined}>
-      <Link className="footer-mark" href="/" aria-label="Students Organize For Syria home">SOS</Link>
+      <Link className="footer-mark" href="/" aria-label="Students Organize For Syria home"><img src="/brand/sos-english-cream.png" width={900} height={382} alt="" /></Link>
       <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a><br/><a href="https://www.instagram.com/organize4syria/">Instagram</a> · <a href="https://www.facebook.com/Organize4Syria/">Facebook</a></p>
       <nav className="footer-nav" aria-label="Footer"><Link href="/about">About</Link><Link href="/our-work">Our work</Link><Link href="/campaigns">Campaigns</Link><Link href="/chapters">Chapters</Link><Link href="/conferences">Conferences</Link><Link href="/media">Media</Link><Link href="/newsletter">Newsletter</Link><Link href="/toolkits">Toolkits</Link><Link href="/donate">Donate</Link><Link href="/contact">Contact</Link></nav>
       <div className="footer-meta"><span>© 2026 Students Organize For Syria</span><span>Student-led. Always.</span></div>

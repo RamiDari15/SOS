@@ -1,19 +1,18 @@
-// Builds the downloadable SOS brand kit into public/toolkit/brand/.
+// Builds the palette sheet and social templates of the SOS brand kit into public/toolkit/brand/.
 // Run: node art-src/toolkit/build.mjs
-// - Logo SVGs use outlined text (glyph paths from Archivo, SIL OFL), so they need no font.
+// - The official logos come from the board (originals in art-src/brand/official/). The kit's
+//   logo/ files are trimmed copies of those; the templates embed art-src/toolkit/logo-src/*.png.
 // - Palette sheet and social templates are SVG sources in art-src/toolkit/, rendered to PNG
 //   with Playwright + Chromium (override with PLAYWRIGHT_MODULE / CHROMIUM_PATH).
-// All artwork is original: type, geometric shapes and abstract silhouettes only.
 import { createRequire } from "node:module";
-import { mkdirSync, writeFileSync, statSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { loadFont } from "./ttf-paths.mjs";
 
 const require = createRequire(import.meta.url);
 const here = dirname(fileURLToPath(import.meta.url));
 const out = join(here, "..", "..", "public", "toolkit", "brand");
-for (const d of ["", "logo", "colors", "templates"]) mkdirSync(join(out, d), { recursive: true });
+for (const d of ["", "colors", "templates"]) mkdirSync(join(out, d), { recursive: true });
 
 // Brand colors — mirror :root in app/globals.css.
 export const COLORS = [
@@ -28,43 +27,7 @@ export const COLORS = [
 ];
 const C = Object.fromEntries(COLORS.map(([n, h]) => [n.toLowerCase(), h]));
 
-const sosFont = loadFont(join(here, "fonts", "Archivo-700.ttf"));
-const labelFont = loadFont(join(here, "fonts", "Archivo-800.ttf"));
 const r1 = n => Math.round(n * 100) / 100;
-
-/* ---------- Logo lock-up (mirrors the site header: "SOS" | STUDENTS / ORGANIZE / FOR SYRIA) ---------- */
-// Proportions from the header CSS: SOS 39px, tracking -.08em; gap 11px; 1px rule; 12px padding; label 8px/1.15, weight 800.
-function lockup(color, { F = 400, x = 0, y = 0 } = {}) {
-  const k = F / 39;
-  const capH = sosFont.capHeight() * F;
-  const sos = sosFont.textPath("SOS", { x, y: y + capH, size: F, tracking: -0.08 });
-  const L = 8 * k, lh = 1.15 * L, labelCap = labelFont.capHeight() * L;
-  const mid = y + capH / 2;
-  const inkTop = mid - (2 * lh + labelCap) / 2;
-  const ruleX = x + sos.width + 11 * k, ruleW = Math.max(1, k);
-  const textX = ruleX + ruleW + 12 * k;
-  const lines = ["STUDENTS", "ORGANIZE", "FOR SYRIA"].map((t, i) => labelFont.textPath(t, { x: textX, y: inkTop + labelCap + i * lh, size: L }));
-  const boxH = 3 * lh;
-  const width = textX - x + Math.max(...lines.map(l => l.width));
-  const body = `<g fill="${color}"><path d="${sos.d}"/><rect x="${r1(ruleX)}" y="${r1(mid - boxH / 2)}" width="${r1(ruleW)}" height="${r1(boxH)}"/>${lines.map(l => `<path d="${l.d}"/>`).join("")}</g>`;
-  return { body, width, height: capH };
-}
-
-function logoSvg(color, bgNote) {
-  const F = 400, pad = 120; // clear space ≈ half the letter height on every side
-  const probe = lockup(color, { F });
-  const W = Math.ceil(probe.width + pad * 2), H = Math.ceil(probe.height + pad * 2);
-  const { body } = lockup(color, { F, x: pad, y: pad });
-  return { svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><title>Students Organize For Syria (SOS) logo — ${bgNote}</title>${body}</svg>\n`, W, H };
-}
-
-function markSvg() {
-  const S = 1000, F = 360;
-  const capH = sosFont.capHeight() * F;
-  const probe = sosFont.textPath("SOS", { size: F, tracking: -0.08 });
-  const sos = sosFont.textPath("SOS", { x: (S - probe.width) / 2, y: (S + capH) / 2, size: F, tracking: -0.08 });
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${S} ${S}" width="${S}" height="${S}"><title>SOS mark — profile picture</title><rect width="${S}" height="${S}" fill="${C.green}"/><path d="${sos.d}" fill="${C.paper}"/></svg>\n`;
-}
 
 /* ---------- Shared poster pieces ---------- */
 const fontCss = `<style>
@@ -96,7 +59,14 @@ function torn(x, y, w, h, seed, jag = 8) {
   return [...top, ...bot].join(" ");
 }
 const sparkle = (x, y, r, fill) => `<path d="M${x} ${y - r}Q${x + r * .14} ${y - r * .14} ${x + r} ${y}Q${x + r * .14} ${y + r * .14} ${x} ${y + r}Q${x - r * .14} ${y + r * .14} ${x - r} ${y}Q${x - r * .14} ${y - r * .14} ${x} ${y - r}Z" fill="${fill}"/>`;
-const placed = (color, x, y, F) => lockup(color, { F, x, y }).body;
+// Official logo: black SOS mark on light backgrounds, cream "Students Organize For Syria" on dark ones.
+const logoSrc = name => `data:image/png;base64,${readFileSync(join(here, "logo-src", name)).toString("base64")}`;
+const LOGOS = { dark: [logoSrc("sos-logo-black.png"), 700 / 407], light: [logoSrc("sos-english-cream.png"), 700 / 297] };
+const placed = (color, x, y, F) => {
+  const [href, ratio] = color === C.ink ? LOGOS.dark : LOGOS.light;
+  const h = Math.round(F * (color === C.ink ? 2 : 1.25));
+  return `<image href="${href}" x="${x}" y="${y}" width="${Math.round(h * ratio)}" height="${h}"/>`;
+};
 const page = (W, H, body) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${fontCss}${defs}${body}</svg>\n`;
 
 /* ---------- Template 1: event announcement (forest) ---------- */
@@ -192,20 +162,7 @@ function paletteSheet() {
 }
 
 /* ---------- Write sources ---------- */
-const logos = [
-  ["sos-logo-dark", C.ink, "dark, for light backgrounds"],
-  ["sos-logo-light", C.paper, "light, for dark backgrounds"],
-  ["sos-logo-green", C.green, "green, for light backgrounds"],
-];
 const jobs = [];
-for (const [name, color, note] of logos) {
-  const { svg, W, H } = logoSvg(color, note);
-  writeFileSync(join(out, "logo", `${name}.svg`), svg);
-  jobs.push({ src: join(out, "logo", `${name}.svg`), dest: join(out, "logo", `${name}.png`), w: W, h: H, scale: 2000 / W, transparent: true });
-}
-writeFileSync(join(out, "logo", "sos-mark-green.svg"), markSvg());
-jobs.push({ src: join(out, "logo", "sos-mark-green.svg"), dest: join(out, "logo", "sos-mark-green.png"), w: 1000, h: 1000, scale: 1 });
-
 const sources = { "palette.svg": [paletteSheet(), "colors/sos-color-palette.png", 2000, 1300] };
 for (const [name, fn] of [["event", eventTemplate], ["meeting", meetingTemplate], ["statement", statementTemplate]]) {
   for (const [kind, h] of [["post", 1080], ["story", 1920]]) {

@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    icons: { icon: [{ url: "/favicon-16.png", sizes: "16x16", type: "image/png" }, { url: "/favicon-32.png", sizes: "32x32", type: "image/png" }, { url: "/favicon-48.png", sizes: "48x48", type: "image/png" }], apple: "/apple-touch-icon.png" },
     openGraph: { title, description, type: "website", images: [{ url: image, width: 1200, height: 630, alt: "We are shaping the future — Students Organize For Syria" }] },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
