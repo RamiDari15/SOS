@@ -252,3 +252,6 @@ body{overflow-x:clip}
   .action-grid h2,.donation-panel h2{font-size:clamp(28px,8.4vw,40px);margin-right:0}
   .signal{font-size:9px}
 }
+/* Official logos (art-src/brand/official). */
+.brand img{width:auto;height:56px}.footer-mark{display:block;max-width:340px}.footer-mark img{width:100%;height:auto}
+@media(max-width:560px){.brand img{height:46px}.footer-mark{max-width:260px}}

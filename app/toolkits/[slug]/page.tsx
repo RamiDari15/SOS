@@ -37,7 +37,7 @@ export default async function TemplatePage({ params }: { params: Promise<{ slug:
     </div>
     <article className="template-sheet">
       <header className="sheet-header">
-        <p><b>SOS</b> {ORG_NAME} · Chapter toolkit</p>
+        <p className="sheet-brand"><img src="/brand/sos-logo-black.png" width={480} height={279} alt={ORG_NAME} /><span>Chapter toolkit</span></p>
         <h1>{t.title}</h1>
         <p className="sheet-summary">{t.summary}</p>
       </header>

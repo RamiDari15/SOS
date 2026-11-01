@@ -132,21 +132,23 @@ export const templateFile = (t: Template) => `/toolkit/docs/${t.slug}.md`;
 
 // -----------------------------------------------------------------------------
 // Brand kit. Files live in public/toolkit/brand/. Add one entry per file.
-// `file` is the path under public/, e.g. "/toolkit/brand/sos-logo-black.svg".
+// `file` is the path under public/, e.g. "/toolkit/brand/logo/sos-logo-black.png".
 // -----------------------------------------------------------------------------
 
 export type BrandFile = { title: string; file: string; format: string; note?: string };
 
 export const brandFiles: BrandFile[] = [
   { title: "Read me first", file: "/toolkit/brand/README.txt", format: "TXT", note: "What every file is for, logo rules, colors, and fonts." },
-  { title: "Dark logo (vector)", file: "/toolkit/brand/logo/sos-logo-dark.svg", format: "SVG", note: "For white or light backgrounds." },
-  { title: "Dark logo (image)", file: "/toolkit/brand/logo/sos-logo-dark.png", format: "PNG", note: "For white or light backgrounds." },
-  { title: "Light logo (vector)", file: "/toolkit/brand/logo/sos-logo-light.svg", format: "SVG", note: "For dark backgrounds. The PNG looks blank on a white screen; that is normal." },
-  { title: "Light logo (image)", file: "/toolkit/brand/logo/sos-logo-light.png", format: "PNG", note: "For dark backgrounds. The PNG looks blank on a white screen; that is normal." },
-  { title: "Green logo (vector)", file: "/toolkit/brand/logo/sos-logo-green.svg", format: "SVG", note: "For white or paper backgrounds." },
-  { title: "Green logo (image)", file: "/toolkit/brand/logo/sos-logo-green.png", format: "PNG", note: "For white or paper backgrounds." },
-  { title: "Square SOS mark (vector)", file: "/toolkit/brand/logo/sos-mark-green.svg", format: "SVG", note: "For profile pictures and icons." },
-  { title: "Square SOS mark (image)", file: "/toolkit/brand/logo/sos-mark-green.png", format: "PNG", note: "For profile pictures and icons." },
+  { title: "Official SOS logo", file: "/toolkit/brand/logo/sos-logo-black.png", format: "PNG", note: "The main logo. Use it whenever you can, on light backgrounds." },
+  { title: "Name wordmark, green", file: "/toolkit/brand/logo/sos-english-green.png", format: "PNG", note: "\"Students Organize For Syria\" with the star, for light backgrounds." },
+  { title: "Name wordmark, cream", file: "/toolkit/brand/logo/sos-english-cream.png", format: "PNG", note: "For dark backgrounds. It looks blank on a white screen; that is normal." },
+  { title: "Arabic wordmark, green", file: "/toolkit/brand/logo/sos-arabic-green.png", format: "PNG", note: "For light backgrounds." },
+  { title: "Arabic wordmark, cream", file: "/toolkit/brand/logo/sos-arabic-cream.png", format: "PNG", note: "For dark backgrounds." },
+  { title: "Star logo, green", file: "/toolkit/brand/logo/sos-bird-green.png", format: "PNG", note: "The red star with both names, for light backgrounds." },
+  { title: "Star logo, cream", file: "/toolkit/brand/logo/sos-bird-cream.png", format: "PNG", note: "The red star with both names, for dark backgrounds." },
+  { title: "Red star", file: "/toolkit/brand/logo/sos-star.png", format: "PNG", note: "For profile pictures, icons and small spaces." },
+  { title: "Banner, black", file: "/toolkit/brand/logo/sos-header-black.png", format: "PNG", note: "Wide header for emails, documents and web banners." },
+  { title: "Banner, green", file: "/toolkit/brand/logo/sos-header-green.png", format: "PNG", note: "Wide header for emails, documents and web banners." },
   { title: "Color palette", file: "/toolkit/brand/colors/sos-color-palette.png", format: "PNG", note: "All eight brand colors with HEX and RGB values." },
   { title: "Event announcement, 1080×1080 post", file: "/toolkit/brand/templates/sos-event-post.png", format: "PNG", note: "With example text to replace." },
   { title: "Event announcement, 1080×1080 post, blank", file: "/toolkit/brand/templates/sos-event-post-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },

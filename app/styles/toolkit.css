@@ -179,3 +179,4 @@
   .sheet-table tr{break-inside:avoid}
   a{color:inherit}
 }
+.sheet-brand{display:flex;align-items:center;gap:14px}.sheet-brand img{width:auto;height:44px}
