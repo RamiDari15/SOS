@@ -34,7 +34,7 @@ collections:
         label: Site settings (email and social links)
         file: content/settings.json
         fields:
-          - { name: contactEmail, label: Contact email, widget: string, hint: "Shown in the footer, Contact, Donate and Newsletter pages, and where website forms are sent." }
+          - { name: contactEmail, label: Contact email, widget: string, hint: "Shown in the footer and on the Contact, Donate, Newsletter and Toolkits pages. Website form submissions always go to sos@organize4syria.com." }
           - { name: instagramHandle, label: Instagram handle, widget: string, hint: "Without the @, e.g. organize4syria" }
           - { name: facebookUrl, label: Facebook page link, widget: string, hint: "Full link starting with https://" }
           - { name: organizingGuideUrl, label: Chapter organizing guide link, widget: string, required: false, hint: "The Google Doc linked on Get Involved. Leave empty to hide that box." }

@@ -57,7 +57,7 @@ The left side lists everything you can edit, all under **Website content**:
 
 Change the contact email, Instagram handle, Facebook page link, or the chapter organizing guide link.
 
-- **Contact email** is shown across the site **and is where website form submissions are emailed**. Only change it to an address someone checks. (If forms are sent through Resend, a developer may also need to update the Resend setup. See Part 4.)
+- **Contact email** is the address shown across the site (footer, Contact, Donate, Newsletter, Toolkits). Only change it to an address someone checks. Website form submissions always go to sos@organize4syria.com no matter what is entered here; changing that needs a developer (see Part 4).
 - **Instagram handle**: just the name, no @ (for example `organize4syria`).
 - **Facebook page link**: the full address, starting with `https://`.
 - **Chapter organizing guide link**: the Google Doc shown on Get Involved and Toolkits. Make sure the Doc is shared as "Anyone with the link can view". Leave it empty to hide that box.
@@ -146,7 +146,7 @@ These need a developer (someone comfortable editing the code on GitHub) or the s
 | Colors, fonts, spacing, layout | `app/globals.css` |
 | Art and captions in the Media page gallery, and home page artwork | `app/media/page.tsx`, `public/art/` |
 | Toolkit templates, brand kit, downloads | `app/toolkits/toolkit-data.ts`, `public/toolkit/` |
-| Form questions and topics | `app/Forms.tsx`, `app/lib/forms.ts` |
+| Form questions and topics, and the address form submissions are emailed to (sos@organize4syria.com) | `app/Forms.tsx`, `app/lib/forms.ts` |
 | Donation amounts, legal name, EIN on the Donate page | `app/donate/DonatePanel.tsx` |
 | Redirects when a chapter is renamed (so old links keep working) | `next.config.ts` |
 | Page titles shown in Google results | the `metadata` at the top of each page file |
