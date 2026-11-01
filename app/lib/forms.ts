@@ -10,6 +10,10 @@ export type FormType = (typeof FORM_TYPES)[number];
 /** Hidden anti-spam field. Deliberately not a name browsers or password managers autofill. */
 export const HONEYPOT_FIELD = "sos_hp_ref";
 export const ORG_NAME = "Students Organize For Syria";
+/**
+ * Where every form submission is emailed. Deliberately fixed in code (owner requirement), so the
+ * editable contact email in /admin -> Site settings cannot redirect form submissions.
+ */
 export const ORG_EMAIL = "sos@organize4syria.com";
 
 export const CONTACT_TOPICS = [

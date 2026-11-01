@@ -1,0 +1,44 @@
+{
+  "campaigns": [
+    {
+      "title": "Books Not Bombs",
+      "partner": "With Karam Foundation",
+      "body": "SOS helped fund scholarships and support education in Syria."
+    },
+    {
+      "title": "Advocacy in D.C.",
+      "partner": "With SAMS",
+      "body": "Students brought informed Syrian voices directly to Washington."
+    },
+    {
+      "title": "Paper Airplanes",
+      "partner": "National partnership",
+      "body": "SOS members offered English tutoring to young Syrians."
+    },
+    {
+      "title": "Warmth in Action",
+      "partner": "With NuDay Syria",
+      "body": "Students fundraised for winter coats for Syrian refugee children."
+    },
+    {
+      "title": "Syria Solidarity Week",
+      "partner": "National campus action",
+      "body": "Chapters held panels, screenings, fundraisers, art actions, and public solidarity events."
+    },
+    {
+      "title": "Dares 4 Syria",
+      "partner": "With Karam Foundation",
+      "body": "A Giving Tuesday campaign that invited supporters to take action for Syrian youth."
+    },
+    {
+      "title": "Virtual Mentorship",
+      "partner": "Syrian Youth Empowerment",
+      "body": "Students and young professionals mentored Syrian youth navigating college applications."
+    },
+    {
+      "title": "The Revolution Continues",
+      "partner": "Washington, D.C.",
+      "body": "A public remembrance and advocacy gathering centered on freedom and accountability."
+    }
+  ]
+}

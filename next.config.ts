@@ -32,6 +32,8 @@ const nextConfig: NextConfig = {
   turbopack: { root: process.cwd() },
   async redirects() {
     return [
+      // Content editor (Decap CMS) lives in public/admin/. See docs/ADMIN-GUIDE.md.
+      { source: "/admin", destination: "/admin/index.html", permanent: false },
       ...Object.entries(renamedChapterSlugs).map(([from, to]) => ({ source: `/chapters/${from}`, destination: `/chapters/${to}`, permanent: true })),
       ...removedChapterSlugs.map(from => ({ source: `/chapters/${from}`, destination: "/chapters", permanent: true })),
     ];
