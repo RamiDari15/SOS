@@ -109,8 +109,7 @@ configured with environment variables (see `.env.example`):
 | --- | --- |
 | `FORMS_WEBHOOK_URL` | https URL that receives each submission as JSON (Google Apps Script, Zapier, Make, …). |
 | `FORMS_WEBHOOK_SECRET` | Optional. Sent as `secret` in the JSON and as the `X-Forms-Secret` header. |
-| `RESEND_API_KEY` | Resend API key. Needs `FORMS_TO_EMAIL`. |
-| `FORMS_TO_EMAIL` | Inbox(es) for submission emails, comma-separated. |
+| `RESEND_API_KEY` | Resend API key. Every submission is emailed to `sos@organize4syria.com` (fixed in code as `ORG_EMAIL` in `app/lib/forms.ts`). |
 | `FORMS_FROM_EMAIL` | Optional sender on a Resend-verified domain (default `onboarding@resend.dev`). |
 | `SUPABASE_URL` | `https://<project-ref>.supabase.co`. Needs `SUPABASE_SERVICE_ROLE_KEY`. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Service-role key (server only, never `NEXT_PUBLIC_`). Rows go into `public.form_submissions`. |
