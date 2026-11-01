@@ -5,20 +5,18 @@
  * Configuration (all optional, read at request time, never hardcoded):
  *   FORMS_WEBHOOK_URL   POST the JSON submission here (Google Apps Script, Zapier, Make...)
  *   FORMS_WEBHOOK_SECRET  optional shared secret sent as `secret` in the JSON and X-Forms-Secret header
- *   RESEND_API_KEY      Resend API key; requires FORMS_TO_EMAIL
- *   FORMS_TO_EMAIL      inbox(es) that receive submissions, comma-separated
+ *   RESEND_API_KEY      Resend API key; emails every submission to ORG_EMAIL (sos@organize4syria.com)
  *   FORMS_FROM_EMAIL    sender on a domain verified in Resend (default: onboarding@resend.dev)
  *   SUPABASE_URL        https://<project>.supabase.co; requires SUPABASE_SERVICE_ROLE_KEY
  *   SUPABASE_SERVICE_ROLE_KEY  service-role key (server only); inserts into public.form_submissions
  *   FORMS_IP_SALT       optional; when set, a salted SHA-256 of the sender's IP is stored as ip_hash
  */
-import { FormType, ORG_NAME, formatSubmissionText, submissionSubject } from "./forms";
+import { FormType, ORG_EMAIL, ORG_NAME, formatSubmissionText, submissionSubject } from "./forms";
 
 const ENV_KEYS = [
   "FORMS_WEBHOOK_URL",
   "FORMS_WEBHOOK_SECRET",
   "RESEND_API_KEY",
-  "FORMS_TO_EMAIL",
   "FORMS_FROM_EMAIL",
   "SUPABASE_URL",
   "SUPABASE_SERVICE_ROLE_KEY",
@@ -137,9 +135,10 @@ export async function deliverSubmission(
     );
   }
 
-  if (env.RESEND_API_KEY && env.FORMS_TO_EMAIL) {
+  if (env.RESEND_API_KEY) {
     configured.push("email");
-    const to = env.FORMS_TO_EMAIL.split(",").map((s) => s.trim()).filter(Boolean);
+    // Every form goes to the national inbox; this is deliberately not configurable.
+    const to = [ORG_EMAIL];
     const text = `${formatSubmissionText(submission.type, submission.data)}\n\nSubmitted: ${submission.submittedAt}${submission.page ? `\nPage: ${submission.page}` : ""}`;
     const body = {
       from: env.FORMS_FROM_EMAIL || `${ORG_NAME} <onboarding@resend.dev>`,
