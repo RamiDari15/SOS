@@ -19,18 +19,6 @@ export const MISSION =
 export const BOILERPLATE =
   "Students Organize For Syria (SOS) is a national, student-led movement rooted in advocacy, solidarity, and action for Syria. SOS grew from two student efforts, Save Our Syrian Freedom at Arizona State University (2012) and Students for Syrian Relief at Yale (2013), into a unified, nationwide student network. Today, SOS chapters give students concrete ways to organize, advocate, mobilize resources, and grow together.";
 
-/** Brand colors. Keep in sync with public/toolkit/brand/README.txt and the tokens in app/globals.css. */
-export const brandColors = [
-  { name: "Ink", hex: "#1B1C1A" },
-  { name: "Paper", hex: "#F4F6F1" },
-  { name: "Cream", hex: "#DFE8DF" },
-  { name: "Green", hex: "#0D6844" },
-  { name: "Emerald", hex: "#16845A" },
-  { name: "Forest", hex: "#063F2C" },
-  { name: "Acid", hex: "#ACD0B9" },
-  { name: "Red", hex: "#A84A42" },
-] as const;
-
 export const socials = [
   { label: "Instagram", handle: "@organize4syria", url: "https://www.instagram.com/organize4syria/" },
   { label: "Facebook", handle: "Organize4Syria", url: "https://www.facebook.com/Organize4Syria/" },
@@ -131,35 +119,6 @@ export const findTemplate = (slug: string) => templates.find(t => t.slug === slu
 export const templateFile = (t: Template) => `/toolkit/docs/${t.slug}.md`;
 
 // -----------------------------------------------------------------------------
-// Brand kit. Files live in public/toolkit/brand/. Add one entry per file.
-// `file` is the path under public/, e.g. "/toolkit/brand/logo/sos-logo-black.png".
-// -----------------------------------------------------------------------------
-
-export type BrandFile = { title: string; file: string; format: string; note?: string };
-
-export const brandFiles: BrandFile[] = [
-  { title: "Read me first", file: "/toolkit/brand/README.txt", format: "TXT", note: "What every file is for, logo rules, colors, and fonts." },
-  { title: "Official SOS logo", file: "/toolkit/brand/logo/sos-logo-black.png", format: "PNG", note: "The main logo. Use it whenever you can, on light backgrounds." },
-  { title: "Name wordmark, green", file: "/toolkit/brand/logo/sos-english-green.png", format: "PNG", note: "\"Students Organize For Syria\" with the star, for light backgrounds." },
-  { title: "Name wordmark, cream", file: "/toolkit/brand/logo/sos-english-cream.png", format: "PNG", note: "For dark backgrounds. It looks blank on a white screen; that is normal." },
-  { title: "Arabic wordmark, green", file: "/toolkit/brand/logo/sos-arabic-green.png", format: "PNG", note: "For light backgrounds." },
-  { title: "Arabic wordmark, cream", file: "/toolkit/brand/logo/sos-arabic-cream.png", format: "PNG", note: "For dark backgrounds." },
-  { title: "Star logo, green", file: "/toolkit/brand/logo/sos-bird-green.png", format: "PNG", note: "The red star with both names, for light backgrounds." },
-  { title: "Star logo, cream", file: "/toolkit/brand/logo/sos-bird-cream.png", format: "PNG", note: "The red star with both names, for dark backgrounds." },
-  { title: "Red star", file: "/toolkit/brand/logo/sos-star.png", format: "PNG", note: "For profile pictures, icons and small spaces." },
-  { title: "Banner, black", file: "/toolkit/brand/logo/sos-header-black.png", format: "PNG", note: "Wide header for emails, documents and web banners." },
-  { title: "Banner, green", file: "/toolkit/brand/logo/sos-header-green.png", format: "PNG", note: "Wide header for emails, documents and web banners." },
-  { title: "Color palette", file: "/toolkit/brand/colors/sos-color-palette.png", format: "PNG", note: "All eight brand colors with HEX and RGB values." },
-  { title: "Event announcement, 1080×1080 post", file: "/toolkit/brand/templates/sos-event-post.png", format: "PNG", note: "With example text to replace." },
-  { title: "Event announcement, 1080×1080 post, blank", file: "/toolkit/brand/templates/sos-event-post-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
-  { title: "Event announcement, 1080×1920 story", file: "/toolkit/brand/templates/sos-event-story.png", format: "PNG", note: "With example text to replace." },
-  { title: "Event announcement, 1080×1920 story, blank", file: "/toolkit/brand/templates/sos-event-story-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
-  { title: "Chapter meeting, 1080×1080 post", file: "/toolkit/brand/templates/sos-meeting-post.png", format: "PNG", note: "With example text to replace." },
-  { title: "Chapter meeting, 1080×1080 post, blank", file: "/toolkit/brand/templates/sos-meeting-post-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
-  { title: "Chapter meeting, 1080×1920 story", file: "/toolkit/brand/templates/sos-meeting-story.png", format: "PNG", note: "With example text to replace." },
-  { title: "Chapter meeting, 1080×1920 story, blank", file: "/toolkit/brand/templates/sos-meeting-story-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
-  { title: "Statement or quote, 1080×1080 post", file: "/toolkit/brand/templates/sos-statement-post.png", format: "PNG", note: "With example text to replace." },
-  { title: "Statement or quote, 1080×1080 post, blank", file: "/toolkit/brand/templates/sos-statement-post-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
-  { title: "Statement or quote, 1080×1920 story", file: "/toolkit/brand/templates/sos-statement-story.png", format: "PNG", note: "With example text to replace." },
-  { title: "Statement or quote, 1080×1920 story, blank", file: "/toolkit/brand/templates/sos-statement-story-blank.png", format: "PNG", note: "Text areas left empty so you can type on top in Canva." },
-];
+// Brand kit: a Google Drive folder the national team keeps up to date. Paste its share link
+// here to show the "Brand kit" button on /toolkits; while it is empty the section is hidden.
+export const BRAND_KIT_URL: string = "";

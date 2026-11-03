@@ -2,24 +2,24 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero, Shell } from "../Interior";
 import { CopyButton } from "./ToolkitActions";
-import { BOILERPLATE, brandColors, CONTACT_EMAIL, MISSION, ORG_NAME, brandFiles, chapterSteps, nameRules, socials, templateFile, templates } from "./toolkit-data";
+import { BOILERPLATE, BRAND_KIT_URL, CONTACT_EMAIL, MISSION, ORG_NAME, chapterSteps, nameRules, socials, templateFile, templates } from "./toolkit-data";
 
 export const metadata: Metadata = {
   title: "Chapter toolkit | Students Organize For Syria",
-  description: "Free tools for starting and running a Students Organize For Syria chapter: organizing steps, messaging guide, printable templates, and brand files.",
+  description: "Free tools for starting and running a Students Organize For Syria chapter: organizing steps, messaging guide, and printable templates.",
 };
 
-const sections = [
+const sections: { id: string; label: string }[] = [
   { id: "start", label: "Start a chapter" },
   { id: "messaging", label: "Messaging guide" },
   { id: "templates", label: "Run the work" },
-  { id: "brand", label: "Brand kit" },
 ];
+if (BRAND_KIT_URL) sections.push({ id: "brand", label: "Brand kit" });
 
 const n = (i: number) => String(i + 1).padStart(2, "0");
 
 export default function Toolkits(){return <Shell active="toolkits">
-  <PageHero index="10" kicker="Chapter toolkit" tone="green" title={<>Built for<br/><i>organizers.</i></>} intro={`Free, public tools for starting and running a ${ORG_NAME} chapter: organizing steps, messaging, printable templates, and brand files.`}/>
+  <PageHero index="10" kicker="Chapter toolkit" tone="green" title={<>Built for<br/><i>organizers.</i></>} intro={`Free, public tools for starting and running a ${ORG_NAME} chapter: organizing steps, messaging, and printable templates.`}/>
 
   <nav className="toolkit-index" aria-label="Toolkit sections">{sections.map((s,i)=><a key={s.id} href={`#${s.id}`}><span>{n(i)}</span>{s.label}<b aria-hidden="true">↓</b></a>)}</nav>
 
@@ -45,18 +45,14 @@ export default function Toolkits(){return <Shell active="toolkits">
   </section>
 
   <section className="toolkit-section toolkit-templates" id="templates" aria-labelledby="templates-title">
-    <div className="toolkit-head"><p className="overline">03 · Run the work</p><h2 id="templates-title" className="ink">Templates you<br/>can use tonight.</h2><p>Open a template to print it or save it as a PDF, or download an editable Markdown copy for Google Docs, Word, or Notion.</p></div>
+    <div className="toolkit-head is-wide"><p className="overline">03 · Run the work</p><h2 id="templates-title" className="ink">Templates you<br/>can use tonight.</h2><p>Open a template to print it or save it as a PDF, or download an editable Markdown copy for Google Docs, Word, or Notion.</p></div>
     <div className="template-grid">{templates.map((t,i)=><article key={t.slug} data-reveal><span>{n(i)}</span><h3>{t.short}</h3><p>{t.summary}</p><div className="template-actions"><Link className="template-open" href={`/toolkits/${t.slug}`}>Open printable <span aria-hidden="true">↗</span></Link><a className="template-download" href={templateFile(t)} download={`${t.slug}.md`}>Download .md</a></div></article>)}</div>
   </section>
 
-  <section className="toolkit-section toolkit-brand" id="brand" aria-labelledby="brand-title">
-    <div className="toolkit-head"><p className="overline">04 · Brand kit</p><h2 id="brand-title" className="ink">Look like<br/>one movement.</h2><p>All chapters share the same SOS logo. Use these files and colors so every chapter’s posts and flyers read as part of one network.</p></div>
-    {brandFiles.length > 0
-      ? <ul className="brand-files">{brandFiles.map(f=><li key={f.file}><div><h3>{f.title}</h3>{f.note && <p>{f.note}</p>}</div><a href={f.file} download>{f.format} <span aria-hidden="true">↓</span></a></li>)}</ul>
-      : <div className="brand-request"><p>Logo files and social templates are shared by the national team.</p><a className="line-link" href={`mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Brand files request")}`}>Email for logo files ↗</a></div>}
-    <div className="brand-palette" role="list" aria-label="Brand colors">{brandColors.map(c=><div role="listitem" key={c.hex}><i style={{background:c.hex}} aria-hidden="true"/><b>{c.name}</b><code>{c.hex}</code></div>)}</div>
-    <div className="brand-type"><div><span>Display</span><b>Archivo Black</b></div><div><span>Body</span><b className="is-body">Archivo</b></div><p>Both are free on Google Fonts.</p></div>
-  </section>
+  {BRAND_KIT_URL && <section className="toolkit-brand-link" id="brand" aria-labelledby="brand-title">
+    <div><p className="overline">{n(sections.length - 1)} · Brand kit</p><h2 id="brand-title">Logos, colors and templates.</h2></div>
+    <a className="pill pill-cream" href={BRAND_KIT_URL} target="_blank" rel="noreferrer">Open the brand kit (Google Drive) <span aria-hidden="true">↗</span></a>
+  </section>}
 
   <section className="toolkit-contact"><div><p className="overline">Need something else?</p><h2 className="ink">Ask the<br/>national team.</h2></div><div><p>Looking for a resource that isn’t here, or have a template other chapters should use? Tell us.</p><a className="pill pill-dark" href="/contact?topic=toolkit#contact-form">Contact us ↗</a></div></section>
 </Shell>}

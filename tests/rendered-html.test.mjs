@@ -42,6 +42,7 @@ function h1Text(html) {
   if (!match) return "";
   return match[1]
     .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<img\b[^>]*\balt="([^"]*)"[^>]*>/gi, " $1 ")
     .replace(/<[^>]+>/g, " ")
     .replace(/&#x27;|&#39;/g, "'")
     .replace(/&amp;/g, "&")
@@ -50,7 +51,7 @@ function h1Text(html) {
 }
 
 const PAGES = [
-  ["/", /Students\s+shaping Syria’s\s+future/i],
+  ["/", /SOS: Students Organize For Syria/],
   ["/about", /Born from urgency/i],
   ["/our-work", /Power is something/i],
   ["/campaigns", /Attention is not enough/i],
@@ -58,7 +59,7 @@ const PAGES = [
   ["/conferences", /Ideas gather/i],
   ["/media", /The student voice/i],
   ["/news", /Our voices/i],
-  ["/newsletter", /Field notes\s+from the movement/i],
+  ["/newsletter", /Stay close\s+to the movement/i],
   ["/get-involved", /There is a place/i],
   ["/toolkits", /Built for/i],
   ["/donate", /Fuel student/i],
