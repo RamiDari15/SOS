@@ -180,3 +180,7 @@
   a{color:inherit}
 }
 .sheet-brand{display:flex;align-items:center;gap:14px}.sheet-brand img{width:auto;height:44px}
+/* Templates heading: two lines on desktop instead of five. */
+.toolkit-head.is-wide{grid-template-columns:minmax(0,1.7fr) minmax(0,.7fr)}.toolkit-head.is-wide h2{font-size:clamp(40px,4.4vw,74px);white-space:nowrap}
+@media(max-width:900px){.toolkit-head.is-wide{grid-template-columns:1fr}.toolkit-head.is-wide h2{white-space:normal;font-size:clamp(36px,9vw,56px)}}
+.toolkit-brand-link{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;padding:60px 7vw;background:var(--forest);color:var(--paper)}.toolkit-brand-link h2{margin:12px 0 0;font-size:clamp(28px,3vw,44px);text-transform:uppercase;letter-spacing:-.04em}

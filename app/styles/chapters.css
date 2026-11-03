@@ -107,3 +107,4 @@ ul.chapter-track>li{display:flex}
 .chapter-cta-row .chapter-cta{margin-left:0}
 .chapter-cta-row .line-link{margin-top:0;color:white}
 .chapter-cta-row .line-link:hover{color:var(--acid)}
+.network-intro{max-width:620px;font-size:17px;line-height:1.55;margin:24px 0 0;opacity:.85}

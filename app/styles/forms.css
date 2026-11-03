@@ -23,7 +23,7 @@
 
 /* ---------- Newsletter page ---------- */
 .newsletter-stage{align-items:start}
-.newsletter-copy h2{margin:28px 0 34px}
+.newsletter-copy :is(h1,h2){margin:28px 0 34px}
 .newsletter-perks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .newsletter-perks li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
 .newsletter-perks span{font-size:10px;font-weight:800;color:var(--green);padding-top:4px}
@@ -57,3 +57,4 @@
 @media(max-width:900px){.newsletter-latest-grid{grid-template-columns:1fr}.latest-card{min-height:0}.latest-card h3{padding-top:24px}}
 @media(max-width:560px){.newsletter-latest{padding:70px 6vw}.newsletter-facts div{grid-template-columns:1fr;gap:4px}}
 @media(prefers-reduced-motion:reduce){.latest-card{transition:none}.latest-card:hover,.latest-card:focus-visible{transform:none}}
+.newsletter-lede{font-size:18px;line-height:1.55;font-weight:600;max-width:560px;margin:0 0 30px}

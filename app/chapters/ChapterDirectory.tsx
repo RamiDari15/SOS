@@ -47,7 +47,7 @@ export function ChapterDirectory() {
   const nothing = active.length === 0 && past.length === 0;
   return <>
     <section className="network" aria-labelledby="network-title">
-      <div className="network-head"><div><p className="overline">{activeChapters.length} active SOS chapters</p><h2 id="network-title">Across campuses.<br />Connected by purpose.</h2></div><button onClick={() => setPaused(!paused)} aria-pressed={paused}>{paused ? "Play animation" : "Pause animation"}</button></div>
+      <div className="network-head"><div><p className="overline">{activeChapters.length} active SOS chapters</p><h1 id="network-title">Find your people.<br />Build where you are.</h1><p className="network-intro">Every chapter starts with students who refuse to stay on the sidelines. Find an active chapter near you, revive a past one, or begin organizing at your campus.</p></div><button onClick={() => setPaused(!paused)} aria-pressed={paused}>{paused ? "Play animation" : "Pause animation"}</button></div>
       <div className={`orbit ${paused ? "paused" : ""}`}>{[...activeChapters, ...activeChapters].map((c, i) => <a key={`${c.name}-${i}`} href={chapterHref(c)} tabIndex={i >= activeChapters.length ? -1 : undefined} aria-hidden={i >= activeChapters.length ? true : undefined}><CampusIcon chapter={c}/><span className="campus-copy"><b>{displayName(c)}</b><small>{c.location}</small></span><Arrow /></a>)}</div>
       <p className="verification-note">Active Students Organize For Syria chapters across the United States.</p>
     </section>

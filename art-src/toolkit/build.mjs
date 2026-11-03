@@ -1,4 +1,5 @@
-// Builds the palette sheet and social templates of the SOS brand kit into public/toolkit/brand/.
+// Builds the palette sheet and social templates into art-src/toolkit/dist/ (not served by the
+// site; upload them to the brand kit Google Drive folder when they change).
 // Run: node art-src/toolkit/build.mjs
 // - The official logos come from the board (originals in art-src/brand/official/). The kit's
 //   logo/ files are trimmed copies of those; the templates embed art-src/toolkit/logo-src/*.png.
@@ -11,7 +12,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const require = createRequire(import.meta.url);
 const here = dirname(fileURLToPath(import.meta.url));
-const out = join(here, "..", "..", "public", "toolkit", "brand");
+const out = join(here, "dist");
 for (const d of ["", "colors", "templates"]) mkdirSync(join(out, d), { recursive: true });
 
 // Brand colors — mirror :root in app/globals.css.

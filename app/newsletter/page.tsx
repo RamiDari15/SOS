@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Arrow, PageHero, Shell } from "../Interior";
+import { Arrow, Shell } from "../Interior";
 import { NewsletterForm } from "../Forms";
 import { statementLinkLabel, statements } from "../site-data";
 
@@ -23,17 +23,11 @@ export default function Newsletter() {
   const latest = statements.slice(0, 3);
   return (
     <Shell active="newsletter">
-      <PageHero
-        index="07"
-        kicker="Monthly newsletter"
-        tone="green"
-        title={<>Field notes<br /><i>from the movement.</i></>}
-        intro="A monthly email from Students Organize For Syria with chapter updates, organizer voices, opportunities to act, and new statements."
-      />
       <section className="newsletter-stage" aria-labelledby="newsletter-what">
         <div className="newsletter-copy">
           <p className="overline">What you’ll get</p>
-          <h2 id="newsletter-what">Stay close<br />to the movement.</h2>
+          <h1 id="newsletter-what">Stay close<br />to the movement.</h1>
+          <p className="newsletter-lede">A monthly email from Students Organize For Syria with chapter updates, organizer voices, opportunities to act, and new statements.</p>
           <ul className="newsletter-perks">
             {perks.map(([title, text], i) => (
               <li key={title}>

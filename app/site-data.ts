@@ -39,6 +39,9 @@ export const givingSlots: readonly GivingSlot[] = [
 
 export function slugify(value: string) { return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
+/** Current national board, shown above the founders on /about once filled in: [name, role, short bio]. */
+export const board: [string, string, string][] = [];
+
 export const founders = [
   ["Zana Alattar", "Founded Save Our Syrian Freedom at Arizona State University in 2012 and used that experience as a foundation for the national SOS network."],
   ["Omar Bailony", "A Syrian American advocate whose work included youth mentorship, asylum representation, and legal scholarship."],
