@@ -1,0 +1,176 @@
+# Content editor for the SOS website (Decap CMS). Opens at https://<site>/admin
+# Each "collection" below is one page in the editor's left menu and one file in content/.
+# Saving in the editor commits the change to the main branch on GitHub, and Vercel
+# then rebuilds the site (usually live in 1–3 minutes). Guide: docs/ADMIN-GUIDE.md
+
+backend:
+  name: github
+  repo: RamiDari15/SOS
+  branch: main
+  # base_url is set to this site's own address in index.html.
+  auth_endpoint: api/admin-auth
+  commit_messages:
+    update: "Content: update {{collection}} ({{author-login}})"
+    uploadMedia: "Content: upload {{path}}"
+    deleteMedia: "Content: delete {{path}}"
+
+# Lets a developer run the editor against their own computer: `npx decap-server` + `npm run dev`.
+local_backend: true
+
+publish_mode: simple
+site_url: https://organize4syria.com
+display_url: https://organize4syria.com
+logo_url: /favicon.svg
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: content
+    label: Website content
+    editor: { preview: false }
+    files:
+      - name: settings
+        label: Site settings (email and social links)
+        file: content/settings.json
+        fields:
+          - { name: contactEmail, label: Contact email, widget: string, hint: "Shown in the footer and on the Contact, Donate, Newsletter and Toolkits pages. Website form submissions always go to sos@organize4syria.com." }
+          - { name: instagramHandle, label: Instagram handle, widget: string, hint: "Without the @, e.g. organize4syria" }
+          - { name: facebookUrl, label: Facebook page link, widget: string, hint: "Full link starting with https://" }
+          - { name: organizingGuideUrl, label: Chapter organizing guide link, widget: string, required: false, hint: "The Google Doc linked on Get Involved. Leave empty to hide that box." }
+
+      - name: chapters
+        label: Chapters
+        file: content/chapters.json
+        fields:
+          - name: chapters
+            label: Chapters
+            label_singular: chapter
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}} — {{fields.status}}"
+            hint: "Order does not matter; the site sorts chapters alphabetically. Inactive chapters show as past chapters."
+            fields:
+              - { name: name, label: School name, widget: string, hint: "Full name. This also makes the page address, so changing it changes the link." }
+              - { name: shortName, label: Short name, widget: string, required: false, hint: "Optional shorter name for small cards, e.g. Michigan State" }
+              - { name: abbreviation, label: Abbreviation, widget: string, required: false, hint: "Optional letters shown in the circle when there is no logo, e.g. UTD" }
+              - { name: location, label: City and state, widget: string, hint: "e.g. Chicago, Illinois" }
+              - { name: status, label: Status, widget: select, default: active, options: [{ label: Active, value: active }, { label: "Inactive (past chapter)", value: inactive }] }
+              - { name: instagram, label: Chapter Instagram, widget: string, required: false, hint: "Handle without the @, e.g. sosucla" }
+              - { name: email, label: Chapter email, widget: string, required: false, hint: "Only a chapter-owned address. Never a student's personal email: this is public." }
+              - { name: logo, label: School logo, widget: image, required: false, choose_url: false, media_folder: /public/college-logos, public_folder: /college-logos, hint: "Square-ish image works best. Only use a logo the school allows." }
+
+      - name: campaigns
+        label: Past campaigns
+        file: content/campaigns.json
+        fields:
+          - name: campaigns
+            label: Campaigns
+            label_singular: campaign
+            widget: list
+            collapsed: true
+            summary: "{{fields.title}}"
+            hint: "Shown on the Campaigns page in this order. Drag to reorder."
+            fields:
+              - { name: title, label: Campaign name, widget: string }
+              - { name: partner, label: Partner or tagline, widget: string, required: false, hint: "e.g. With Karam Foundation" }
+              - { name: body, label: Short description, widget: text }
+
+      - name: statements
+        label: Official statements
+        file: content/statements.json
+        fields:
+          - name: statements
+            label: Statements
+            label_singular: statement
+            widget: list
+            collapsed: true
+            summary: "{{fields.date}} · {{fields.title}}"
+            hint: "Newest first. The top one is featured on the Newsletter and News pages. Drag to reorder."
+            fields:
+              - { name: date, label: Date, widget: string, hint: "Written the way it should appear, e.g. Dec 10, 2024" }
+              - { name: title, label: Title, widget: string }
+              - { name: summary, label: One-sentence summary, widget: text }
+              - { name: url, label: Link to the statement, widget: string, hint: "Full link starting with https://" }
+              - { name: source, label: Where the link goes, widget: select, default: Instagram, options: [{ label: Instagram post, value: Instagram }, { label: "Old organize4syria.com page (archived)", value: organize4syria.com }] }
+
+      - name: giving
+        label: Donate page photos
+        file: content/giving.json
+        fields:
+          - name: slots
+            label: '"Where your money goes" boxes'
+            label_singular: box
+            widget: list
+            collapsed: true
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Heading, widget: string }
+              - { name: caption, label: Caption, widget: text }
+              - { name: image, label: Photo, widget: image, required: false, choose_url: false, media_folder: /public/donate, public_folder: /donate, hint: "Optional. Only photos SOS has permission to use. Without one, a 'Photo coming soon' frame shows." }
+              - { name: alt, label: Photo description (for screen readers), widget: string, required: false, hint: "Describe what is in the photo, e.g. Students holding a banner at a campus rally" }
+
+      - name: board
+        label: Current board
+        file: content/board.json
+        fields:
+          - name: board
+            label: Board members
+            label_singular: board member
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}} · {{fields.role}}"
+            hint: "Shown on the About page above the founders, in this order. While this list is empty the founders show open; once anyone is added, the founders fold behind a 'Meet the founders' button."
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: role, label: Role, widget: string, required: false, hint: "e.g. President, Treasurer" }
+              - { name: bio, label: Short bio, widget: text, required: false }
+              - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Optional. Square photos look best (shown in a circle). Only use a photo the person agreed to share. Without one, their initials show." }
+
+      - name: founders
+        label: Founders
+        file: content/founders.json
+        fields:
+          - name: founders
+            label: Founders
+            label_singular: founder
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}}"
+            hint: "Shown on the About page in this order."
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: bio, label: Short bio, widget: text }
+
+      - name: conferences
+        label: Conferences
+        file: content/conferences.json
+        fields:
+          - name: conferences
+            label: Conferences
+            label_singular: conference
+            widget: list
+            collapsed: true
+            summary: "{{fields.year}} · {{fields.city}}"
+            hint: "Newest first."
+            fields:
+              - { name: year, label: Year, widget: string }
+              - { name: city, label: City and state, widget: string }
+              - { name: dates, label: Dates, widget: string, hint: "e.g. November 9–11, 2018" }
+              - { name: theme, label: Theme, widget: string }
+              - { name: speakers, label: Speakers and organizations, label_singular: speaker, widget: list, field: { name: speaker, label: Name, widget: string } }
+
+      - name: press
+        label: Press coverage
+        file: content/press.json
+        fields:
+          - name: press
+            label: Articles
+            label_singular: article
+            widget: list
+            collapsed: true
+            summary: "{{fields.source}} · {{fields.title}}"
+            fields:
+              - { name: source, label: Publication, widget: string, hint: "e.g. USA Today College" }
+              - { name: title, label: Headline, widget: string }
+              - { name: url, label: Link to the article, widget: string, hint: "Full link starting with https://" }

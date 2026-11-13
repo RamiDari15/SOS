@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Arrow, Shell } from "../Interior";
 import { NewsletterForm } from "../Forms";
 import { statementLinkLabel, statements } from "../site-data";
+import { contactEmail } from "../site-settings";
 
 export const metadata: Metadata = {
   title: "Newsletter | Students Organize For Syria",
@@ -17,7 +18,7 @@ const perks = [
   ["New statements", "New official statements."],
 ] as const;
 
-const UNSUBSCRIBE = "mailto:sos@organize4syria.com?subject=Unsubscribe";
+const UNSUBSCRIBE = `mailto:${contactEmail}?subject=Unsubscribe`;
 
 export default function Newsletter() {
   const latest = statements.slice(0, 3);
@@ -39,7 +40,7 @@ export default function Newsletter() {
           <dl className="newsletter-facts">
             <div><dt>How often</dt><dd>Monthly.</dd></div>
             <div><dt>Your privacy</dt><dd>We use your email only to send Students Organize For Syria updates. We never sell or share it.</dd></div>
-            <div><dt>Unsubscribe</dt><dd>Any time: email <a href={UNSUBSCRIBE}>sos@organize4syria.com</a> with “Unsubscribe”.</dd></div>
+            <div><dt>Unsubscribe</dt><dd>Any time: email <a href={UNSUBSCRIBE}>{contactEmail}</a> with “Unsubscribe”.</dd></div>
           </dl>
         </div>
         <NewsletterForm />
@@ -67,7 +68,7 @@ export default function Newsletter() {
             </a>
           ))}
         </div>
-        <p className="newsletter-unsubscribe">Want to stop getting emails? Email <a href={UNSUBSCRIBE}>sos@organize4syria.com</a> with “Unsubscribe”.</p>
+        <p className="newsletter-unsubscribe">Want to stop getting emails? Email <a href={UNSUBSCRIBE}>{contactEmail}</a> with “Unsubscribe”.</p>
       </section>
     </Shell>
   );

@@ -5,11 +5,14 @@
 // template here, update its .md file too (same headings, same blanks).
 // =============================================================================
 
+import { contactEmail, facebookLabel, facebookUrl, instagramHandle, instagramProfileUrl, organizingGuideUrl } from "../site-settings";
+
 export const ORG_NAME = "Students Organize For Syria";
 export const LEGAL_NAME = "STUDENTS ORGANIZE FOR SYRIA INC";
 export const EIN = "81-3410686";
-export const CONTACT_EMAIL = "sos@organize4syria.com";
-export const GUIDE_URL = "https://docs.google.com/document/d/1Dvi09bJSaOUSksVLpYMAYP8v7EqP3DoLh3_c36PnejM/view?usp=sharing";
+// Email, social links and the organizing-guide link are edited in /admin -> Site settings.
+export const CONTACT_EMAIL = contactEmail;
+export const GUIDE_URL = organizingGuideUrl;
 
 /** Board-approved mission (wording unchanged; "For" capitalised to match the official name). Do not edit without board approval. */
 export const MISSION =
@@ -20,8 +23,8 @@ export const BOILERPLATE =
   "Students Organize For Syria (SOS) is a national, student-led movement rooted in advocacy, solidarity, and action for Syria. SOS grew from two student efforts, Save Our Syrian Freedom at Arizona State University (2012) and Students for Syrian Relief at Yale (2013), into a unified, nationwide student network. Today, SOS chapters give students concrete ways to organize, advocate, mobilize resources, and grow together.";
 
 export const socials = [
-  { label: "Instagram", handle: "@organize4syria", url: "https://www.instagram.com/organize4syria/" },
-  { label: "Facebook", handle: "Organize4Syria", url: "https://www.facebook.com/Organize4Syria/" },
+  { label: "Instagram", handle: `@${instagramHandle}`, url: instagramProfileUrl },
+  { label: "Facebook", handle: facebookLabel, url: facebookUrl },
 ] as const;
 
 export const nameRules: { title: string; body: string }[] = [
@@ -32,7 +35,7 @@ export const nameRules: { title: string; body: string }[] = [
 ];
 
 export const chapterSteps: { title: string; body: string; link?: { href: string; label: string; external?: boolean } }[] = [
-  { title: "Read the organizing guide", body: "The New Chapter Organizing Guide walks through recognition steps, launch planning, and chapter standards for Students Organize For Syria chapters.", link: { href: GUIDE_URL, label: "Open the organizing guide", external: true } },
+  { title: "Read the organizing guide", body: "The New Chapter Organizing Guide walks through recognition steps, launch planning, and chapter standards for Students Organize For Syria chapters.", link: GUIDE_URL ? { href: GUIDE_URL, label: "Open the organizing guide", external: true } : undefined },
   { title: "Check the chapter directory", body: "See whether your campus already has an active chapter to join, or a past chapter you can bring back.", link: { href: "/chapters", label: "Browse chapters" } },
   { title: "Find your co-organizers", body: "A chapter starts with students who refuse to stay on the sidelines. Bring a few friends in early and share the work from day one." },
   { title: "Tell us about your campus", body: "The start-a-chapter form asks for your name, email, school, state or region, phone number, and why this campus, why now. The national team will follow up with next steps.", link: { href: "/get-involved?form=chapter#apply", label: "Start a chapter" } },
@@ -121,4 +124,4 @@ export const templateFile = (t: Template) => `/toolkit/docs/${t.slug}.md`;
 // -----------------------------------------------------------------------------
 // Brand kit: a Google Drive folder the national team keeps up to date. Paste its share link
 // here to show the "Brand kit" button on /toolkits; while it is empty the section is hidden.
-export const BRAND_KIT_URL: string = "";
+export const BRAND_KIT_URL: string = "https://drive.google.com/drive/folders/1Q4we0qlR2V6HGYaLCv7QgAB-F9Wh6ZFF";

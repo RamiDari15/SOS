@@ -9,8 +9,8 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 
 const C = {
-  ink: "#1b1c1a", paper: "#f4f6f1", cream: "#dfe8df", warm: "#ece6d6", green: "#0d6844",
-  emerald: "#16845a", forest: "#063f2c", acid: "#acd0b9", red: "#a84a42",
+  ink: "#1b1c1a", paper: "#f3f0ea", cream: "#e4ddcc", warm: "#ece6d6", green: "#36592c",
+  emerald: "#4f7a3d", forest: "#233d1c", acid: "#c3cfac", red: "#8c0011",
 };
 
 // Seeded PRNG so every render is identical.
@@ -44,7 +44,7 @@ function defs(seed = 3) {
       <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="${seed + 21}"/>
       <feColorMatrix values="0 0 0 0 .1  0 0 0 0 .1  0 0 0 0 .09  0 0 0 -1.4 .8"/>
     </filter>
-    ${Object.entries({ ...C, shade: "#933f38" }).map(([name, col]) => `
+    ${Object.entries({ ...C, shade: "#6e000d" }).map(([name, col]) => `
     <pattern id="dots-l-${name}" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="2.2" fill="${col}"/></pattern>
     <pattern id="dots-m-${name}" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><circle cx="4.5" cy="4.5" r="3.3" fill="${col}"/></pattern>
     <pattern id="lines-${name}" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)"><rect width="10" height="3.2" fill="${col}"/></pattern>`).join("")}

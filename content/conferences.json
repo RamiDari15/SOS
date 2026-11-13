@@ -1,0 +1,44 @@
+{
+  "conferences": [
+    {
+      "year": "2018",
+      "city": "Ann Arbor, Michigan",
+      "dates": "November 9–11, 2018",
+      "theme": "Where do we go from here?",
+      "speakers": [
+        "Qutaiba Idlibi",
+        "Shiyam Galyon",
+        "Suzanne Meridien",
+        "Marc Nelson",
+        "Loubna Mrie",
+        "Lina Sergie Attar",
+        "Kenan Rahmani",
+        "Hadia Zarzour",
+        "Dr. Jihad Qaddour",
+        "Dr. Hend Azhary",
+        "Adham Sahloul",
+        "Big O"
+      ]
+    },
+    {
+      "year": "2017",
+      "city": "Chicago, Illinois",
+      "dates": "November 10–12, 2017",
+      "theme": "Preparing the next generation to stand up for Syria",
+      "speakers": [
+        "Kenan Rahmani",
+        "Shiyam Galyon",
+        "Dr. Zaher Sahloul",
+        "Dr. John Kahler",
+        "Mariam Jalabi",
+        "Syrian Community Network",
+        "Karam Foundation",
+        "Syrian American Council",
+        "White Helmets",
+        "Omar Offendum",
+        "Amal Kassir",
+        "Marc Nelson"
+      ]
+    }
+  ]
+}

@@ -4,7 +4,7 @@
 .release-archive{scroll-margin-top:90px}
 .release-archive .statement-link{font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.1em;color:var(--red);white-space:nowrap;border-bottom:1px solid currentColor;padding-bottom:3px;transition:color .2s,border-color .2s}
 .release-archive .statement-link:hover,.release-archive .statement-link:focus-visible{color:var(--green)}
-.release-archive article:has(.statement-link:hover){background:linear-gradient(90deg,transparent,rgba(13,104,68,.06))}
+.release-archive article:has(.statement-link:hover){background:linear-gradient(90deg,transparent,rgba(54,89,44,.06))}
 @media(max-width:900px){.release-archive .statement-link{grid-column:3;justify-self:start}}
 
 /* Media: two remaining path cards */
@@ -74,20 +74,20 @@
 .giving-placeholder{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:22px;color:var(--forest);border:1px solid var(--line);
   background:
     radial-gradient(circle at 78% 22%,rgba(255,255,255,.55) 0 18%,transparent 19%),
-    repeating-linear-gradient(135deg,rgba(6,63,44,.07) 0 1px,transparent 1px 9px),
-    repeating-linear-gradient(45deg,rgba(6,63,44,.05) 0 1px,transparent 1px 13px),
+    repeating-linear-gradient(135deg,rgba(35,61,28,.07) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(45deg,rgba(35,61,28,.05) 0 1px,transparent 1px 13px),
     linear-gradient(160deg,var(--cream),var(--acid))}
 .giving-grid figure:nth-child(2) .giving-placeholder{background:
     radial-gradient(circle at 22% 70%,rgba(255,255,255,.45) 0 22%,transparent 23%),
-    repeating-linear-gradient(135deg,rgba(6,63,44,.07) 0 1px,transparent 1px 9px),
-    repeating-linear-gradient(45deg,rgba(6,63,44,.05) 0 1px,transparent 1px 13px),
+    repeating-linear-gradient(135deg,rgba(35,61,28,.07) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(45deg,rgba(35,61,28,.05) 0 1px,transparent 1px 13px),
     linear-gradient(200deg,var(--acid),var(--cream))}
 .giving-grid figure:nth-child(3) .giving-placeholder{background:
     radial-gradient(circle at 60% 85%,rgba(255,255,255,.4) 0 25%,transparent 26%),
-    repeating-linear-gradient(135deg,rgba(6,63,44,.07) 0 1px,transparent 1px 9px),
-    repeating-linear-gradient(45deg,rgba(6,63,44,.05) 0 1px,transparent 1px 13px),
+    repeating-linear-gradient(135deg,rgba(35,61,28,.07) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(45deg,rgba(35,61,28,.05) 0 1px,transparent 1px 13px),
     linear-gradient(120deg,var(--cream),var(--paper) 55%,var(--acid))}
-.giving-placeholder:after{content:"";position:absolute;inset:12px;border:1px dashed rgba(6,63,44,.35);pointer-events:none}
+.giving-placeholder:after{content:"";position:absolute;inset:12px;border:1px dashed rgba(35,61,28,.35);pointer-events:none}
 .giving-placeholder span{font-size:10px;font-weight:850;letter-spacing:.14em}
 .giving-placeholder small{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;opacity:.7}
 .giving-grid figcaption{padding:22px 0 0;border-top:1px solid var(--line);margin-top:18px}
@@ -117,7 +117,7 @@
 .give-fields input,.give-fields textarea{display:block;width:100%;margin-top:9px;padding:13px 0;border:0;border-bottom:1px solid #62635f;background:transparent;color:white;border-radius:0;outline:none;font:inherit;font-size:15px;font-weight:500;letter-spacing:0;text-transform:none;transition:border-color .25s,background .25s,padding .25s}
 .give-fields textarea{resize:vertical}
 .give-fields input::placeholder,.give-fields textarea::placeholder{color:#888}
-.give-fields input:focus,.give-fields textarea:focus{border-color:var(--acid);background:rgba(185,227,86,.06);padding-left:12px}
+.give-fields input:focus,.give-fields textarea:focus{border-color:var(--acid);background:rgba(195,207,172,.06);padding-left:12px}
 .donation-panel .give-submit .pill{display:flex;width:100%;max-width:440px;justify-content:space-between}
 .donation-panel .give-submit .pill:hover,.donation-panel .give-submit .pill:focus-visible{background:var(--acid);color:var(--ink)}
 .donation-panel>.field-error{margin:-14px 0 20px}
@@ -125,11 +125,11 @@
 .donation-panel .form-success h2{font-size:clamp(34px,4vw,45px);line-height:.95;margin:18px 0 14px}
 .donation-panel .form-success p{line-height:1.55}
 @media(max-width:560px){.give-fields{grid-template-columns:1fr}.donation-panel .form-success{padding:26px}}
-.donation-panel .give-alt{margin:14px 0 0;font-size:12px;line-height:1.5;color:#b7beb8}
+.donation-panel .give-alt{margin:14px 0 0;font-size:12px;line-height:1.5;color:#c9c2b4}
 .donation-panel .give-alt a{color:white;border-bottom:1px solid currentColor;overflow-wrap:anywhere}
 .give-status{display:flex;align-items:center;gap:10px;margin-top:34px;padding-top:22px;border-top:1px solid #3b3c39;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--acid)}
-.give-status i{width:8px;height:8px;border-radius:50%;background:var(--acid);box-shadow:0 0 0 0 rgba(172,208,185,.6);animation:give-pulse 2.4s ease-out infinite}
-@keyframes give-pulse{0%{box-shadow:0 0 0 0 rgba(172,208,185,.55)}70%{box-shadow:0 0 0 10px rgba(172,208,185,0)}100%{box-shadow:0 0 0 0 rgba(172,208,185,0)}}
+.give-status i{width:8px;height:8px;border-radius:50%;background:var(--acid);box-shadow:0 0 0 0 rgba(195,207,172,.6);animation:give-pulse 2.4s ease-out infinite}
+@keyframes give-pulse{0%{box-shadow:0 0 0 0 rgba(195,207,172,.55)}70%{box-shadow:0 0 0 10px rgba(195,207,172,0)}100%{box-shadow:0 0 0 0 rgba(195,207,172,0)}}
 @media(prefers-reduced-motion:reduce){.give-status i{animation:none}}
 .donation-panel .donation-legal{margin-top:12px;font-size:10px;letter-spacing:.06em;text-transform:uppercase}
 .donation-note a{overflow-wrap:anywhere}
@@ -137,4 +137,5 @@
 .founders-toggle>summary{display:inline-flex;align-items:center;gap:14px;cursor:pointer;list-style:none;margin:30px 0 10px;padding:14px 20px;border:1px solid var(--ink);border-radius:100px;font-size:11px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
 .founders-toggle>summary::-webkit-details-marker{display:none}.founders-toggle>summary:after{content:"+";font-size:16px}.founders-toggle[open]>summary:after{content:"−"}
 .founders-toggle>summary:hover,.founders-toggle>summary:focus-visible{background:var(--ink);color:var(--paper)}
+.founder-mark img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
 .founders-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;margin-top:60px;padding-top:30px;border-top:1px solid var(--line)}.founders-cta p{max-width:560px;font-size:17px;line-height:1.5;margin:0}
