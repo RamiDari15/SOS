@@ -1,0 +1,47 @@
+/* Text fit (layered last). Display type inside cards and columns was sized
+   with vw, but those boxes are a fraction of the viewport, so the longest
+   word (MENTORSHIP, FUNDRAISING, TOOLKITS, ORGANIZING) spilled out of its
+   box and was cut off by the card's overflow:hidden / ink mask. Each box is
+   now a size container and its heading is capped in cqi (a % of the box),
+   so the longest word always fits whatever the viewport width. */
+
+/* Grid children may shrink below their longest word */
+.past-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.past-grid>*,.action-grid>*,.donation-stage>*,.chapter-profile>*,.legacy-model>div>*{min-width:0}
+
+/* /campaigns past campaign cards — longest word ~6.6em */
+.past-grid article{container-type:inline-size}
+.past-grid h2{font-size:min(45px,14cqi);overflow-wrap:break-word}
+
+/* /our-work pillars — FUNDRAISING ~6.5em */
+.legacy-model .pillars{grid-template-columns:repeat(3,minmax(0,1fr))}
+.legacy-model .pillars article{container-type:inline-size}
+.legacy-model .pillars article b{font-size:min(clamp(40px,5vw,76px),14cqi)}
+
+/* /get-involved action cards — TOOLKITS ~5.4em plus the 60px arrow gutter */
+.action-grid>a{container-type:inline-size}
+.action-grid h2{font-size:min(clamp(45px,5.5vw,82px),14cqi)}
+
+/* /donate panel — ORGANIZING. ~7.1em */
+.donation-panel{container-type:inline-size}
+.donation-panel h2{font-size:min(clamp(44px,5vw,75px),13cqi)}
+
+/* /donate story column — BUILDING ~5.2em */
+.donation-story{container-type:inline-size}
+.donation-story h2{font-size:min(clamp(54px,7vw,105px),18cqi)}
+
+/* /chapters/[slug] letter mark: keep the letters inside the circle */
+.chapter-logo-art.is-mark .campus-icon{container-type:inline-size}
+.chapter-logo-art.is-mark .campus-icon i{font-size:min(clamp(48px,7vw,96px),29cqi)}
+.chapter-logo-art.is-mark .campus-icon i.is-long{font-size:min(clamp(40px,6vw,84px),24cqi)}
+
+@media(max-width:900px){
+  .legacy-model .pillars{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:560px){
+  .past-grid{grid-template-columns:minmax(0,1fr)}
+  .action-grid h2,.donation-panel h2{font-size:min(clamp(28px,8.4vw,40px),14cqi)}
+  .donation-story h2{font-size:min(clamp(32px,10vw,52px),18cqi)}
+  /* Chapter facts: label above value so long values (emails) are not squeezed into half the row */
+  .chapter-profile dl div{grid-template-columns:minmax(0,1fr);gap:6px}
+}

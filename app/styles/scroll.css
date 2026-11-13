@@ -1,0 +1,16 @@
+/* Keep focused fields, links and #anchor targets clear of the sticky header.
+   .nav-wrap is position:sticky (76px, 68px under 560px) and translucent. When
+   the browser scrolls something into view (Tab / Shift+Tab, tapping a form
+   field so the on-screen keyboard opens, or a #link) it aligned the element
+   with the top edge, i.e. under the header, so the field being typed in was
+   covered. scroll-padding tells every such scroll to leave room for it. */
+:root{--header-h:76px}
+@media(max-width:560px){:root{--header-h:68px}}
+html{scroll-padding-top:calc(var(--header-h) + 16px);scroll-padding-bottom:16px}
+#main-content{scroll-margin-top:0}
+
+/* The mobile menu hangs off the sticky header, so on a short screen (landscape
+   phone, keyboard open) its last links were unreachable. Let it scroll. */
+@media(max-width:1180px){
+  .nav-wrap nav.nav-open{max-height:calc(100dvh - var(--header-h));overflow-y:auto;overscroll-behavior:contain}
+}
