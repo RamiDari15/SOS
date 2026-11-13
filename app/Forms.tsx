@@ -27,7 +27,7 @@ function trimmed(fields: Record<string, string>): Record<string, string> {
   return out;
 }
 
-function useFormSubmission(type: FormType) {
+export function useFormSubmission(type: FormType) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const uid = useId();
@@ -111,7 +111,7 @@ function useFormSubmission(type: FormType) {
   return { status, onSubmit, fieldProps, errorFor, hintFor, reset };
 }
 
-function Honeypot() {
+export function Honeypot() {
   return (
     <div className="form-hp" aria-hidden="true">
       <label>
@@ -123,7 +123,7 @@ function Honeypot() {
 }
 
 /** Live region inside the form: submitting / validation / fallback messages. */
-function FormStatus({ status }: { status: Status }) {
+export function FormStatus({ status }: { status: Status }) {
   let content: ReactNode = null;
   if (status.kind === "submitting") content = <p>Sending…</p>;
   if (status.kind === "invalid") content = <p>Please fix the highlighted fields and try again.</p>;
@@ -146,7 +146,7 @@ function FormStatus({ status }: { status: Status }) {
   );
 }
 
-function SuccessPanel({ title, children, again, onAgain, className = "" }: { title: string; children: ReactNode; again: string; onAgain: () => void; className?: string }) {
+export function SuccessPanel({ title, children, again, onAgain, className = "" }: { title: string; children: ReactNode; again: string; onAgain: () => void; className?: string }) {
   const ref = useRef<HTMLHeadingElement>(null);
   useEffect(() => ref.current?.focus(), []);
   return (
@@ -160,7 +160,7 @@ function SuccessPanel({ title, children, again, onAgain, className = "" }: { tit
   );
 }
 
-function SubmitButton({ busy, children }: { busy: boolean; children: ReactNode }) {
+export function SubmitButton({ busy, children }: { busy: boolean; children: ReactNode }) {
   return (
     <button className="pill pill-green" type="submit" aria-disabled={busy || undefined}>
       {busy ? "Sending…" : children} {!busy && <Arrow />}
