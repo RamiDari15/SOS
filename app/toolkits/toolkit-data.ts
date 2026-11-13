@@ -121,4 +121,4 @@ export const templateFile = (t: Template) => `/toolkit/docs/${t.slug}.md`;
 // -----------------------------------------------------------------------------
 // Brand kit: a Google Drive folder the national team keeps up to date. Paste its share link
 // here to show the "Brand kit" button on /toolkits; while it is empty the section is hidden.
-export const BRAND_KIT_URL: string = "";
+export const BRAND_KIT_URL: string = "https://drive.google.com/drive/folders/1Q4we0qlR2V6HGYaLCv7QgAB-F9Wh6ZFF";
