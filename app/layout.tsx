@@ -7,6 +7,7 @@ import "./styles/forms.css";
 import "./styles/content.css";
 import "./styles/toolkit.css";
 import "./styles/fit.css";
+import "./styles/scroll.css";
 
 const archivo = Archivo({ variable: "--font-body", subsets: ["latin"] });
 const archivoBlack = Archivo_Black({ variable: "--font-display", weight: "400", subsets: ["latin"] });
