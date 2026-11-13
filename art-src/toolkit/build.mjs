@@ -18,13 +18,13 @@ for (const d of ["", "colors", "templates"]) mkdirSync(join(out, d), { recursive
 // Brand colors — mirror :root in app/globals.css.
 export const COLORS = [
   ["Ink", "#1b1c1a", "Text, dark backgrounds"],
-  ["Paper", "#f4f6f1", "Main light background"],
-  ["Cream", "#dfe8df", "Soft panels, cards"],
-  ["Green", "#0d6844", "Primary brand color, buttons"],
-  ["Emerald", "#16845a", "Gradients, highlights"],
-  ["Forest", "#063f2c", "Deep backgrounds, footers"],
-  ["Acid", "#acd0b9", "Accents on dark green"],
-  ["Red", "#a84a42", "Calls to action, emphasis"],
+  ["Paper", "#f3f0ea", "Main light background"],
+  ["Cream", "#e4ddcc", "Soft panels, cards"],
+  ["Green", "#36592c", "Primary brand color, buttons"],
+  ["Emerald", "#4f7a3d", "Gradients, highlights"],
+  ["Forest", "#233d1c", "Deep backgrounds, footers"],
+  ["Acid", "#c3cfac", "Accents on dark green"],
+  ["Red", "#8c0011", "Calls to action, emphasis"],
 ];
 const C = Object.fromEntries(COLORS.map(([n, h]) => [n.toLowerCase(), h]));
 
@@ -145,7 +145,7 @@ function statementTemplate(H, blank = false) {
 function paletteSheet() {
   const W = 2000, H = 1300, cw = 440, ch = 420, gx = 40;
   const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)).join(", ");
-  const light = h => ["#f4f6f1", "#dfe8df", "#acd0b9"].includes(h);
+  const light = h => ["#f3f0ea", "#e4ddcc", "#c3cfac"].includes(h);
   const cards = COLORS.map(([name, hex, use], i) => {
     const x = 80 + (i % 4) * (cw + gx), y = 250 + Math.floor(i / 4) * (ch + 40), fg = light(hex) ? C.ink : C.paper;
     return `<rect x="${x}" y="${y}" width="${cw}" height="${ch}" fill="${hex}" stroke="${C.ink}" stroke-opacity=".15" stroke-width="2"/>
