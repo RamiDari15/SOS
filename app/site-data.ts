@@ -5,6 +5,7 @@
 //   content/campaigns.json    Past campaigns              (/campaigns)
 //   content/statements.json   Official statements         (/media, /news, /about, /newsletter)
 //   content/giving.json       "Where your money goes"     (/donate)
+//   content/board.json        Current national board      (/about)
 //   content/founders.json     Founders                    (/about)
 //   content/conferences.json  Conferences                 (/conferences, /about)
 //   content/press.json        Press coverage              (/media)
@@ -13,6 +14,7 @@
 // This file only tidies those values up for the pages.
 // =============================================================================
 
+import boardFile from "../content/board.json";
 import campaignsFile from "../content/campaigns.json";
 import conferencesFile from "../content/conferences.json";
 import foundersFile from "../content/founders.json";
@@ -55,8 +57,11 @@ export const givingSlots: readonly GivingSlot[] = list<Partial<GivingSlot>>(givi
 
 export function slugify(value: string) { return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
-/** Current national board, shown above the founders on /about once filled in: [name, role, short bio]. */
-export const board: [string, string, string][] = [];
+export type BoardMember = { name: string; role: string; bio: string; photo?: string };
+/** Current national board, shown above the founders on /about once filled in (content/board.json). */
+export const board: readonly BoardMember[] = list<Partial<BoardMember>>(boardFile.board)
+  .filter(b => text(b.name))
+  .map(b => ({ name: text(b.name)!, role: text(b.role) ?? "", bio: text(b.bio) ?? "", photo: text(b.photo) }));
 
 type Founder = { name: string; bio: string };
 export const founders: readonly (readonly [string, string])[] = list<Partial<Founder>>(foundersFile.founders)

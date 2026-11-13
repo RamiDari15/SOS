@@ -33,6 +33,7 @@ The left side lists everything you can edit, all under **Website content**:
 | Past campaigns | Campaign cards | Campaigns page |
 | Official statements | Statements and their links | Media, News, Newsletter (newest 3), About |
 | Donate page photos | The three "Where your money goes" boxes | Donate page |
+| Current board | Board members' names, roles, bios and photos | About page (above the founders) |
 | Founders | Founder names and bios | About page |
 | Conferences | Year, city, dates, theme, speakers | Conferences page, About page timeline |
 | Press coverage | News articles about SOS | Media page |
@@ -50,7 +51,7 @@ The left side lists everything you can edit, all under **Website content**:
   - Click the **›** arrow on an item to open it, and again to close it.
   - **Add …** (top right of the list) adds a new item at the bottom.
   - The **✕** on an item deletes it.
-  - Drag the **═** handle to move an item up or down. For statements, campaigns, founders, conferences and press, the order in the editor is the order on the site.
+  - Drag the **═** handle to move an item up or down. For statements, campaigns, board members, founders, conferences and press, the order in the editor is the order on the site.
 - Fields marked **(optional)** can be left empty.
 
 ### Site settings
@@ -105,9 +106,17 @@ The Donate page has three "Where your money goes" boxes. Each has a **heading**,
 - With no photo, the box shows a "Photo coming soon" frame.
 - Landscape photos around 1600 pixels wide and under 1 MB work best.
 
+### Current board
+
+The current national board shows on the About page, above the founders, in the editor's order. The list starts empty, and nothing shows until someone is added.
+
+- Each member has a **name**, a **role** (for example `President`), a **short bio**, and an optional **photo**.
+- Photos show in a circle, so square photos with the face centered work best. Only use a photo the person agreed to share. Without a photo, a circle with their initials is shown.
+- While the board list is empty, the founders show open on the About page. Once anyone is on the board, the founders fold behind a **Meet the founders** button.
+
 ### Founders
 
-Each founder has a **name** and a **short bio**. The circle with their initials is made automatically. They show on the About page in the editor's order.
+Each founder has a **name** and a **short bio**. The circle with their initials is made automatically. They show on the About page in the editor's order, under the "Meet the founders" button (open by default while the board list is empty).
 
 ### Conferences
 
@@ -141,11 +150,11 @@ These need a developer (someone comfortable editing the code on GitHub) or the s
 | What | Where it lives in the code |
 | --- | --- |
 | Page headlines, intros and paragraphs (for example "Born from urgency", the home page sections, Our Work, Get Involved cards) | The page's file in `app/`, for example `app/about/page.tsx`, `app/page.tsx` |
-| About page story timeline, values, and "how the original network worked" | `app/about/page.tsx` |
+| About page story timeline, mission, values, and the founders section layout | `app/about/page.tsx` |
 | Menu items and footer links | `app/Interior.tsx` |
-| Colors, fonts, spacing, layout | `app/globals.css` |
+| Colors, fonts, spacing, layout | `app/globals.css`, `app/styles/` |
 | Art and captions in the Media page gallery, and home page artwork | `app/media/page.tsx`, `public/art/` |
-| Toolkit templates, brand kit, downloads | `app/toolkits/toolkit-data.ts`, `public/toolkit/` |
+| Toolkit templates and downloads, and the brand kit Google Drive link on Toolkits (`BRAND_KIT_URL`) | `app/toolkits/toolkit-data.ts`, `public/toolkit/` |
 | Form questions and topics, and the address form submissions are emailed to (sos@organize4syria.com) | `app/Forms.tsx`, `app/lib/forms.ts` |
 | Donation amounts, legal name, EIN on the Donate page | `app/donate/DonatePanel.tsx` |
 | Redirects when a chapter is renamed (so old links keep working) | `next.config.ts` |

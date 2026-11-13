@@ -110,6 +110,23 @@ collections:
               - { name: image, label: Photo, widget: image, required: false, choose_url: false, media_folder: /public/donate, public_folder: /donate, hint: "Optional. Only photos SOS has permission to use. Without one, a 'Photo coming soon' frame shows." }
               - { name: alt, label: Photo description (for screen readers), widget: string, required: false, hint: "Describe what is in the photo, e.g. Students holding a banner at a campus rally" }
 
+      - name: board
+        label: Current board
+        file: content/board.json
+        fields:
+          - name: board
+            label: Board members
+            label_singular: board member
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}} · {{fields.role}}"
+            hint: "Shown on the About page above the founders, in this order. While this list is empty the founders show open; once anyone is added, the founders fold behind a 'Meet the founders' button."
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: role, label: Role, widget: string, required: false, hint: "e.g. President, Treasurer" }
+              - { name: bio, label: Short bio, widget: text, required: false }
+              - { name: photo, label: Photo, widget: image, required: false, choose_url: false, hint: "Optional. Square photos look best (shown in a circle). Only use a photo the person agreed to share. Without one, their initials show." }
+
       - name: founders
         label: Founders
         file: content/founders.json
