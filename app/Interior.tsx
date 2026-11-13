@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { contactEmail, facebookUrl, instagramProfileUrl } from "./site-settings";
 
 export const Arrow = () => <span aria-hidden="true">↗</span>;
 
@@ -70,7 +71,7 @@ export function Shell({ children, active }: { children: ReactNode; active?: stri
     <main id="main-content" tabIndex={-1} inert={open || undefined}>{children}</main>
     <footer inert={open || undefined}>
       <Link className="footer-mark" href="/" aria-label="Students Organize For Syria home"><img src="/brand/sos-english-cream.png" width={900} height={382} alt="" /></Link>
-      <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href="mailto:sos@organize4syria.com">sos@organize4syria.com</a><br/><a href="https://www.instagram.com/organize4syria/">Instagram</a> · <a href="https://www.facebook.com/Organize4Syria/">Facebook</a></p>
+      <p>Students Organize For Syria<br />Building community power.<br />Shaping what comes next.<br/><a href={`mailto:${contactEmail}`}>{contactEmail}</a><br/><a href={instagramProfileUrl}>Instagram</a> · <a href={facebookUrl}>Facebook</a></p>
       <nav className="footer-nav" aria-label="Footer"><Link href="/about">About</Link><Link href="/our-work">Our work</Link><Link href="/campaigns">Campaigns</Link><Link href="/chapters">Chapters</Link><Link href="/conferences">Conferences</Link><Link href="/media">Media</Link><Link href="/newsletter">Newsletter</Link><Link href="/toolkits">Toolkits</Link><Link href="/donate">Donate</Link><Link href="/contact">Contact</Link></nav>
       <div className="footer-meta"><span>© 2026 Students Organize For Syria</span><span>Student-led. Always.</span></div>
     </footer>

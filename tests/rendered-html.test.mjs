@@ -103,11 +103,10 @@ test("/newsletter is a finished signup page with the latest statements", async (
   for (const name of ["email", "firstName", "lastName", "school", "consent"]) assert.match(html, new RegExp(`name="${name}"`), `field ${name}`);
   assert.match(html, /[Mm]onthly/);
   assert.match(html, /mailto:sos@organize4syria\.com\?subject=Unsubscribe/, "unsubscribe mailto");
-  // The three newest statements are the first three entries of `statements` in app/site-data.ts.
-  const source = await readFile(new URL("../app/site-data.ts", import.meta.url), "utf8");
-  const block = source.slice(source.indexOf("export const statements"));
-  const expected = [...block.matchAll(/title: "([^"]+)"/g)].slice(0, 3).map((m) => m[1].replace(/&/g, "&amp;"));
-  assert.equal(expected.length, 3, "found three statements in site-data.ts");
+  // The three newest statements are the first three entries in content/statements.json (edited in /admin).
+  const source = JSON.parse(await readFile(new URL("../content/statements.json", import.meta.url), "utf8"));
+  const expected = source.statements.slice(0, 3).map((s) => s.title.replace(/&/g, "&amp;"));
+  assert.equal(expected.length, 3, "found three statements in content/statements.json");
   const strip = html.slice(html.indexOf("newsletter-latest"));
   for (const title of expected) assert.ok(strip.includes(title), `latest statement "${title}"`);
   assert.equal((strip.match(/class="latest-card"/g) ?? []).length, 3, "three latest cards");
@@ -196,4 +195,23 @@ test("/api/forms rate-limits one IP after 5 accepted submissions", async () => {
   const statuses = [];
   for (let i = 0; i < 6; i++) statuses.push((await postForm(validContact, { "cf-connecting-ip": "198.51.100.77" })).status);
   assert.deepEqual(statuses, [503, 503, 503, 503, 503, 429]);
+});
+
+test("/admin content editor is wired to the content files and GitHub sign-in", async () => {
+  // Static file (served from public/ by the host; the test worker has no asset server).
+  const html = await readFile(new URL("../public/admin/index.html", import.meta.url), "utf8");
+  assert.match(html, /decap-cms@\d+\.\d+\.\d+\/dist\/decap-cms\.js/, "pinned Decap CMS version");
+  assert.match(html, /noindex/);
+  const config = await readFile(new URL("../public/admin/config.yml", import.meta.url), "utf8");
+  assert.match(config, /repo: RamiDari15\/SOS/);
+  assert.match(config, /auth_endpoint: api\/admin-auth/);
+  const files = [...config.matchAll(/file: (content\/[\w-]+\.json)/g)].map((m) => m[1]);
+  assert.ok(files.length >= 8, "every content file is editable");
+  for (const file of files) JSON.parse(await readFile(new URL(`../${file}`, import.meta.url), "utf8"));
+  // Without the OAuth env vars the sign-in popup explains what is missing instead of crashing.
+  const auth = await request("/api/admin-auth?provider=github&scope=repo");
+  assert.ok([302, 500].includes(auth.status), `sign-in route status ${auth.status}`);
+  if (auth.status === 500) assert.match(await auth.text(), /GITHUB_OAUTH_CLIENT_ID/);
+  const callback = await request("/api/admin-auth/callback?code=x&state=y");
+  assert.ok(callback.status >= 400, "callback rejects a request without the matching state cookie");
 });
