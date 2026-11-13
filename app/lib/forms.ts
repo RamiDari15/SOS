@@ -4,7 +4,7 @@
  * the client (app/Forms.tsx) for the mailto fallback. No secrets here.
  */
 
-export const FORM_TYPES = ["contact", "member", "chapter", "newsletter"] as const;
+export const FORM_TYPES = ["contact", "member", "chapter", "newsletter", "donation"] as const;
 export type FormType = (typeof FORM_TYPES)[number];
 
 /** Hidden anti-spam field. Deliberately not a name browsers or password managers autofill. */
@@ -98,6 +98,15 @@ export const FORM_SCHEMAS: Record<FormType, { title: string; fields: Record<stri
       consent: { label: `I want monthly updates from ${ORG_NAME}`, kind: "consent", required: true, max: 3 },
     },
   },
+  donation: {
+    title: "Donation pledge",
+    fields: {
+      amount: { label: "Amount", kind: "text", required: true, max: 20 },
+      name: { label: "Name", kind: "text", required: true, max: 120 },
+      email: { label: "Email", kind: "email", required: true, max: 254 },
+      note: { label: "Note", kind: "multiline", max: 2000 },
+    },
+  },
 };
 
 export function isFormType(value: unknown): value is FormType {
@@ -180,7 +189,7 @@ export function formatSubmissionText(type: FormType, data: Record<string, string
 export function submissionSubject(type: FormType, data: Record<string, string>): string {
   const who = data.name || [data.firstName, data.lastName].filter(Boolean).join(" ") || data.email || "";
   const base = `[${ORG_NAME}] ${FORM_SCHEMAS[type].title}`;
-  const topic = type === "contact" && data.topic ? ` (${data.topic})` : "";
+  const topic = type === "contact" && data.topic ? ` (${data.topic})` : type === "donation" && data.amount ? ` (${data.amount})` : "";
   return `${base}${topic}${who ? ` from ${who}` : ""}`.slice(0, 200);
 }
 
