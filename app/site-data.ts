@@ -1,65 +1,80 @@
-export const pastCampaigns = [
-  { title: "Books Not Bombs", partner: "With Karam Foundation", body: "SOS helped fund scholarships and support education in Syria." },
-  { title: "Advocacy in D.C.", partner: "With SAMS", body: "Students brought informed Syrian voices directly to Washington." },
-  { title: "Paper Airplanes", partner: "National partnership", body: "SOS members offered English tutoring to young Syrians." },
-  { title: "Warmth in Action", partner: "With NuDay Syria", body: "Students fundraised for winter coats for Syrian refugee children." },
-  { title: "Syria Solidarity Week", partner: "National campus action", body: "Chapters held panels, screenings, fundraisers, art actions, and public solidarity events." },
-  { title: "Dares 4 Syria", partner: "With Karam Foundation", body: "A Giving Tuesday campaign that invited supporters to take action for Syrian youth." },
-  { title: "Virtual Mentorship", partner: "Syrian Youth Empowerment", body: "Students and young professionals mentored Syrian youth navigating college applications." },
-  { title: "The Revolution Continues", partner: "Washington, D.C.", body: "A public remembrance and advocacy gathering centered on freedom and accountability." },
-];
+// =============================================================================
+// SITE CONTENT
+// The words and lists below are NOT typed here any more. They live in the
+// content/ folder as .json files, which the admin editor at /admin changes:
+//   content/campaigns.json    Past campaigns              (/campaigns)
+//   content/statements.json   Official statements         (/media, /news, /about, /newsletter)
+//   content/giving.json       "Where your money goes"     (/donate)
+//   content/founders.json     Founders                    (/about)
+//   content/conferences.json  Conferences                 (/conferences, /about)
+//   content/press.json        Press coverage              (/media)
+//   content/settings.json     Email + social links        (whole site, see site-settings.ts)
+//   content/chapters.json     Chapters                    (see chapter-data.ts)
+// This file only tidies those values up for the pages.
+// =============================================================================
+
+import campaignsFile from "../content/campaigns.json";
+import conferencesFile from "../content/conferences.json";
+import foundersFile from "../content/founders.json";
+import givingFile from "../content/giving.json";
+import pressFile from "../content/press.json";
+import statementsFile from "../content/statements.json";
+
+/** Trims text; empty or missing values become undefined so optional fields behave. */
+export const text = (value: unknown): string | undefined => (typeof value === "string" && value.trim() ? value.trim() : undefined);
+const list = <T,>(value: unknown): T[] => (Array.isArray(value) ? (value as T[]) : []);
+
+type Campaign = { title: string; partner: string; body: string };
+export const pastCampaigns: readonly Campaign[] = list<Partial<Campaign>>(campaignsFile.campaigns)
+  .filter(c => text(c.title))
+  .map(c => ({ title: text(c.title)!, partner: text(c.partner) ?? "", body: text(c.body) ?? "" }));
 
 export type Statement = { date: string; title: string; summary: string; url: string; source: "Instagram" | "organize4syria.com" };
 
-/** Official SOS statements, newest first. Dates come from the board's notes or the original posts. */
-export const statements: readonly Statement[] = [
-  { date: "Dec 10, 2024", title: "Syria is Free", summary: "Our statement: Syria is free.", url: "https://www.instagram.com/p/DDay_bvOloU/", source: "Instagram" },
-  // Date not given in the board notes; the year is read from the original Instagram post.
-  { date: "2023", title: "In Solidarity with Gaza", summary: "Our statement in solidarity with Gaza.", url: "https://www.instagram.com/p/CyeO14JpQ7_/", source: "Instagram" },
-  { date: "Feb 6, 2023", title: "Statement Regarding the Earthquake", summary: "Our statement regarding the earthquake.", url: "https://www.instagram.com/p/CocrQGMJWhP/", source: "Instagram" },
-  { date: "May 31, 2020", title: "Statement on BLM protests", summary: "A solidarity statement responding to protests against police brutality in the United States.", url: "https://web.archive.org/web/2021/https://organize4syria.com/statement-on-blm-protests/", source: "organize4syria.com" },
-  { date: "Mar 18, 2020", title: "Statement on Idlib", summary: "A statement addressing displacement, humanitarian conditions, and violence affecting civilians in Idlib.", url: "https://web.archive.org/web/2021/https://organize4syria.com/statement-on-idlib/", source: "organize4syria.com" },
-  { date: "Mar 15, 2020", title: "Remembrance Day", summary: "A reflection marking nine years since the first protests in Daraa and the beginning of the Syrian revolution.", url: "https://web.archive.org/web/2021/https://organize4syria.com/remembrance-day/", source: "organize4syria.com" },
-];
+/** Official SOS statements, newest first (the order in the admin list is the order on the site). */
+export const statements: readonly Statement[] = list<Partial<Statement>>(statementsFile.statements)
+  .filter(s => text(s.title) && text(s.url))
+  .map(s => ({
+    date: text(s.date) ?? "",
+    title: text(s.title)!,
+    summary: text(s.summary) ?? "",
+    url: text(s.url)!,
+    source: s.source === "organize4syria.com" ? "organize4syria.com" : "Instagram",
+  }));
 
 export function statementLinkLabel(s: Statement) { return s.source === "Instagram" ? "Read on Instagram ↗" : "Read archived statement ↗"; }
 
 /**
  * "Where your money goes" photo slots on /donate.
- * To add a real photo: drop a rights-cleared image in public/donate/ (e.g. public/donate/campus.jpg)
- * and set `image: "/donate/campus.jpg"` plus a descriptive `alt`. Slots without an image render a textured placeholder frame.
+ * Slots without an image render a textured placeholder frame.
  */
 export type GivingSlot = { title: string; caption: string; image?: string; alt?: string };
-// TODO(board): replace with approved captions + photos.
-export const givingSlots: readonly GivingSlot[] = [
-  { title: "Campus organizing", caption: "Support for student chapters organizing on their campuses." },
-  { title: "National connection", caption: "Support for the national network that connects chapters." },
-  { title: "Movement continuity", caption: "Support for keeping the movement running over time." },
-];
+export const givingSlots: readonly GivingSlot[] = list<Partial<GivingSlot>>(givingFile.slots)
+  .filter(s => text(s.title))
+  .map(s => ({ title: text(s.title)!, caption: text(s.caption) ?? "", image: text(s.image), alt: text(s.alt) }));
 
 export function slugify(value: string) { return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
 /** Current national board, shown above the founders on /about once filled in: [name, role, short bio]. */
 export const board: [string, string, string][] = [];
 
-export const founders = [
-  ["Zana Alattar", "Founded Save Our Syrian Freedom at Arizona State University in 2012 and used that experience as a foundation for the national SOS network."],
-  ["Omar Bailony", "A Syrian American advocate whose work included youth mentorship, asylum representation, and legal scholarship."],
-  ["Nada Hashem", "An organizer committed to freedom, justice, and human rights who served Syrian community and advocacy organizations."],
-  ["Dina Jaber", "A Syrian American student organizer whose education and human-rights work shaped her activism during the Arab Spring."],
-  ["Kenan Rahmani", "A Syrian American political and human-rights activist with experience across grassroots and civil-society organizations."],
-  ["Sarah Yazji", "A Yale organizer who helped lead relief and fundraising efforts and traveled to Syria’s northern border and Za’atari Refugee Camp."],
-] as const;
+type Founder = { name: string; bio: string };
+export const founders: readonly (readonly [string, string])[] = list<Partial<Founder>>(foundersFile.founders)
+  .filter(f => text(f.name))
+  .map(f => [text(f.name)!, text(f.bio) ?? ""] as const);
 
-export const conferences = [
-  { year: "2018", city: "Ann Arbor, Michigan", dates: "November 9–11, 2018", theme: "Where do we go from here?", speakers: ["Qutaiba Idlibi", "Shiyam Galyon", "Suzanne Meridien", "Marc Nelson", "Loubna Mrie", "Lina Sergie Attar", "Kenan Rahmani", "Hadia Zarzour", "Dr. Jihad Qaddour", "Dr. Hend Azhary", "Adham Sahloul", "Big O"] },
-  { year: "2017", city: "Chicago, Illinois", dates: "November 10–12, 2017", theme: "Preparing the next generation to stand up for Syria", speakers: ["Kenan Rahmani", "Shiyam Galyon", "Dr. Zaher Sahloul", "Dr. John Kahler", "Mariam Jalabi", "Syrian Community Network", "Karam Foundation", "Syrian American Council", "White Helmets", "Omar Offendum", "Amal Kassir", "Marc Nelson"] },
-] as const;
+type Conference = { year: string; city: string; dates: string; theme: string; speakers: string[] };
+export const conferences: readonly Conference[] = list<Partial<Conference>>(conferencesFile.conferences)
+  .filter(c => text(c.year))
+  .map(c => ({
+    year: text(c.year)!,
+    city: text(c.city) ?? "",
+    dates: text(c.dates) ?? "",
+    theme: text(c.theme) ?? "",
+    speakers: list<unknown>(c.speakers).map(text).filter((v): v is string => Boolean(v)),
+  }));
 
-export const press = [
-  ["USA Today College", "Student activists organize for a free Syria", "https://www.usatoday.com/story/college/2015/09/16/student-activists-organize-for-a-free-syria/37406537/"],
-  ["BarakaBits", "Five ways you can help Syria for real", "https://www.barakabits.com/2015/03/5-ways-you-can-help-syria-for-real"],
-  ["The State Press", "Arizona State University’s mock refugee tent", "https://www.statepress.com/article/2015/03/asu-students-experience-living-like-syrian-refugees/"],
-  ["The Eastern Echo", "Eastern Michigan University hosts Tea With a Syrian", "https://www.easternecho.com/article/2015/03/tea-with-a-syrian"],
-  ["The Independent Florida Alligator", "University of Florida SOS shows students the life of a refugee", "https://www.alligator.org/news/did-you-notice-the-blue-tent-on-plaza-of-americas/article_bfd0ef48-41ed-11e8-9f26-3f0f31f6ef6d.html"],
-] as const;
+type PressItem = { source: string; title: string; url: string };
+export const press: readonly (readonly [string, string, string])[] = list<Partial<PressItem>>(pressFile.press)
+  .filter(p => text(p.title) && text(p.url))
+  .map(p => [text(p.source) ?? "", text(p.title)!, text(p.url)!] as const);

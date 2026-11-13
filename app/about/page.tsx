@@ -2,20 +2,24 @@ import type { Metadata } from "next";
 import { PageHero, Shell } from "../Interior";
 import { board, conferences, founders, statements } from "../site-data";
 
-const chicago = conferences.find(c => c.year === "2017")!;
-const annArbor = conferences.find(c => c.year === "2018")!;
-const syriaIsFree = statements.find(s => s.title === "Syria is Free")!;
+const chicago = conferences.find(c => c.year === "2017");
+const annArbor = conferences.find(c => c.year === "2018");
+const syriaIsFree = statements.find(s => s.title === "Syria is Free");
 
-/** The SOS story in order. Every entry restates facts already published on the site or in the board's notes. */
-const story: { year: string; place: string; title: string; body: string; link?: { href: string; label: string } }[] = [
+/**
+ * The SOS story in order. Every entry restates facts already published on the site or in the board's notes.
+ * The conference and "Syria is Free" entries read from the admin-edited content and are skipped if those items are removed.
+ */
+type StoryItem = { year: string; place: string; title: string; body: string; link?: { href: string; label: string } };
+const story: StoryItem[] = ([
   { year: "2012", place: "Arizona State University", title: "Save Our Syrian Freedom", body: "Zana Alattar founds Save Our Syrian Freedom at ASU. The initiative raises awareness of the Syrian Revolution, promotes philanthropy, supports humanitarian aid, and connects student activists nationally." },
   { year: "2013", place: "Yale University + international students", title: "Students for Syrian Relief", body: "After a student fundraising trip to the Turkey–Syria border, Students for Syrian Relief is founded to connect students with relief projects, awareness work, and fundraising opportunities. Yale organizers, including Sarah Yazji, led relief and fundraising." },
   { year: "Then", place: "Campuses nationwide", title: "Students Organize For Syria", body: "The two efforts grow into Students Organize For Syria: a unified, national student network. Chapters run campaigns such as Books Not Bombs, Syria Solidarity Week, and Advocacy in D.C.", link: { href: "/campaigns", label: "See past campaigns ↗" } },
-  { year: chicago.year, place: `${chicago.city} · ${chicago.dates}`, title: "National conference in Chicago", body: `Students, activists, artists, and organizations gather around the theme “${chicago.theme}.”`, link: { href: "/conferences", label: "Explore the conferences ↗" } },
-  { year: annArbor.year, place: `${annArbor.city} · ${annArbor.dates}`, title: "National conference in Ann Arbor", body: `The network meets again and asks, “${annArbor.theme}”` },
+  chicago && { year: chicago.year, place: `${chicago.city} · ${chicago.dates}`, title: "National conference in Chicago", body: `Students, activists, artists, and organizations gather around the theme “${chicago.theme}.”`, link: { href: "/conferences", label: "Explore the conferences ↗" } },
+  annArbor && { year: annArbor.year, place: `${annArbor.city} · ${annArbor.dates}`, title: "National conference in Ann Arbor", body: `The network meets again and asks, “${annArbor.theme}”` },
   { year: "2020–2023", place: "Official statements", title: "A public voice", body: "SOS speaks on the record: a Remembrance Day reflection marking nine years since the first protests in Daraa, followed by statements on Idlib, the BLM protests, the earthquake, and solidarity with Gaza.", link: { href: "/media#statements", label: "Read the statements ↗" } },
-  { year: "2024", place: syriaIsFree.date, title: syriaIsFree.title, body: "SOS issues its statement “Syria is Free.”", link: { href: syriaIsFree.url, label: "Read on Instagram ↗" } },
-];
+  syriaIsFree && { year: "2024", place: syriaIsFree.date, title: syriaIsFree.title, body: "SOS issues its statement “Syria is Free.”", link: { href: syriaIsFree.url, label: "Read on Instagram ↗" } },
+] as (StoryItem | undefined)[]).filter((item): item is StoryItem => Boolean(item));
 
 export const metadata: Metadata = {
   title: "About | Students Organize For Syria",
