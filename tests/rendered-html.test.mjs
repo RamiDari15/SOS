@@ -75,6 +75,7 @@ for (const [path, heading] of PAGES) {
     assert.match(h1Text(html), heading);
     assert.match(html, /<title>[^<]+<\/title>/i, "page has a <title>");
     assert.match(html, /Students Organize For Syria/, "official name appears");
+    assert.doesNotMatch(html, /Students Organize for Syria/, "official name uses a capital F");
   });
 }
 
